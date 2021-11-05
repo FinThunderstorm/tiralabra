@@ -5,6 +5,10 @@
             "name": "root"
         },
         {
+            "path": "src/docs",
+            "name": "Documentation"
+        },
+        {
             "path": "src/frontend",
             "name": "Frontend"
         },
