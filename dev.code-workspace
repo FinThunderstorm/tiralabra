@@ -5,20 +5,24 @@
             "name": "root"
         },
         {
-            "path": "src/docs",
+            "path": "./docs",
             "name": "Documentation"
         },
         {
-            "path": "src/frontend",
+            "path": "./src/frontend",
             "name": "Frontend"
         },
         {
-            "path": "src/backend",
+            "path": "./src/backend",
             "name": "Backend"
         },
         {
-            "path": "src/pathfinder",
+            "path": "./src/pathfinder",
             "name": "Pathfinder"
+        },
+        {
+            "path": "./src/datastructures",
+            "name": "Data Structures"
         }
     ]
 }
