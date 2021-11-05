@@ -1,0 +1,19 @@
+name: Build & test
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: docker-compose build
+    - name: Run tests & create coverage report
+      run: docker-compose run --rm app npm run test:coverage
+    - name: Coverage report to Codecov
+      run: bash <(curl -s https://codecov.io/bash)
+    
