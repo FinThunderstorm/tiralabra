@@ -6,7 +6,7 @@ Viikon 1 tehtäviä ovat olleet kehitysympäristön pystyttäminen sekä määri
 
 ## Miten ohjelma on edistynyt?
 
-Varsinaista ohjelmakoodia ei vielä ole toteutettu. Kehitysympäristö on pystytetty sekä CI-putki aloitettu. Kaikkia tarvittavia tuotannon aikaisia kirjastoja ei vielä ole asetettu; todo to myself: eslint + prettier konfiguraatiot kuntoon, jestin asennus + coverage codecoville.
+Varsinaista ohjelmakoodia ei vielä ole toteutettu. Kehitysympäristö on pystytetty sekä CI-putki aloitettu.
 
 ## Mitä opin tällä viikolla / tänään?
 
