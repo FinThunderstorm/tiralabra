@@ -6,7 +6,7 @@ Viikon 1 tehtäviä ovat olleet kehitysympäristön pystyttäminen sekä määri
 
 ## Miten ohjelma on edistynyt?
 
-Varsinaista ohjelmakoodia ei vielä ole toteutettu. Kehitysympäristö on aloittamiseen valmis.
+Varsinaista ohjelmakoodia ei vielä ole toteutettu.
 
 ## Mitä opin tällä viikolla / tänään?
 
