@@ -2,7 +2,7 @@
 
 ## Ohjelmointikieli
 
-Projektissa on tarkoitus käyttää ohjelmointikielenä _Javascriptiä_ ajaen sitä _Docker_-kontissa. Vertaisarviointi onnistuu luonteviten JS, Python ja Java.
+Projektissa on tarkoitus käyttää ohjelmointikielenä _Javascriptiä_ ajaen sitä _Docker_-kontissa kehityksenaikaisesti. Vertaisarviointi onnistuu luonteviten JS, Python ja Java.
 
 ## Käytettävät algoritmit ja tietorakenteet
 

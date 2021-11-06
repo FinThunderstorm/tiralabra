@@ -6,7 +6,7 @@ Viikon 1 tehtäviä ovat olleet kehitysympäristön pystyttäminen sekä määri
 
 ## Miten ohjelma on edistynyt?
 
-Varsinaista ohjelmakoodia ei vielä ole toteutettu.
+Varsinaista ohjelmakoodia ei vielä ole toteutettu. Kehitysympäristö on pystytetty sekä CI-putki aloitettu. Kaikkia tarvittavia tuotannon aikaisia kirjastoja ei vielä ole asetettu; todo to myself: eslint + prettier konfiguraatiot kuntoon, jestin asennus + coverage codecoville.
 
 ## Mitä opin tällä viikolla / tänään?
 
@@ -19,3 +19,5 @@ Aika- ja tilavaatimuksien määrittäminen oli tähän mennessä hankalinta, yri
 ## Mitä teen seuraavaksi?
 
 Ketterän kehityksen termein MVP pystyyn. Tavoite on saada ensimmäinen versio A\*-algoritmistä aikaiseksi, sekä ensimmäinen versio visualisoinnille. Tietorakenne toteutetaan ensimmäisessä versiossa epätehokkaasti ja optimoidaan reitinhakualgoritmin ensimmäisen version jälkeen.
+
+**Työaika:** ~10 tuntia
