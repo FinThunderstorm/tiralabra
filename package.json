@@ -62,7 +62,7 @@
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
     "babel-eslint": "^10.1.0",
-    "eslint": "^7.32.0",
+    "eslint": "^6.6.0",
     "eslint-airbnb-react-prettier": "^0.1.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-prettier": "^8.3.0",
@@ -75,8 +75,9 @@
     "eslint-plugin-react": "^7.26.1",
     "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-plugin-testing-library": "^3.10.2",
-    "jest": "^27.3.1",
+    "jest": "^24.9.0",
     "prettier": "2.4.1",
-    "supertest": "^6.1.6"
+    "supertest": "^6.1.6",
+    "webpack": "4.42.0"
   }
 }
