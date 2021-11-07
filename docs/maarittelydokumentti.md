@@ -30,8 +30,8 @@ Prioriteettijonossa aikavaativuudet noudattelevat minimikeon aikavaatimuksia eli
 
 ## Lähteet
 
-- Laaksonen A, 2021, "Tietorakenteet ja algoritmit", luettu 6.11.2021. Saatavilla: [https://www.cs.helsinki.fi/u/ahslaaks/tirakirja/](https://www.cs.helsinki.fi/u/ahslaaks/tirakirja/)
-- Santoso L, Setiawan A & Prajogo A, 2010, "Performance Analysis of Dijkstra, A\* and Ant Algorithm for Finding Optimal Path Case Study: Surabaya CityMap", luettu 6.11.2021. Saatavilla [http://fportfolio.petra.ac.id/user_files/04-021/MICEEI2010.pdf](http://fportfolio.petra.ac.id/user_files/04-021/MICEEI2010.pdf)
-- Patel A, vuosi ei tiedossa, "Introduction to A\*", luettu 6.11.2021. Saatavilla: [http://theory.stanford.edu/~amitp/GameProgramming/AStarComparison.html](http://theory.stanford.edu/~amitp/GameProgramming/AStarComparison.html)
-- Patel A, 2014, "Introduction to A\* Algorithm", luettu 6.11.2021. Saatavilla [https://www.redblobgames.com/pathfinding/a-star/introduction.html](https://www.redblobgames.com/pathfinding/a-star/introduction.html)
-- Hart P, Nilsson N & Raphael B, 1968, "A Formal Basis for the Heuristic Determination of Minimum Cost Paths", luettu 6.11.2021. Saatavilla: [https://ieeexplore.ieee.org/document/4082128](https://ieeexplore.ieee.org/document/4082128) (alkuperäinen A\* paperi muistiin tutkittavaksi)
+-   Laaksonen A, 2021, "Tietorakenteet ja algoritmit", luettu 6.11.2021. Saatavilla: [https://www.cs.helsinki.fi/u/ahslaaks/tirakirja/](https://www.cs.helsinki.fi/u/ahslaaks/tirakirja/)
+-   Santoso L, Setiawan A & Prajogo A, 2010, "Performance Analysis of Dijkstra, A\* and Ant Algorithm for Finding Optimal Path Case Study: Surabaya CityMap", luettu 6.11.2021. Saatavilla [http://fportfolio.petra.ac.id/user_files/04-021/MICEEI2010.pdf](http://fportfolio.petra.ac.id/user_files/04-021/MICEEI2010.pdf)
+-   Patel A, vuosi ei tiedossa, "Introduction to A\*", luettu 6.11.2021. Saatavilla: [http://theory.stanford.edu/~amitp/GameProgramming/AStarComparison.html](http://theory.stanford.edu/~amitp/GameProgramming/AStarComparison.html)
+-   Patel A, 2014, "Introduction to A\* Algorithm", luettu 6.11.2021. Saatavilla [https://www.redblobgames.com/pathfinding/a-star/introduction.html](https://www.redblobgames.com/pathfinding/a-star/introduction.html)
+-   Hart P, Nilsson N & Raphael B, 1968, "A Formal Basis for the Heuristic Determination of Minimum Cost Paths", luettu 6.11.2021. Saatavilla: [https://ieeexplore.ieee.org/document/4082128](https://ieeexplore.ieee.org/document/4082128) (alkuperäinen A\* paperi muistiin tutkittavaksi)

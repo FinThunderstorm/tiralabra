@@ -1,14 +1,20 @@
-version: "3.8"
+version: '3.8'
 
-services: 
-  app:
-    build:
-      context: ./
-      dockerfile: utils/dev.Dockerfile
-    image: tiralabra-dev
-    container_name: tiralabra-dev
-    ports:
-      - 3000:3000
-      - 3001:3001
-    volumes:
-     - ./:/tiralabra
+services:
+    app:
+        build:
+            context: ./
+            dockerfile: utils/dev.Dockerfile
+        image: tiralabra-dev
+        container_name: tiralabra-dev
+        ports:
+            - 3000:3000
+            - 3001:3001
+        volumes:
+            - ./:/tiralabra
+        depends_on:
+            - cache
+
+    cache:
+        image: redis
+        container_name: tiralabra-cache

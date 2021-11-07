@@ -1,5 +1,10 @@
 {
     "editor.tabSize": 4,
     "prettier.semi": false,
-    "editor.formatOnSave": true,
+    "[javascript]": {
+        "editor.formatOnSave": true
+    },
+    "[javascriptreact]": {
+        "editor.formatOnSave": true
+    }
 }
