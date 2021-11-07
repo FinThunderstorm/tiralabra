@@ -1,5 +1,7 @@
 FROM node:17-buster
 
+ENV PUBLIC_URL=/tiralabra
+
 WORKDIR /tiralabra
 
 COPY package.json package-lock.json /tiralabra/
