@@ -16,5 +16,5 @@ services:
             - cache
 
     cache:
-        image: redis
+        image: redis:latest
         container_name: tiralabra-cache
