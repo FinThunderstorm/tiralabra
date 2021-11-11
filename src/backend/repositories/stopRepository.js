@@ -1,12 +1,15 @@
 const { gql } = require('graphql-request')
+const redisClient = require('@backend/redis')
+const graphqlClient = require('@backend/graphql')
+
 const { convertEpochToDate } = require('@backend/utils/helpers')
 const { cachetime } = require('@backend/config/config')
 
-class StopRepository {
+export default class StopRepository {
     constructor(api, cache) {
-        this.api = api
-        this.cache = cache
-        this.cachevalid = 30
+        this.api = api ?? redisClient
+        this.cache = cache ?? graphqlClient
+        this.cachevalid = cachetime ?? 60
     }
 
     async getStop(stopGtfsId) {
@@ -38,7 +41,7 @@ class StopRepository {
             }
 
             await this.cache.set(`stop:${stopGtfsId}`, JSON.stringify(stop))
-            await this.cache.expires(`stop:${stopGtfsId}`, cachetime)
+            await this.cache.expires(`stop:${stopGtfsId}`, this.cachevalid)
 
             return stop
         }
@@ -127,7 +130,7 @@ class StopRepository {
                 `departures:${stopGtfsId}`,
                 JSON.stringify(departures)
             )
-            await this.cache.expires(`departures:${stopGtfsId}`, cachetime)
+            await this.cache.expires(`departures:${stopGtfsId}`, this.cachevalid)
 
             return departures
         }
