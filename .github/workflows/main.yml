@@ -17,6 +17,6 @@ jobs:
             - name: Run linter
               run: docker-compose run --rm --no-deps app npm run lint
             - name: Run tests & create coverage report
-              run: docker-compose run --rm --no-deps app npm run test:coverage
+              run: docker-compose run --rm app npm run test:coverage
             - name: Coverage report to Codecov
               run: bash <(curl -s https://codecov.io/bash)

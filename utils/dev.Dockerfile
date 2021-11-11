@@ -13,4 +13,6 @@ EXPOSE 3001
 
 COPY . /tiralabra
 
+RUN rm -rf ~/.npm
+
 CMD ["npm","run","start:dev"]
