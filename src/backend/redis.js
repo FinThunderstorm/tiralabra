@@ -1,6 +1,6 @@
 const redis = require('async-redis')
 
-const client = redis.createClient({host: "tiralabra-cache"})
+const client = redis.createClient({ host: 'tiralabra-cache' })
 client.on('error', (error) => console.error(error))
 
 const test = async () => {

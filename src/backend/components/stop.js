@@ -9,13 +9,15 @@ const gQLClient = new GraphQLClient(
 const getNextDepartures = async (stopGtfsId) => {
     console.log(`Trying to get routes for stop ${stopGtfsId}`)
 
-
     // test stop HSL:4620205
     const GETNEXTDEPATURESFORALLROUTESFROMSTOP = gql`
         query stop($id: String!) {
             stop(id: $id) {
                 name
                 code
+                lat
+                lon
+                locationType
                 stoptimesForPatterns(numberOfDepartures: 5) {
                     pattern {
                         code
@@ -37,30 +39,73 @@ const getNextDepartures = async (stopGtfsId) => {
     `
 
     const results = await gQLClient.request(
-        GETNEXTDEPATURESFORALLROUTESFROMSTOP, 
+        GETNEXTDEPATURESFORALLROUTESFROMSTOP,
         { id: stopGtfsId }
     )
 
     const departures = {}
-    departures.stop = {"name": results.stop.name, "code": results.stop.code}
+    departures.stop = {
+        name: results.stop.name,
+        code: results.stop.code,
+        coordinates: {
+            latitude: results.stop.lat,
+            longitude: results.stop.lon,
+        },
+        locationType: results.stop.locationType,
+    }
     departures.departures = []
     results.stop.stoptimesForPatterns.forEach((route) => {
         route.stoptimes.forEach((stoptime) => {
             const facts = {
-                "name": route.pattern.name, 
-                "code": route.pattern.code, 
-                "tripGtfsId": stoptime.trip.gtfsId,
-                "headsign": route.pattern.headsign, 
-                "realtime": stoptime.realtime,
-                "departuresAt": convertEpochToDate(stoptime.scheduledDeparture + stoptime.serviceDay),
-                "realtimeDeparturesAt": convertEpochToDate(stoptime.realtimeDeparture + stoptime.serviceDay),
-                "unixTimestamps": {"scheduledDeparture": stoptime.scheduledDeparture, "realtimeDeparture": stoptime.realtimeDeparture,"serviceDay": stoptime.serviceDay}
+                name: route.pattern.name,
+                code: route.pattern.code,
+                tripGtfsId: stoptime.trip.gtfsId,
+                headsign: route.pattern.headsign,
+                realtime: stoptime.realtime,
+                departuresAt: convertEpochToDate(
+                    stoptime.scheduledDeparture + stoptime.serviceDay
+                ),
+                realtimeDeparturesAt: convertEpochToDate(
+                    stoptime.realtimeDeparture + stoptime.serviceDay
+                ),
+                unixTimestamps: {
+                    scheduledDeparture: stoptime.scheduledDeparture,
+                    realtimeDeparture: stoptime.realtimeDeparture,
+                    serviceDay: stoptime.serviceDay,
+                },
             }
             departures.departures = departures.departures.concat([facts])
-        })  
+        })
     })
-    departures.departures = departures.departures.sort((a,b) => a.departuresAt - b.departuresAt)
+    departures.departures = departures.departures.sort(
+        (a, b) => a.departuresAt - b.departuresAt
+    )
     return departures
+}
+
+const getStop = async (stopGtfsId) => {
+    const GETSTOP = gql`
+        query stop($id: String!) {
+            stop(id: $id) {
+                name
+                code
+                lat
+                lon
+                locationType
+            }
+        }
+    `
+
+    const result = await gQLClient.request(GETSTOP, { id: stopGtfsId })
+
+    const stop = {
+        name: result.stop.name,
+        code: result.stop.code,
+        coordinates: { latitude: result.stop.lat, longitude: result.stop.lon },
+        locationType: result.stop.locationType,
+    }
+
+    return stop
 }
 
 // test trip HSL:4570_20211105_Su_2_1750
@@ -75,6 +120,9 @@ const getNextStopForTrip = async (tripGtfsId, startStopGtfsId) => {
                         code
                         name
                         gtfsId
+                        lat
+                        lon
+                        locationType
                     }
                     scheduledArrival
                     scheduledDeparture
@@ -84,10 +132,7 @@ const getNextStopForTrip = async (tripGtfsId, startStopGtfsId) => {
         }
     `
 
-    const results = await gQLClient.request(
-        GETSTOPS,
-        { id: tripGtfsId }
-    )
+    const results = await gQLClient.request(GETSTOPS, { id: tripGtfsId })
 
     let res = null
     let check = false
@@ -99,20 +144,36 @@ const getNextStopForTrip = async (tripGtfsId, startStopGtfsId) => {
             return
         }
         if (!res && check) {
-            res = {"route": results.trip.routeShortName, "headsign": results.trip.tripHeadsign,"code": stop.stop.code, "name": stop.stop.name, "gtfsId": stop.stop.gtfsId, "arrivesAt": convertEpochToDate(stop.scheduledArrival + stop.serviceDay), "departuresAt": convertEpochToDate(stop.scheduledDeparture + stop.serviceDay)}
+            res = {
+                route: results.trip.routeShortName,
+                headsign: results.trip.tripHeadsign,
+                code: stop.stop.code,
+                name: stop.stop.name,
+                coordinates: {
+                    latitude: stop.stop.lat,
+                    longitude: stop.stop.lon,
+                },
+                locationType: stop.stop.locationType,
+                gtfsId: stop.stop.gtfsId,
+                arrivesAt: convertEpochToDate(
+                    stop.scheduledArrival + stop.serviceDay
+                ),
+                departuresAt: convertEpochToDate(
+                    stop.scheduledDeparture + stop.serviceDay
+                ),
+            }
         }
     })
     return res
-
 }
 
 const convertEpochToDate = (epoch) => new Date(epoch * 1000)
 
-
 module.exports = {
     getNextDepartures,
     convertEpochToDate,
-    getNextStopForTrip
+    getNextStopForTrip,
+    getStop,
 }
 
 const trashCan = () => {
