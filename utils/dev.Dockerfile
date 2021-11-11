@@ -1,7 +1,8 @@
 FROM node:17-buster
 
 ENV PUBLIC_URL=/tiralabra
-
+RUN useradd -ms /bin/bash tiralabra
+USER tiralabra
 WORKDIR /tiralabra
 
 COPY package.json package-lock.json /tiralabra/
