@@ -14,6 +14,7 @@
         "express": "^4.17.1",
         "graphql": "^15.7.2",
         "graphql-request": "^3.6.1",
+        "haversine": "^1.1.1",
         "leaflet": "^1.7.1",
         "leaflet-routing-machine": "^3.2.12",
         "module-alias": "^2.2.2",
@@ -36,7 +37,8 @@
         "lint": "eslint .",
         "prettier": "npx prettier --write src",
         "prettier:ci": "npx prettier --check src",
-        "start:dev": "NODE_ENV=development concurrently \"nodemon ./src/backend/index.js\" \"npm run start:frontend\""
+        "start:dev": "NODE_ENV=development concurrently \"nodemon ./src/backend/index.js\" \"npm run start:frontend\"",
+        "run:container": "docker-compose run -rm app"
     },
     "repository": {
         "type": "git",
@@ -69,7 +71,8 @@
     "_moduleAliases": {
         "@pathfinder": "src/pathfinder/algorithm",
         "@datastructures": "src/pathfinder/datastructures",
-        "@backend": "src/backend"
+        "@backend": "src/backend",
+        "@repositories": "src/backend/repositories"
     },
     "devDependencies": {
         "@typescript-eslint/eslint-plugin": "^4.33.0",
@@ -102,5 +105,8 @@
         "semi": false,
         "singleQuote": true,
         "tabWidth": 4
+    },
+    "jest": {
+        "testEnvironment": "node"
     }
 }
