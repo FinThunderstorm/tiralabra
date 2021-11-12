@@ -3,6 +3,9 @@ FROM node:17-buster
 ENV PUBLIC_URL=/
 
 USER node
+
+RUN echo $(whoami)
+
 WORKDIR /tiralabra/
 
 
