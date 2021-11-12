@@ -37,7 +37,7 @@
         "lint": "eslint .",
         "prettier": "npx prettier --write src",
         "prettier:ci": "npm run fixPermissions && npx prettier --check src",
-        "fixPermissions": "whoami && chmod g+rwx /root /root/.npm /root/.config/_logs",
+        "fixPermissions": "getent passwd && chmod g+rwx /root /root/.npm /root/.config/_logs",
         "start:dev": "NODE_ENV=development concurrently \"nodemon ./src/backend/index.js\" \"npm run start:frontend\"",
         "run:container": "docker-compose run -rm app"
     },
