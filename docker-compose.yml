@@ -6,7 +6,7 @@ services:
             context: ./
             dockerfile: utils/dev.Dockerfile
         user: 'node'
-        working_dir: /tiralabra
+        working_dir: /home/node/tiralabra/
         image: tiralabra-dev
         container_name: tiralabra-dev
         ports:
