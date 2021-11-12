@@ -15,7 +15,7 @@ COPY . /tiralabra/
 
 #RUN chown -R 1001:121 "/root/.npm"
 #RUN rm -rf /root/.npm
-RUN chmod g+rwx /root /root/.npm /root/.config/_logs
+RUN chmod g+rwx /root /root/.npm
 
 
 CMD ["npm","run","start:dev"]
