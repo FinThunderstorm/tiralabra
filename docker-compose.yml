@@ -5,6 +5,7 @@ services:
         build:
             context: ./
             dockerfile: utils/dev.Dockerfile
+        user: '${UID}:${GID}'
         image: tiralabra-dev
         container_name: tiralabra-dev
         ports:

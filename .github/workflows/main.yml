@@ -13,7 +13,7 @@ jobs:
             - name: Build the Docker image
               run: docker-compose build
             - name: Run prettier
-              run: USER=root docker-compose run --rm --no-deps app npm run prettier:ci
+              run: docker-compose run --rm --no-deps app npm run prettier:ci
             - name: Run linter
               run: docker-compose run --rm --no-deps app npm run lint
             - name: Run tests & create coverage report
