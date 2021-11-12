@@ -2,7 +2,7 @@ FROM node:17-buster
 
 ENV PUBLIC_URL=/
 
-USER node
+
 
 RUN echo $(whoami)
 
@@ -19,3 +19,5 @@ EXPOSE 3001
 COPY . /home/node/tiralabra/
 
 CMD ["npm","run","start:dev"]
+
+USER node
