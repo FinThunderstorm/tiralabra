@@ -15,8 +15,8 @@ COPY . /tiralabra/
 
 #RUN chown -R 1001:121 "/root/.npm"
 #RUN rm -rf /root/.npm
-RUN chmod g+rwx /root /root/.npm
-RUN echo "$(whoami) / $(id)"
+# RUN chmod g+rwx /root /root/.npm
+# RUN echo "$(whoami) / $(id)"
 
 
 CMD ["npm","run","start:dev"]
