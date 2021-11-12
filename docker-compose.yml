@@ -6,13 +6,14 @@ services:
             context: ./
             dockerfile: utils/dev.Dockerfile
         user: 'node'
+        working_dir: /tiralabra
         image: tiralabra-dev
         container_name: tiralabra-dev
         ports:
             - 3000:3000
             - 3001:3001
         volumes:
-            - ./:/tiralabra
+            - ./:/home/node/tiralabra
         depends_on:
             - cache
 

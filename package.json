@@ -34,7 +34,7 @@
         "test:coverage": "NODE_ENV=test jest --runInBand --coverage",
         "test:frontend": "react-scripts test",
         "eject": "react-scripts eject",
-        "lint:ci": "/tiralabra/node_modules/.bin/eslint .",
+        "lint:ci": "eslint .",
         "lint": "eslint .",
         "prettier": "npx prettier --write src",
         "prettier:ci": "npx prettier --check src",
