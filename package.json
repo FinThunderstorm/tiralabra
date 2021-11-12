@@ -34,7 +34,7 @@
         "test:coverage": "NODE_ENV=test jest --runInBand --coverage",
         "test:frontend": "react-scripts test",
         "eject": "react-scripts eject",
-        "lint": "eslint .",
+        "lint": "./node_modules/.bin/eslint .",
         "prettier": "npx prettier --write src",
         "prettier:ci": "npx prettier --check src",
         "fixPermissions": "getent passwd && chmod g+rwx /root /root/.npm /root/.config/_logs",
