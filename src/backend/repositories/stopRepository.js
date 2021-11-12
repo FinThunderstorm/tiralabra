@@ -130,7 +130,10 @@ export default class StopRepository {
                 `departures:${stopGtfsId}`,
                 JSON.stringify(departures)
             )
-            await this.cache.expires(`departures:${stopGtfsId}`, this.cachevalid)
+            await this.cache.expires(
+                `departures:${stopGtfsId}`,
+                this.cachevalid
+            )
 
             return departures
         }
