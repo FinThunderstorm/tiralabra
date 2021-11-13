@@ -24,7 +24,7 @@ Ensimmäisessä vaiheessa reititys tapahtuu käyttäen lähtöpisteenä ja kohde
 
 ## Tavoitteena olevat aika- ja tilavaativuudet (m.m. O-analyysit)
 
-A\*-algoritmin osalta aikavaativuus on riippuvainen heurestisesta laskusta, mutta pahimmillaan se voi olla O(n^x), missä n solmujen määrä ja x lyhyimmän reitin pituus (Santoso et al, 2010). Optimitilanteessa se voi olla O(log h(x)), missä h on käytetty heuristinen funktio ja x tarkka reitin arvo. Tilavaatimus noudattelee aikavaativuuksia.
+A\*-algoritmin osalta aikavaativuus pahimmillaan voi olla verkon kaarien määrä, jos kaikki vaihtoehdot joudutaan tarkastelemaan kertaalleen haun aikana. Tilavaatimus noudattelee aikavaativuuksia.
 
 Prioriteettijonossa aikavaativuudet noudattelevat minimikeon aikavaatimuksia eli lisääminen ja poistaminen on O(log n) (Laaksonen, 2021). Tilavaatimus vastaa taulukon pituutta eli siellä olevien alkioiden määrää, O(n).
 
