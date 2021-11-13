@@ -15,4 +15,16 @@ module.exports = {
             { singleQuote: true, semi: false, tabWidth: 4 },
         ],
     },
+    settings: {
+        'import/resolver': {
+            alias: {
+                map: [
+                    ['@repositories', '../backend/repositories'],
+                    ['@backend', '../backend'],
+                    ['@pathfinder', './'],
+                    ['@datastructures', '../pathfinder/datastructures'],
+                ],
+            },
+        },
+    },
 }

@@ -19,4 +19,16 @@ module.exports = {
         ],
         'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
     },
+    settings: {
+        'import/resolver': {
+            alias: {
+                map: [
+                    ['@repositories', '../backend/repositories'],
+                    ['@backend', '../backend'],
+                    ['@pathfinder', './algorithm'],
+                    ['@datastructures', '../pathfinder/datastructures'],
+                ],
+            },
+        },
+    },
 }

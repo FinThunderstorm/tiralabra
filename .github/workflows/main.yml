@@ -2,7 +2,7 @@ name: Build & test
 
 on:
     push:
-        branches: [master]
+        branches: [master, dev]
 
 jobs:
     build:
@@ -13,9 +13,9 @@ jobs:
             - name: Build the Docker image
               run: docker-compose build
             - name: Run prettier
-              run: docker-compose run --rm app npm run prettier:ci
+              run: docker-compose run --rm --no-deps app npm run prettier:ci
             - name: Run linter
-              run: docker-compose run --rm app npm run lint
+              run: docker-compose run --rm --no-deps app npm run lint:ci
             - name: Run tests & create coverage report
               run: docker-compose run --rm app npm run test:coverage
             - name: Coverage report to Codecov
