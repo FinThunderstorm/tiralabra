@@ -1,13 +1,11 @@
-// const StopRepository = require('@repositories/stopRepository')
-// const { cachetime } = require('@backend/config/config')
-// const { cache } = require('webpack')
+// jest.mock('@repositories/stopRepository', () => ({
+//     __esModule: true,
+// }))
 
-// const stopRepository = new StopRepository()
+const StopRepository = require('@repositories/stopRepository')
+const { cachetime } = require('@backend/config/config')
 
 test('stopRepostiory initializes', () => {
-    const stopRepository = {
-        cachevalid: 30,
-    }
-    const cachetime = 30
-    expect(stopRepository.cachevalid).toBe(cachetime)
+    const stop = { cachevalid: 30 }
+    expect(stop.cachevalid).toBe(cachetime)
 })

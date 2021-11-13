@@ -34,11 +34,11 @@
         "test:coverage": "NODE_ENV=test jest --runInBand --coverage",
         "test:frontend": "react-scripts test",
         "eject": "react-scripts eject",
-        "lint:ci": "eslint .",
+        "lint:ci": "./node_modules/.bin/eslint .",
         "lint": "eslint .",
         "prettier": "npx prettier --write src",
         "prettier:ci": "npx prettier --check src",
-        "fixPermissions": "getent passwd && chmod g+rwx /root /root/.npm /root/.config/_logs",
+        "fixPermissions": "getent passwd && whoami",
         "start:dev": "NODE_ENV=development concurrently \"nodemon ./src/backend/index.js\" \"npm run start:frontend\"",
         "run:container": "docker-compose run -rm app"
     },
@@ -70,12 +70,6 @@
             "last 1 safari version"
         ]
     },
-    "_moduleAliases": {
-        "@pathfinder": "src/pathfinder/algorithm",
-        "@datastructures": "src/pathfinder/datastructures",
-        "@backend": "src/backend",
-        "@repositories": "src/backend/repositories"
-    },
     "devDependencies": {
         "@typescript-eslint/eslint-plugin": "^4.33.0",
         "@typescript-eslint/parser": "^4.33.0",
@@ -87,8 +81,9 @@
         "eslint-config-airbnb": "^18.2.1",
         "eslint-config-prettier": "^8.3.0",
         "eslint-config-react-app": "^6.0.0",
+        "eslint-import-resolver-alias": "^1.1.2",
         "eslint-plugin-flowtype": "^5.10.0",
-        "eslint-plugin-import": "^2.25.2",
+        "eslint-plugin-import": "^2.25.3",
         "eslint-plugin-jest": "^24.7.0",
         "eslint-plugin-jsx-a11y": "^6.4.1",
         "eslint-plugin-prettier": "^4.0.0",
@@ -108,7 +103,20 @@
         "singleQuote": true,
         "tabWidth": 4
     },
+    "_moduleAliases": {
+        "@pathfinder": "src/pathfinder",
+        "@datastructures": "src/datastructures",
+        "@backend": "src/backend",
+        "@repositories": "src/backend/repositories"
+    },
     "jest": {
-        "testEnvironment": "node"
+        "testEnvironment": "node",
+        "moduleNameMapper": {
+            "@pathfinder(.*)$": "<rootDir>/src/pathfinder/algorithm/$1",
+            "@datastructures(.*)$": "<rootDir>/src/datastructures/$1",
+            "@backend(.*)$": "<rootDir>/src/backend/$1",
+            "@repositories(.*)$": "<rootDir>/src/backend/repositories/$1"
+        },
+        "transform": {}
     }
 }

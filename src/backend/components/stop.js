@@ -6,107 +6,9 @@ const gQLClient = new GraphQLClient(
     'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql'
 )
 
-const getNextDepartures = async (stopGtfsId) => {
-    console.log(`Trying to get routes for stop ${stopGtfsId}`)
-
-    // test stop HSL:4620205
-    const GETNEXTDEPATURESFORALLROUTESFROMSTOP = gql`
-        query stop($id: String!) {
-            stop(id: $id) {
-                name
-                code
-                lat
-                lon
-                locationType
-                stoptimesForPatterns(numberOfDepartures: 5) {
-                    pattern {
-                        code
-                        name
-                        headsign
-                    }
-                    stoptimes {
-                        scheduledDeparture
-                        realtimeDeparture
-                        realtime
-                        serviceDay
-                        trip {
-                            gtfsId
-                        }
-                    }
-                }
-            }
-        }
-    `
-
-    const results = await gQLClient.request(
-        GETNEXTDEPATURESFORALLROUTESFROMSTOP,
-        { id: stopGtfsId }
-    )
-
-    const departures = {}
-    departures.stop = {
-        name: results.stop.name,
-        code: results.stop.code,
-        coordinates: {
-            latitude: results.stop.lat,
-            longitude: results.stop.lon,
-        },
-        locationType: results.stop.locationType,
-    }
-    departures.departures = []
-    results.stop.stoptimesForPatterns.forEach((route) => {
-        route.stoptimes.forEach((stoptime) => {
-            const facts = {
-                name: route.pattern.name,
-                code: route.pattern.code,
-                tripGtfsId: stoptime.trip.gtfsId,
-                headsign: route.pattern.headsign,
-                realtime: stoptime.realtime,
-                departuresAt: convertEpochToDate(
-                    stoptime.scheduledDeparture + stoptime.serviceDay
-                ),
-                realtimeDeparturesAt: convertEpochToDate(
-                    stoptime.realtimeDeparture + stoptime.serviceDay
-                ),
-                unixTimestamps: {
-                    scheduledDeparture: stoptime.scheduledDeparture,
-                    realtimeDeparture: stoptime.realtimeDeparture,
-                    serviceDay: stoptime.serviceDay,
-                },
-            }
-            departures.departures = departures.departures.concat([facts])
-        })
-    })
-    departures.departures = departures.departures.sort(
-        (a, b) => a.departuresAt - b.departuresAt
-    )
-    return departures
-}
-
-const getStop = async (stopGtfsId) => {
-    const GETSTOP = gql`
-        query stop($id: String!) {
-            stop(id: $id) {
-                name
-                code
-                lat
-                lon
-                locationType
-            }
-        }
-    `
-
-    const result = await gQLClient.request(GETSTOP, { id: stopGtfsId })
-
-    const stop = {
-        name: result.stop.name,
-        code: result.stop.code,
-        coordinates: { latitude: result.stop.lat, longitude: result.stop.lon },
-        locationType: result.stop.locationType,
-    }
-
-    return stop
-}
+/**
+ * HOX HOX! Koodia, jonka sijainti tulee vielä muuttumaan.
+ */
 
 // test trip HSL:4570_20211105_Su_2_1750
 const getNextStopForTrip = async (tripGtfsId, startStopGtfsId) => {
@@ -167,14 +69,13 @@ const getNextStopForTrip = async (tripGtfsId, startStopGtfsId) => {
     return res
 }
 
-const convertEpochToDate = (epoch) => new Date(epoch * 1000)
-
 module.exports = {
-    getNextDepartures,
-    convertEpochToDate,
     getNextStopForTrip,
-    getStop,
 }
+
+/**
+ * trashCan sisältää käyttökelpoisia queryjä Digitransitin apia vasten, mutta niille ei ole vielä varsinaista käyttötarkoitusta.
+ */
 
 const trashCan = () => {
     const GETROUTES = gql`
