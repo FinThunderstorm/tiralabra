@@ -18,7 +18,8 @@ const distanceBetweenTwoPoints = (coord1, coord2) => {
 }
 
 /**
- * Käytetään heuristisen aika-arvion laskemiseen pysäkiltä kohteeseen.
+ * Käytetään heuristisen aika-arvion laskemiseen lähtöpysäköiltä kohdepysäkille.
+ * @summary Laskee tällä hetkellä heuristisen aika-arvion maapallon pintaa viivasuoraa etäisyyttä pysäkkien välillä hyödyntäen. Tällä hetkellä käyttää vain bussin keskimääräistä nopeutta HSL-liikenteessä.
  * @param {Stop} startStop lähtöpysäkki
  * @param {Stop} endStop kohdepysäkki
  * @returns aika-arvio minuutteina
@@ -30,6 +31,7 @@ const heurestic = (startStop, endStop) => {
     )
     const speed = 20 // bussi 20km/h
     const time = distance / speed
+    return time
 }
 
 /**
@@ -59,7 +61,7 @@ class PathFinder {
             const departures = StopRepository.getNextDepartures(stop.gtfsId)
             console.log(departures)
             for (const stop in departures.departures) {
-                const heurValue = heurestic(startStop, stop)
+                console.log('saga jatkuu')
             }
         }
     }

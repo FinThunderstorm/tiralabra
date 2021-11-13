@@ -1,24 +1,24 @@
 const Route = require('@datastructures/Route')
 
 const kumpulaStop = {
-    "name": "Kumpulan kampus",
-    "code": "H3029",
-    "coordinates": {
-        "latitude": 60.203679,
-        "longitude": 24.965952
+    name: 'Kumpulan kampus',
+    code: 'H3029',
+    coordinates: {
+        latitude: 60.203679,
+        longitude: 24.965952,
     },
-    "locationType": "STOP"
+    locationType: 'STOP',
 }
 
 const kylasaariStop = {
-    "name": "Kyläsaarenkatu",
-    "code": "H3020",
-    "coordinates": {
-        "latitude": 60.202895,
-        "longitude": 24.964478
+    name: 'Kyläsaarenkatu',
+    code: 'H3020',
+    coordinates: {
+        latitude: 60.202895,
+        longitude: 24.964478,
     },
-    "locationType": "STOP"
-    }
+    locationType: 'STOP',
+}
 
 describe('Route-object', () => {
     test('Route initializes', () => {

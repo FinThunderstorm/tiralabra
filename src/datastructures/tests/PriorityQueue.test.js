@@ -20,15 +20,14 @@ describe('PriorityQueue', () => {
     })
     test('pop returns always smallest', () => {
         const queue = new PriorityQueue()
-        const values = [1,5,2,3,4]
+        const values = [1, 5, 2, 3, 4]
         values.forEach((value) => queue.push(value))
         values.sort().forEach((value) => expect(queue.pop()).toBe(value))
     })
     test('toString returns right formatted string', () => {
         const queue = new PriorityQueue()
-        const values = [1,5,2,3,4]
+        const values = [1, 5, 2, 3, 4]
         values.forEach((value) => queue.push(value))
         expect(queue.toString()).toBe('1,2,3,4,5')
     })
-
 })

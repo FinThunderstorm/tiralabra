@@ -7,7 +7,7 @@ const gQLClient = new GraphQLClient(
 )
 
 /**
- * HOX HOX! Koodia, jonka sijainti tulee vielä muuttumaan.
+ * HOX HOX! Koodia, jonka sijainti tulee vielä muuttumaan. Tiedosto itsessään lakkaa olemasta tässä muodossa myöhemmin.
  */
 
 // test trip HSL:4570_20211105_Su_2_1750
