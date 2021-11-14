@@ -10,12 +10,17 @@ jobs:
 
         steps:
             - uses: actions/checkout@v2
+            - uses: actions/setup-node@v2
+              with:
+                node-version: '16'
+            - name: Install packages
+              run: npm ci
+            - name: Run prettier
+              run: npm run prettier:ci
+            - name: Run linter
+              run: npm run lint
             - name: Build the Docker image
               run: docker-compose build
-            - name: Run prettier
-              run: docker-compose run --rm app npm run prettier:ci
-            - name: Run linter
-              run: docker-compose run --rm app npm run lint
             - name: Run tests & create coverage report
               run: docker-compose run --rm app npm run test:coverage
             - name: Coverage report to Codecov
