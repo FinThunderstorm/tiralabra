@@ -21,8 +21,9 @@ module.exports = {
                 map: [
                     ['@repositories', '../backend/repositories'],
                     ['@backend', '../backend'],
-                    ['@pathfinder', './'],
-                    ['@datastructures', '../pathfinder/datastructures'],
+                    ['@pathfinder', '../pathfinder'],
+                    ['@datastructures', '../datastructures'],
+                    ['@config', '../config'],
                 ],
             },
         },

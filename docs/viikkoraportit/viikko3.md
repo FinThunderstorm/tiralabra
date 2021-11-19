@@ -9,3 +9,9 @@
 ## Mikä jäi epäselväksi tai tuottanut vaikeuksia? Vastaa tähän kohtaan rehellisesti, koska saat tarvittaessa apua tämän kohdan perusteella.
 
 ## Mitä teen seuraavaksi?
+
+## Työajat
+
+| SU  | MA  | TI  | KE  | TO  |  PE | LA  |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1h  |  0h |  0h | 0h  | 0h  | Xh  | Xh  |
