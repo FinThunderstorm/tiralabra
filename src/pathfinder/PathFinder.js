@@ -67,4 +67,4 @@ class PathFinder {
     }
 }
 
-module.exports = { distanceBetweenTwoPoints, heurestic }
+module.exports = PathFinder

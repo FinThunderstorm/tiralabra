@@ -3,7 +3,7 @@
 // }))
 
 const StopRepository = require('@repositories/stopRepository')
-const { cachetime } = require('@backend/config/config')
+const { cachetime } = require('@config/config')
 
 test('stopRepostiory initializes', () => {
     const stop = { cachevalid: 30 }
