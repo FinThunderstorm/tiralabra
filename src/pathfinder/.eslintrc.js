@@ -4,7 +4,7 @@ module.exports = {
         es2021: true,
         node: true,
     },
-    extends: ['airbnb-base', 'prettier'],
+    extends: ['airbnb-base', 'plugin:prettier/recommended'],
     parserOptions: {
         ecmaVersion: 12,
     },
@@ -14,6 +14,8 @@ module.exports = {
             'warn',
             { singleQuote: true, semi: false, tabWidth: 4 },
         ],
+        'no-console': 'off',
+        'import/no-unresolved': 'off',
     },
     settings: {
         'import/resolver': {

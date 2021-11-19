@@ -1,5 +1,4 @@
 const haversine = require('haversine')
-const stopRepository = require('@repositories/stopRepository')
 const PriorityQueue = require('@datastructures/PriorityQueue')
 const StopRepository = require('@repositories/stopRepository')
 const Route = require('@datastructures/Route')
@@ -51,17 +50,16 @@ class PathFinder {
      */
     async search(startStop, endStop) {
         this.queue.push(new Route())
-
+        const time = heurestic(startStop, endStop)
         while (this.queue.length > 0) {
             const stop = this.queue.pop()
-            if (!this.visited.indexOf(stop.gtfsId) === -1) {
-                continue
-            }
-            this.visited = this.visited.concat([stop.gtfsId])
-            const departures = StopRepository.getNextDepartures(stop.gtfsId)
-            console.log(departures)
-            for (const stop in departures.departures) {
-                console.log('saga jatkuu')
+            if (this.visited.indexOf(stop.gtfsId) === -1) {
+                this.visited = this.visited.concat([stop.gtfsId])
+                const departures = StopRepository.getNextDepartures(stop.gtfsId)
+                console.log(departures)
+                departures.departures.array.forEach((departure) => {
+                    console.log(departure, time)
+                })
             }
         }
     }
