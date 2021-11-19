@@ -14,6 +14,8 @@ module.exports = {
             'warn',
             { singleQuote: true, semi: false, tabWidth: 4 },
         ],
+        'no-console': 'off',
+        'import/no-unresolved': 'off',
     },
     settings: {
         'import/resolver': {

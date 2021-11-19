@@ -1,9 +1,0 @@
-{
-    "editor.tabSize": 4,
-    "prettier.semi": false,
-    "[markdown]": {
-        "editor.formatOnSave": false
-    },
-    "editor.formatOnSave": true
-
-}
