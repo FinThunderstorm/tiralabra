@@ -4,7 +4,6 @@
 const haversine = require('haversine')
 const PriorityQueue = require('@datastructures/PriorityQueue')
 const StopRepository = require('@repositories/stopRepository')
-const TripRepository = require('@repositories/tripRepository')
 const Route = require('@datastructures/Route')
 
 /**

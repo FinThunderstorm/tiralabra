@@ -10,6 +10,8 @@ const kumpulaStop = {
     locationType: 'STOP',
 }
 
+const routeName = '55 to Rautatientori (HSL:1111203)'
+
 const kylasaariStop = {
     name: 'Kyläsaarenkatu',
     code: 'H3020',
@@ -25,22 +27,30 @@ describe('Route-object', () => {
         const route = new Route(kumpulaStop)
         expect(route.stop).toBe(kumpulaStop)
         expect(route.time).toBe(0)
+        expect(route.route).toBe(null)
         expect(route.next).toBe(null)
     })
     test('Route takes given time', () => {
         const time = 10
-        const route = new Route(kumpulaStop, ,time)
+        const route = new Route(kumpulaStop, time)
         expect(route.stop).toBe(kumpulaStop)
         expect(route.time).toBe(time)
+        expect(route.route).toBe(null)
         expect(route.next).toBe(null)
     })
     test('Route can have next stop', () => {
         const timeBefore = 15
         const timeAfter = 4
         const routeBefore = new Route(kumpulaStop, timeBefore)
-        const route = new Route(kylasaariStop, timeAfter, routeBefore)
+        const route = new Route(
+            kylasaariStop,
+            timeAfter,
+            routeName,
+            routeBefore
+        )
         expect(route.stop).toBe(kylasaariStop)
         expect(route.time).toBe(timeAfter)
+        expect(route.route).toBe(routeName)
         expect(route.next).toBe(routeBefore)
     })
 })
