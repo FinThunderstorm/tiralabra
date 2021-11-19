@@ -5,7 +5,6 @@ services:
         build:
             context: ./
             dockerfile: utils/dev.Dockerfile
-        user: 'node'
         working_dir: /tiralabra
         image: tiralabra-dev
         container_name: tiralabra-dev
