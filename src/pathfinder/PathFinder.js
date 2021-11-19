@@ -1,6 +1,10 @@
+/* eslint-disable no-loop-func */
+/* eslint-disable no-await-in-loop */
+
 const haversine = require('haversine')
 const PriorityQueue = require('@datastructures/PriorityQueue')
 const StopRepository = require('@repositories/stopRepository')
+const TripRepository = require('@repositories/tripRepository')
 const Route = require('@datastructures/Route')
 
 /**
@@ -11,9 +15,10 @@ const Route = require('@datastructures/Route')
  * @returns matka kilometreinä
  */
 const distanceBetweenTwoPoints = (coord1, coord2) => {
-    console.log('coord1 >', coord1)
-    console.log('coord2 >', coord2)
-    return haversine(coord1, coord2)
+    // console.log('coord1 >', coord1)
+    // console.log('coord2 >', coord2)
+    const distance = haversine(coord1, coord2)
+    return distance
 }
 
 /**
@@ -23,7 +28,7 @@ const distanceBetweenTwoPoints = (coord1, coord2) => {
  * @param {Stop} endStop kohdepysäkki
  * @returns aika-arvio minuutteina
  */
-const heurestic = (startStop, endStop) => {
+const heuristic = (startStop, endStop) => {
     const distance = distanceBetweenTwoPoints(
         startStop.coordinates,
         endStop.coordinates
@@ -36,33 +41,57 @@ const heurestic = (startStop, endStop) => {
 /**
  * PathFinder-luokkaa käytetään reitin hakemiseen kahden pisteen välillä.
  */
-class PathFinder {
-    constructor() {
-        this.queue = new PriorityQueue()
-        this.visited = []
-    }
 
-    /**
-     * search-funktiolla haetaan lyhin reitti ajallisesti kahden pysäkin välillä.
-     * @param {*} startStop lähtöpysäkki
-     * @param {*} endStop kohdepysäkki
-     * @returns {Route} suositeltu reitti Route-oliona.
-     */
-    async search(startStop, endStop) {
-        this.queue.push(new Route())
-        const time = heurestic(startStop, endStop)
-        while (this.queue.length > 0) {
-            const stop = this.queue.pop()
-            if (this.visited.indexOf(stop.gtfsId) === -1) {
-                this.visited = this.visited.concat([stop.gtfsId])
-                const departures = StopRepository.getNextDepartures(stop.gtfsId)
-                console.log(departures)
-                departures.departures.array.forEach((departure) => {
-                    console.log(departure, time)
-                })
-            }
+/**
+ * search-funktiolla haetaan lyhin reitti ajallisesti kahden pysäkin välillä.
+ * @param {*} startStop lähtöpysäkki
+ * @param {*} endStop kohdepysäkki
+ * @returns {Route} suositeltu reitti Route-oliona.
+ */
+const search = async (startStop, endStop) => {
+    console.log('is Pathfinder activated?')
+    const queue = new PriorityQueue()
+    let visited = []
+    queue.push(new Route(startStop, null, 0))
+
+    let route = queue.pop()
+    while (route.stop.gtfsId !== endStop.gtfsId) {
+        // otetaan seuraava pysäkki
+        let ready = false
+        // console.log('Jonossa ennen käsittelyä:', queue.length)
+
+        if (visited.indexOf(route.stop.gtfsId) === -1) {
+            // lisätään vierailtuihin
+            visited = visited.concat([route.stop.gtfsId])
+            // pyydetään listaus seuraavista lähdöistä.
+            console.log('curr:', route.stop.gtfsId)
+            const departures = await StopRepository.getNextDepartures(
+                route.stop.gtfsId
+            )
+            await departures.departures.forEach(async (departure) => {
+                // tarkastetaan, ettei kyseessä ole päättäri -> TODO ratkaista miten jatketaan
+                if (departure.nextStop !== null) {
+                    const timeAfter =
+                        route.time + heuristic(departure.nextStop, endStop)
+                    const newRoute = new Route(
+                        departure.nextStop,
+                        timeAfter,
+                        departure.name,
+                        route
+                    )
+                    await queue.push(newRoute)
+                }
+            })
+        }
+        if (queue.length > 0) {
+            ready = true
+        }
+        // console.log('Jonossa jälkeen:', queue.length)
+        if (ready) {
+            route = queue.pop()
         }
     }
+    return route
 }
 
-module.exports = PathFinder
+module.exports = { search }

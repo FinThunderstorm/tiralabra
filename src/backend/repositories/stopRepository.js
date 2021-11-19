@@ -66,6 +66,22 @@ const getNextDepartures = async (stopGtfsId) => {
                         serviceDay
                         trip {
                             gtfsId
+                            routeShortName
+                            stoptimes {
+                                stop {
+                                    code
+                                    name
+                                    gtfsId
+                                    lat
+                                    lon
+                                    locationType
+                                }
+                                scheduledArrival
+                                realtimeArrival
+                                scheduledDeparture
+                                realtimeDeparture
+                                serviceDay
+                            }
                         }
                     }
                 }
@@ -91,6 +107,28 @@ const getNextDepartures = async (stopGtfsId) => {
     departures.departures = []
     results.stop.stoptimesForPatterns.forEach((route) => {
         route.stoptimes.forEach((stoptime) => {
+            let res = null
+            let check = false
+            stoptime.trip.stoptimes.forEach((stop) => {
+                // console.log('loop Stop', stop)
+                if (res && check) return
+                if (stop.stop.gtfsId === stopGtfsId) {
+                    check = true
+                    return
+                }
+                if (!res && check) {
+                    res = {
+                        name: stop.stop.name,
+                        code: stop.stop.code,
+                        gtfsId: stop.stop.gtfsId,
+                        coordinates: {
+                            latitude: stop.stop.lat,
+                            longitude: stop.stop.lon,
+                        },
+                        locationType: stop.stop.locationType,
+                    }
+                }
+            })
             const facts = {
                 name: route.pattern.name,
                 code: route.pattern.code,
@@ -103,6 +141,7 @@ const getNextDepartures = async (stopGtfsId) => {
                 realtimeDeparturesAt: convertEpochToDate(
                     stoptime.realtimeDeparture + stoptime.serviceDay
                 ),
+                nextStop: res,
                 unixTimestamps: {
                     scheduledDeparture: stoptime.scheduledDeparture,
                     realtimeDeparture: stoptime.realtimeDeparture,

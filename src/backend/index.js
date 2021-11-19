@@ -6,6 +6,10 @@ const app = express()
 
 const StopRepository = require('@repositories/stopRepository')
 
+const PathFinder = require('@pathfinder/PathFinder')
+
+const Route = require('../datastructures/Route')
+
 // 'experimental cachetime >', Math.round(((departures.departures[0].departuresAt - timeNow)/1000)-60)
 
 app.get('/health', (req, res) => {
@@ -17,12 +21,22 @@ app.get('/testing', async (req, res) => {
     // Urheilutie etelään HSL:4620205
     const urheilutieCode = 'HSL:4620205'
     const kumpulaCode = 'HSL:1240103'
-
+    const toinenSavuCode = 'HSL:4520237'
+    const kuusikkotieCode = 'HSL:4640213'
     const urheilutie = await StopRepository.getStop(urheilutieCode)
     const kumpula = await StopRepository.getStop(kumpulaCode)
+    const toinenSavu = await StopRepository.getStop(toinenSavuCode)
+    const kuusikkotie = await StopRepository.getStop(kuusikkotieCode)
 
-    res.json({ ...kumpula, ...urheilutie })
+    // const nextUrheilutie = await StopRepository.getNextDepartures(
+    //     urheilutieCode
+    // )
+    // await res.json(nextUrheilutie)
     // await res.json({distance: distanceBetweenTwoPoints(urheilutie.coordinates, kumpula.coordinates)})
+    PathFinder.search(urheilutie, kuusikkotie).then((searchedRoute) => {
+        console.log('Searched route:', searchedRoute)
+        res.json(searchedRoute.toJSON())
+    })
 })
 
 const PORT = 3001

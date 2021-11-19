@@ -29,7 +29,7 @@ describe('Route-object', () => {
     })
     test('Route takes given time', () => {
         const time = 10
-        const route = new Route(kumpulaStop, time)
+        const route = new Route(kumpulaStop, ,time)
         expect(route.stop).toBe(kumpulaStop)
         expect(route.time).toBe(time)
         expect(route.next).toBe(null)
