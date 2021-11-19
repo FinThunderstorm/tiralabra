@@ -27,6 +27,7 @@ const getStop = async (stopGtfsId) => {
     const stop = {
         name: result.stop.name,
         code: result.stop.code,
+        gtfsId: stopGtfsId,
         coordinates: {
             latitude: result.stop.lat,
             longitude: result.stop.lon,
@@ -39,6 +40,7 @@ const getStop = async (stopGtfsId) => {
 /**
  * Jokaisen pysäkiltä lähtevän linjan 5 seuraavaa lähtöä.
  * @summary Haetaan jokaisen pysäkiltä lähtevän linjan 5 seuraavaa lähtöä, sekä niiden tiedot.
+ * Esimerkki pysäkin gtfsid:stä: HSL:1240103
  * @param {String} stopGtfsId - pysäkin id GTFS-formaatissa
  * @return {JSON} Pysäkin perustiedot ja seuraavat 5 lähtöä jokaiselle kulkevalle linjalle lähtöaikajärjestyksessä.
  */
@@ -71,7 +73,7 @@ const getNextDepartures = async (stopGtfsId) => {
         }
     `
 
-    const results = await this.api.request(QUERY, {
+    const results = await api.request(QUERY, {
         id: stopGtfsId,
     })
 
@@ -79,6 +81,7 @@ const getNextDepartures = async (stopGtfsId) => {
     departures.stop = {
         name: results.stop.name,
         code: results.stop.code,
+        gtfsId: stopGtfsId,
         coordinates: {
             latitude: results.stop.lat,
             longitude: results.stop.lon,
