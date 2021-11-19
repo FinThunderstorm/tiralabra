@@ -109,7 +109,8 @@
         "@pathfinder": "src/pathfinder",
         "@datastructures": "src/datastructures",
         "@backend": "src/backend",
-        "@repositories": "src/backend/repositories"
+        "@repositories": "src/backend/repositories",
+        "@config": "src/config"
     },
     "jest": {
         "testEnvironment": "node",
@@ -117,7 +118,8 @@
             "@pathfinder(.*)$": "<rootDir>/src/pathfinder/algorithm/$1",
             "@datastructures(.*)$": "<rootDir>/src/datastructures/$1",
             "@backend(.*)$": "<rootDir>/src/backend/$1",
-            "@repositories(.*)$": "<rootDir>/src/backend/repositories/$1"
+            "@repositories(.*)$": "<rootDir>/src/backend/repositories/$1",
+            "@config(.*)$": "<rootDir>/src/config/$1"
         },
         "transform": {}
     }

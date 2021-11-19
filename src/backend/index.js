@@ -3,17 +3,9 @@ const express = require('express')
 
 const app = express()
 // const redis = require('redis')
-const cache = require('@backend/redis')
+
 const StopRepository = require('@repositories/stopRepository')
 
-const {
-    getNextDepartures,
-    getNextStopForTrip,
-    getStop,
-} = require('./components/stop')
-const { distanceBetweenTwoPoints } = require('../pathfinder/PathFinder')
-
-const CACHETIME = 30
 // 'experimental cachetime >', Math.round(((departures.departures[0].departuresAt - timeNow)/1000)-60)
 
 app.get('/health', (req, res) => {
@@ -29,7 +21,7 @@ app.get('/testing', async (req, res) => {
     const urheilutie = await StopRepository.getStop(urheilutieCode)
     const kumpula = await StopRepository.getStop(kumpulaCode)
 
-    res.json(kumpula)
+    res.json({ ...kumpula, ...urheilutie })
     // await res.json({distance: distanceBetweenTwoPoints(urheilutie.coordinates, kumpula.coordinates)})
 })
 

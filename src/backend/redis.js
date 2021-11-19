@@ -1,5 +1,5 @@
 const redis = require('async-redis')
-const { defaultHost, cachetime } = require('@backend/config/config')
+const { defaultHost, cachetime } = require('@config/config')
 
 const client = redis.createClient({ host: defaultHost })
 client.on('error', (error) => console.error(error))

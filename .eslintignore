@@ -2,3 +2,4 @@ docs
 build
 utils
 *.md
+tests

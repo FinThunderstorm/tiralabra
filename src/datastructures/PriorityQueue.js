@@ -1,10 +1,10 @@
 /**
  * PriorityQueue-luokka mallintaa prioriteettijonoa tietorakenteena.
- * HOX! Toteutus on väliaikainen ei-tehokas, ja tullaan korvaamaan minimikeolla projektin e.
+ * HOX! Toteutus on väliaikainen ei-tehokas, ja tullaan korvaamaan minimikeolla projektin edistyessä.
  */
 module.exports = class PriorityQueue {
     constructor() {
-        this.arr = new Array()
+        this.arr = []
     }
 
     /**

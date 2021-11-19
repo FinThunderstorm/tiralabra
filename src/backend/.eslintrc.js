@@ -14,6 +14,8 @@ module.exports = {
             'warn',
             { singleQuote: true, semi: false, tabWidth: 4 },
         ],
+        'no-console': 'off',
+        'import/no-unresolved': 'off',
     },
     settings: {
         'import/resolver': {
@@ -21,8 +23,9 @@ module.exports = {
                 map: [
                     ['@repositories', '../backend/repositories'],
                     ['@backend', '../backend'],
-                    ['@pathfinder', './algorithm'],
-                    ['@datastructures', '../pathfinder/datastructures'],
+                    ['@pathfinder', '../pathfinder'],
+                    ['@datastructures', '../datastructures'],
+                    ['@config', '../config'],
                 ],
             },
         },
