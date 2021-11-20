@@ -63,7 +63,9 @@ const search = async (startStop, endStop) => {
             // lisätään vierailtuihin
             visited = visited.concat([route.stop.gtfsId])
             // pyydetään listaus seuraavista lähdöistä.
-            console.log('curr:', route.stop.gtfsId)
+            console.log(
+                `now checking: ${route.stop.gtfsId} / ${route.stop.name} (${route.stop.code})`
+            )
             const departures = await StopRepository.getNextDepartures(
                 route.stop.gtfsId
             )

@@ -20,9 +20,19 @@ const PathFinder = require('@pathfinder/PathFinder')
 // 'experimental cachetime >', Math.round(((departures.departures[0].departuresAt - timeNow)/1000)-60)
 
 app.use(cors())
+app.use(express.json())
 
 app.get('/health', (req, res) => {
     res.send('<h1>Health check ok!</h1>')
+})
+
+app.post('/search', async (req, res) => {
+    const attributes = req.body
+    const startStop = await StopRepository.getStop(attributes.startStop)
+    const endStop = await StopRepository.getStop(attributes.endStop)
+    PathFinder.search(startStop, endStop).then((searchedRoute) => {
+        res.json(searchedRoute.toJSON())
+    })
 })
 
 app.get('/testing', async (req, res) => {
