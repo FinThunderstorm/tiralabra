@@ -23,8 +23,12 @@
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
         "react-leaflet": "^3.2.2",
+        "react-redux": "^7.2.6",
         "react-scripts": "4.0.3",
         "redis": "^3.1.2",
+        "redux": "^4.1.2",
+        "redux-devtools-extension": "^2.13.9",
+        "redux-thunk": "^2.4.0",
         "web-vitals": "^1.1.2"
     },
     "scripts": {
@@ -34,7 +38,7 @@
         "start:backend": "NODE_ENV=production node ./src/backend/index.js",
         "build": "react-scripts build",
         "test": "NODE_ENV=test jest --verbose --runInBand",
-        "test:coverage": "NODE_ENV=test jest --runInBand --coverage",
+        "test:coverage": "NODE_ENV=test jest --runInBand --coverage --collectCoverageFrom=src/**/*.{js,jsx}",
         "test:frontend": "react-scripts test",
         "eject": "react-scripts eject",
         "lint:ci": "./node_modules/.bin/eslint .",
@@ -129,6 +133,12 @@
             "@components(.*)$": "<rootDir>/src/frontend/components/$1",
             "@frontend(.*)$": "<rootDir>/src/frontend/$1"
         },
-        "transform": {}
+        "transform": {},
+        "coveragePathIgnorePatterns": [
+            "<rootDir>/src/frontend/",
+            "/node_modules/",
+            ".eslintrc.js",
+            "<rootDir>/src/index.js"
+        ]
     }
 }

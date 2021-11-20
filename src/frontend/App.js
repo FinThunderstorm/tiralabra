@@ -3,15 +3,17 @@
 import L from 'leaflet'
 import React, { useState, useEffect } from 'react'
 import { MapContainer, Marker, Polyline, Popup, TileLayer } from 'react-leaflet'
-import './App.css'
+// import './App.css'
 import 'leaflet/dist/leaflet.css'
 import axios from 'axios'
 import markerLogo from './marker.svg'
+import Route from './components/Route'
+import Departures from './components/Departures'
 
 const App = () => {
     const serviceName = 'työnimi pirkkaReittiopas'
     const position = [60.29549, 25.0614]
-    const scale = 0.15
+    const scale = 0.05
     // useEffect(() => {
     //     const map = L.map('map').setView(position, 13)
     //     const osmMapnik = L.tileLayer(
@@ -27,14 +29,17 @@ const App = () => {
 
     const [route, setRoute] = useState(null)
     const [routeLine, setRouteLine] = useState(null)
+    const [startStop, setStartStop] = useState('HSL:4620205')
+    const [endStop, setEndStop] = useState('HSL:1240118')
 
-    useEffect(() => {
+    const findRoute = () => {
         axios
             .post('http://localhost:3001/search', {
-                startStop: 'HSL:4620205',
-                endStop: 'HSL:1240103',
+                startStop,
+                endStop,
             })
             .then((res) => {
+                console.log('res:', res.data)
                 setRoute(res.data)
                 let stops = []
                 res.data.via.forEach((stop) => {
@@ -48,19 +53,42 @@ const App = () => {
                 console.log('stops:', stops)
                 setRouteLine(stops)
             })
-    }, [])
-    if (route === null || routeLine === null) {
-        return <div>error</div>
+    }
+
+    const [departures, setDepartures] = useState(null)
+
+    const handleDepartures = (event) => {
+        event.preventDefault()
+        axios
+            .post('http://localhost:3001/nextDepartures', {
+                gtfsId: event.target.stopGtfsId.value,
+                startTime: Date.parse(event.target.startTime.value),
+            })
+            .then((res) => {
+                setDepartures(res.data)
+            })
     }
 
     return (
         <div className="App">
             <h1>{serviceName}</h1>
+            <div id="searchBox">
+                <input
+                    onChange={(event) => setStartStop(event.target.value)}
+                    value={startStop}
+                />
+                <input
+                    onChange={(event) => setEndStop(event.target.value)}
+                    value={endStop}
+                />
+                <button onClick={() => findRoute()} type="submit">
+                    Etsi
+                </button>
+            </div>
             <MapContainer
                 center={position}
                 zoom={13}
-                style={{ height: '75vh', width: '100wh' }}
-                id="hsl-map"
+                style={{ height: '60vh', width: '25wh' }}
             >
                 <TileLayer
                     id="hsl-map"
@@ -68,29 +96,9 @@ const App = () => {
                     zoomOffset={-1}
                     url="https://cdn.digitransit.fi/map/v1/{id}/{z}/{x}/{y}@2x.png"
                 />
-                {route.via.map((stop) => (
-                    <Marker
-                        key={stop.stop.gtfsId}
-                        icon={L.icon({
-                            iconUrl: markerLogo,
-                            iconSize: [200 * scale, 350 * scale],
-                            iconAnchor: [0, 350 * scale],
-                        })}
-                        position={[
-                            stop.stop.coordinates.latitude,
-                            stop.stop.coordinates.longitude,
-                        ]}
-                    >
-                        <Popup>
-                            <p>{stop.route}</p>
-                        </Popup>
-                    </Marker>
-                ))}
-                <Polyline
-                    pathOptions={{ color: 'purple' }}
-                    positions={routeLine}
-                />
+                <Route stops={route} routeLine={routeLine} />
             </MapContainer>
+            <Departures departures={departures} />
         </div>
     )
 }

@@ -35,6 +35,31 @@ app.post('/search', async (req, res) => {
     })
 })
 
+app.get('/stop/:stopGtfsId', async (req, res) => {
+    StopRepository.getStop(req.params.stopGtfsId).then((stop) => {
+        res.json(stop)
+    })
+})
+
+app.get('/nextDepartures/:stopGtfsId', async (req, res) => {
+    StopRepository.getNextDepartures(req.params.stopGtfsId, new Date()).then(
+        (departures) => {
+            res.json(departures)
+        }
+    )
+})
+
+app.post('/nextDepartures', async (req, res) => {
+    const attributes = req.body
+    console.log('attr:', attributes)
+    StopRepository.getNextDepartures(
+        attributes.gtfsId,
+        attributes.startTime
+    ).then((departures) => {
+        res.json(departures)
+    })
+})
+
 app.get('/testing', async (req, res) => {
     // Kumpulan kampus pohjoiseen HSL:1240103
     // Urheilutie etelään HSL:4620205
@@ -56,9 +81,9 @@ app.get('/testing', async (req, res) => {
         if (expired < 0) {
             console.log('cache is old, refreshing')
             PathFinder.search(urheilutie, kuusikkotie).then((searchedRoute) => {
-                console.log('Searched route:', searchedRoute)
+                // console.log('Searched route:', searchedRoute)
                 cache.set('route:1', JSON.stringify(searchedRoute)).then(() => {
-                    cache.expire('route:1', cachetime)
+                    cache.expire('route:1', Math.round(cachetime / 4))
                     res.json(searchedRoute)
                 })
             })

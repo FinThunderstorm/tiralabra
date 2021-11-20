@@ -2,6 +2,7 @@ const { gql } = require('graphql-request')
 const api = require('@backend/graphql')
 
 const { convertEpochToDate } = require('@backend/utils/helpers')
+const { convertDateToEpoch } = require('../utils/helpers')
 
 /**
  * Hae pysäkin tiedot API:sta.
@@ -39,21 +40,24 @@ const getStop = async (stopGtfsId) => {
 }
 /**
  * Jokaisen pysäkiltä lähtevän linjan 5 seuraavaa lähtöä.
- * @summary Haetaan jokaisen pysäkiltä lähtevän linjan 5 seuraavaa lähtöä, sekä niiden tiedot.
+ * @summary Haetaan jokaisen pysäkiltä lähtevän linjan seuraavan lähdön, sekä niiden tiedot.
  * Esimerkki pysäkin gtfsid:stä: HSL:1240103
  * @param {String} stopGtfsId - pysäkin id GTFS-formaatissa
- * @return {JSON} Pysäkin perustiedot ja seuraavat 5 lähtöä jokaiselle kulkevalle linjalle lähtöaikajärjestyksessä.
+ * @return {JSON} Pysäkin perustiedot ja seuraava lähtö jokaiselle kulkevalle linjalle lähtöaikajärjestyksessä.
  */
-const getNextDepartures = async (stopGtfsId) => {
+const getNextDepartures = async (stopGtfsId, startTime) => {
     const QUERY = gql`
-        query stop($id: String!) {
+        query stop($id: String!, $startTime: Long) {
             stop(id: $id) {
                 name
                 code
                 lat
                 lon
                 locationType
-                stoptimesForPatterns(numberOfDepartures: 5) {
+                stoptimesForPatterns(
+                    numberOfDepartures: 1
+                    startTime: $startTime
+                ) {
                     pattern {
                         code
                         name
@@ -62,6 +66,8 @@ const getNextDepartures = async (stopGtfsId) => {
                     stoptimes {
                         scheduledDeparture
                         realtimeDeparture
+                        scheduledArrival
+                        realtimeArrival
                         realtime
                         serviceDay
                         trip {
@@ -89,8 +95,11 @@ const getNextDepartures = async (stopGtfsId) => {
         }
     `
 
+    const arrived = convertDateToEpoch(startTime)
+    // console.log('Lähtöaika: ', arrived, convertDateToEpoch(startTime))
     const results = await api.request(QUERY, {
         id: stopGtfsId,
+        startTime: arrived,
     })
 
     const departures = {}
@@ -126,6 +135,19 @@ const getNextDepartures = async (stopGtfsId) => {
                             longitude: stop.stop.lon,
                         },
                         locationType: stop.stop.locationType,
+                        arrivesAt: convertEpochToDate(
+                            stop.scheduledArrival + stoptime.serviceDay
+                        ),
+                        realtimeArrivesAt: convertEpochToDate(
+                            stop.realtimeArrival + stoptime.serviceDay
+                        ),
+                        departuresAt: convertEpochToDate(
+                            stop.scheduledDeparture + stoptime.serviceDay
+                        ),
+                        realtimeDeparturesAt: convertEpochToDate(
+                            stop.realtimeDeparture + stoptime.serviceDay
+                        ),
+                        serviceDay: convertEpochToDate(stoptime.serviceDay),
                     }
                 }
             })
@@ -135,6 +157,12 @@ const getNextDepartures = async (stopGtfsId) => {
                 tripGtfsId: stoptime.trip.gtfsId,
                 headsign: route.pattern.headsign,
                 realtime: stoptime.realtime,
+                arrivesAt: convertEpochToDate(
+                    stoptime.scheduledArrival + stoptime.serviceDay
+                ),
+                realtimeArrivesAt: convertEpochToDate(
+                    stoptime.realtimeArrival + stoptime.serviceDay
+                ),
                 departuresAt: convertEpochToDate(
                     stoptime.scheduledDeparture + stoptime.serviceDay
                 ),

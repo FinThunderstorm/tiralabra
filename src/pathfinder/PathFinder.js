@@ -25,7 +25,7 @@ const distanceBetweenTwoPoints = (coord1, coord2) => {
  * @summary Laskee tällä hetkellä heuristisen aika-arvion maapallon pintaa viivasuoraa etäisyyttä pysäkkien välillä hyödyntäen. Tällä hetkellä käyttää vain bussin keskimääräistä nopeutta HSL-liikenteessä.
  * @param {Stop} startStop lähtöpysäkki
  * @param {Stop} endStop kohdepysäkki
- * @returns aika-arvio minuutteina
+ * @returns aika-arvio millisekunteissa (yhteensopivuus Date-olion kanssa)
  */
 const heuristic = (startStop, endStop) => {
     const distance = distanceBetweenTwoPoints(
@@ -34,7 +34,7 @@ const heuristic = (startStop, endStop) => {
     )
     const speed = 20 // bussi 20km/h
     const time = distance / speed
-    return time
+    return time * 60 * 60 * 1000
 }
 
 /**
@@ -45,13 +45,16 @@ const heuristic = (startStop, endStop) => {
  * search-funktiolla haetaan lyhin reitti ajallisesti kahden pysäkin välillä.
  * @param {*} startStop lähtöpysäkki
  * @param {*} endStop kohdepysäkki
+ * @param {*} uStartTime vapaaehtoinen, käyttäjän spesifioima lähtöaika
  * @returns {Route} suositeltu reitti Route-oliona.
  */
-const search = async (startStop, endStop) => {
+const search = async (startStop, endStop, uStartTime) => {
     console.log('is Pathfinder activated?')
     const queue = new PriorityQueue()
     let visited = []
-    queue.push(new Route(startStop, null, 0))
+    const startTime = uStartTime ?? new Date()
+    // console.log('Lähtöaika:', startTime.toUTCString())
+    queue.push(new Route(startStop, 0, startTime))
 
     let route = queue.pop()
     while (route.stop.gtfsId !== endStop.gtfsId) {
@@ -64,20 +67,45 @@ const search = async (startStop, endStop) => {
             visited = visited.concat([route.stop.gtfsId])
             // pyydetään listaus seuraavista lähdöistä.
             console.log(
-                `now checking: ${route.stop.gtfsId} / ${route.stop.name} (${route.stop.code})`
+                `\nnow checking: ${route.stop.gtfsId} / ${route.stop.name} (${
+                    route.stop.code
+                }) - arrived with ${
+                    route.route ?? ''
+                } at ${route.arrived.toUTCString()}`
             )
             const departures = await StopRepository.getNextDepartures(
-                route.stop.gtfsId
+                route.stop.gtfsId,
+                route.arrived
             )
             await departures.departures.forEach(async (departure) => {
                 // tarkastetaan, ettei kyseessä ole päättäri -> TODO ratkaista miten jatketaan
+                // console.log(
+                //     ` - route ${
+                //         departure.name.split(' ')[0]
+                //     }  departures at ${departure.departuresAt.toUTCString()}`
+                // )
                 if (departure.nextStop !== null) {
+                    const elapsed = departure.departuresAt - startTime
+                    const takes =
+                        departure.nextStop.arrivesAt - departure.departuresAt
                     const timeAfter =
-                        route.time + heuristic(departure.nextStop, endStop)
+                        elapsed + takes + heuristic(departure.nextStop, endStop)
+                    // console.log(
+                    //     'kulunut aikaa lähdöstä:',
+                    //     Math.round(elapsed / (1000 * 60)),
+                    //     '- seuraavalle pysäkille:',
+                    //     Math.round(takes / (1000 * 60)),
+                    //     '- Arvioitu aika loppuun',
+                    //     Math.round(
+                    //         heuristic(departure.nextStop, endStop) / (1000 * 60)
+                    //     )
+                    // )
+
                     const newRoute = new Route(
                         departure.nextStop,
                         timeAfter,
-                        departure.name,
+                        departure.arrivesAt,
+                        departure.name.split(' ')[0],
                         route
                     )
                     await queue.push(newRoute)
@@ -92,6 +120,9 @@ const search = async (startStop, endStop) => {
             route = queue.pop()
         }
     }
+    console.log(
+        `Route search from ${startStop.code} to ${endStop.code} is ready`
+    )
     return route
 }
 

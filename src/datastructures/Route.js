@@ -1,10 +1,19 @@
 /**
  * Route-luokkaa käytetään syntyvän reitin mallintamiseen.
  */
-module.exports = class Route {
-    constructor(stop, time, route, next) {
+class Route {
+    /**
+     * Konstruktorille annetaan seuraavat parametrit
+     * @param {JSON} stop pysäkki, jossa ollaan viimeisimmäksi käyty
+     * @param {int} travelTime vapaaehtoinen, kuinka kauan ollaan matkustettu
+     * @param {Date} arrived vapaaehtoinen, milloin reitillä ollaan saavuttu tälle pysäkille∂
+     * @param {string} route vapaaehtoinen, reitin tiedot, jolla ollaan saavuttu
+     * @param {Route} next vapaaehtoinen, edellinen pysäkki
+     */
+    constructor(stop, travelTime, arrived, route, next) {
         this.stop = stop
-        this.time = time ?? 0
+        this.travelTime = travelTime ?? 0
+        this.arrived = arrived ?? new Date()
         this.route = route ?? null
         this.next = next ?? null
     }
@@ -17,29 +26,35 @@ module.exports = class Route {
         const output = {
             to: this.stop,
             from: null,
+            arrived: this.arrived,
+            startTime: this.arrived,
+            travelTime: this.travelTime,
             via: [
                 {
                     stop: this.stop,
                     route: this.route,
-                    time: this.time,
+                    travelTime: this.travelTime,
                 },
             ],
         }
 
         let next = this.next // eslint-disable-line
         while (next !== null) {
-            console.log('next:', next)
+            // console.log('next:', next)
             output.via = output.via.concat([
                 {
                     stop: next.stop,
                     route: next.route,
-                    time: next.time,
+                    travelTime: next.travelTime,
                 },
             ])
             output.from = next.stop
+            output.startTime = next.arrived
             next = next.next
         }
 
         return output
     }
 }
+
+module.exports = Route

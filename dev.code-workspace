@@ -23,6 +23,10 @@
         {
             "path": "./src/datastructures",
             "name": "Data Structures"
+        },
+        {
+            "path:": "./src/config",
+            "name": "Config"
         }
     ],
     "settings": {
