@@ -31,12 +31,10 @@ Tällä hetkellä tilanne vielä vakaa, katsotaan uudelleen lähdettäessä selv
 
 ## Mitä teen seuraavaksi?
 
--   Reitinhakualgoritmin ongelmien korjaamista ja testien kirjoittaminen.
-
+-   Reitinhakualgoritmin ongelmien korjaamista.
+-   Yksikkötestikattavuuden kasvattaminen. Tähän asti ei ole ollut vielä järkevää tehdä yksikkötestejä, kun asiat ovat eläneet niin paljon, että jokaisen muutoksen jälkeen olisi saanut kirjoittaa testit kokonaan uusiksi.
 -   Prioriteettijonon toteutuksen aloittaminen.
-
 -   Refaktorointia ja järkevöittämistä - tällä hetkellä hyvin paljon ylimääräistä koodia, jolla ei välttämättä ole enää käyttötarkoitusta tai toteuttamisen voisi tehdä huomattavasti järkevämmin.
-
 -   Jos aikaa jää, niin ensimmäinen staging-versio sovelluksesta verkkoon käytettäväksi omalle palvelimelle (alkuperäinen ajatus oli pyörittää Herokulla, mutta oman instanssin API:sta käyttämisen takia pyöritettävä omalla VPS-palvelimella).
 
 ## Työajat
