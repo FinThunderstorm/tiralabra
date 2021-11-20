@@ -19,3 +19,16 @@ services:
     cache:
         image: redis:latest
         container_name: tiralabra-cache
+
+    otp:
+        image: hsldevcom/opentripplanner:prod
+        container_name: tiralabra-otp-hsl
+        logging:
+            driver: 'none'
+        environment:
+            - ROUTER_NAME=hsl
+            - JAVA_OPTS=-Xmx5g
+            - ROUTER_DATA_CONTAINER_URL=https://api.digitransit.fi/routing-data/v2/hsl
+        ports:
+            - 9080:8080
+            - 9081:8081

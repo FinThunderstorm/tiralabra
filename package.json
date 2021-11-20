@@ -10,8 +10,10 @@
         "@testing-library/user-event": "^12.8.3",
         "async-redis": "^2.0.0",
         "axios": "^0.24.0",
+        "cors": "^2.8.5",
         "dotenv": "^10.0.0",
         "express": "^4.17.1",
+        "fontawesome-5-icons-list": "^1.0.1",
         "graphql": "^15.7.2",
         "graphql-request": "^3.6.1",
         "haversine": "^1.1.1",
@@ -20,6 +22,7 @@
         "module-alias": "^2.2.2",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
+        "react-leaflet": "^3.2.2",
         "react-scripts": "4.0.3",
         "redis": "^3.1.2",
         "web-vitals": "^1.1.2"
@@ -40,6 +43,7 @@
         "prettier:ci": "npx prettier --check src",
         "fixPermissions": "getent passwd && whoami",
         "start:dev": "NODE_ENV=development concurrently \"nodemon ./src/backend/index.js\" \"npm run start:frontend\"",
+        "start:dev-containers": "docker-compose up -d && docker-compose logs -f app cache",
         "run:container": "docker-compose run -rm app"
     },
     "repository": {
@@ -58,19 +62,19 @@
             "react-app/jest"
         ]
     },
-    "browserslist": {
-        "production": [
-            ">0.2%",
-            "not dead",
-            "not op_mini all"
-        ],
-        "development": [
-            "last 1 chrome version",
-            "last 1 firefox version",
-            "last 1 safari version"
+    "nodemonConfig": {
+        "ignore": [
+            "src/frontend",
+            "*/tests/*"
         ]
     },
+    "browserslist": [
+        ">0.2%",
+        "not dead",
+        "not op_mini all"
+    ],
     "devDependencies": {
+        "@babel/plugin-proposal-nullish-coalescing-operator": "^7.16.0",
         "@typescript-eslint/eslint-plugin": "^4.33.0",
         "@typescript-eslint/parser": "^4.33.0",
         "babel-eslint": "^10.1.0",
@@ -110,7 +114,9 @@
         "@datastructures": "src/datastructures",
         "@backend": "src/backend",
         "@repositories": "src/backend/repositories",
-        "@config": "src/config"
+        "@config": "src/config",
+        "@components": "src/frontend/components",
+        "@frontend": "src/frontend"
     },
     "jest": {
         "testEnvironment": "node",
@@ -119,7 +125,9 @@
             "@datastructures(.*)$": "<rootDir>/src/datastructures/$1",
             "@backend(.*)$": "<rootDir>/src/backend/$1",
             "@repositories(.*)$": "<rootDir>/src/backend/repositories/$1",
-            "@config(.*)$": "<rootDir>/src/config/$1"
+            "@config(.*)$": "<rootDir>/src/config/$1",
+            "@components(.*)$": "<rootDir>/src/frontend/components/$1",
+            "@frontend(.*)$": "<rootDir>/src/frontend/$1"
         },
         "transform": {}
     }
