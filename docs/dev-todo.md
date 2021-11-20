@@ -6,3 +6,8 @@ Julkisen liikenteen keskinopeudet:
 -   metro 44 km/h (http://jlf.fi/f29/3408-joukkoliikennevalineiden-keskinopeudet/) & (https://fi.wikipedia.org/wiki/Helsingin_metro)
 
 selvitä how to prevent return of value as promise, wait for promise to resolve before return
+
+https://www.colourlovers.com/palette/56122/Sweet_Lolly väriteema
+
+docker run --name otp-hsl -p 9080:8080 -e ROUTER_NAME=hsl -e JAVA_OPTS=-Xmx5g -e ROUTER_DATA_CONTAINER_URL=https://api.digitransit.fi/routing-data/v2/hsl hsldevcom/opentripplanner:prod
+Tällä pyörimään oma OTP Hösselistä, niin ei tarvitse prodia sekottaa. ![Vinkki täältä.](https://digitransit.fi/en/developers/architecture/x-apis/1-routing-api/)

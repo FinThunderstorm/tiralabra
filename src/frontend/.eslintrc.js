@@ -30,6 +30,8 @@ module.exports = {
                     ['@pathfinder', '../pathfinder'],
                     ['@datastructures', '../datastructures'],
                     ['@config', '../config'],
+                    ['@components', '../frontend/components'],
+                    ['@frontend', '../frontend'],
                 ],
             },
         },
