@@ -1,6 +1,6 @@
 # Tiralabra
 
-![Github Actions](https://github.com/FinThunderstorm/tiralabra/workflows/Build&Test/badge.svg) [![codecov](https://codecov.io/gh/FinThunderstorm/tiralabra/branch/master/graph/badge.svg?token=agzbQdgG0v)](https://codecov.io/gh/FinThunderstorm/tiralabra)
+![Github Actions](https://github.com/FinThunderstorm/tiralabra/workflows/Build&Test/badge.svg) [![codecov](https://codecov.io/gh/FinThunderstorm/tiralabra/branch/master/graph/badge.svg?token=agzbQdgG0v)](https://codecov.io/gh/FinThunderstorm/tiralabra) [![Maintainability](https://api.codeclimate.com/v1/badges/ba0b31f0815473265922/maintainability)](https://codeclimate.com/github/FinThunderstorm/tiralabra/maintainability)
 
 ## Dokumentaatio
 
