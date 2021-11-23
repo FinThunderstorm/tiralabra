@@ -62,9 +62,9 @@ const search = async (startStop, endStop, uStartTime) => {
         let ready = false
         // console.log('Jonossa ennen käsittelyä:', queue.length)
 
-        if (visited.indexOf(route.stop.gtfsId) === -1) {
+        if (visited.indexOf(`${route.stop.gtfsId}:${route.route}`) === -1) {
             // lisätään vierailtuihin
-            visited = visited.concat([route.stop.gtfsId])
+            visited = visited.concat([`${route.stop.gtfsId}:${route.route}`])
             // pyydetään listaus seuraavista lähdöistä.
             console.log(
                 `\nnow checking: ${route.stop.gtfsId} / ${route.stop.name} (${

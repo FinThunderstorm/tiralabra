@@ -7,8 +7,8 @@ import { MapContainer, Marker, Polyline, Popup, TileLayer } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import axios from 'axios'
 import markerLogo from './marker.svg'
-import Route from './components/Route'
 import Departures from './components/Departures'
+import RouteOnMap from './components/RouteOnMap'
 
 const App = () => {
     const serviceName = 'työnimi pirkkaReittiopas'
@@ -96,7 +96,7 @@ const App = () => {
                     zoomOffset={-1}
                     url="https://cdn.digitransit.fi/map/v1/{id}/{z}/{x}/{y}@2x.png"
                 />
-                <Route stops={route} routeLine={routeLine} />
+                <RouteOnMap stops={route} routeLine={routeLine} />
             </MapContainer>
             <Departures departures={departures} />
         </div>

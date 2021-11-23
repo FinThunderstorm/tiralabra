@@ -18,6 +18,10 @@ class Route {
         this.next = next ?? null
     }
 
+    valueOf() {
+        return this.travelTime
+    }
+
     /**
      * toJSON käytetään reitin havainnollistamiseen JSON-muodossa.
      * @return {JSON} Reitin tiedot JSON-muodossa

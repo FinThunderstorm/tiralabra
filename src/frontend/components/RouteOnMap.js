@@ -7,7 +7,7 @@ import { Marker, Polyline, Popup } from 'react-leaflet'
 import markerLogo from '../marker.svg'
 import { setDepartures } from '../reducers/departuresReducer'
 
-const Route = ({ stops, routeLine }) => {
+const RouteOnMap = ({ stops, routeLine }) => {
     const dispatch = useDispatch()
     const handleDepartures = (event) => {
         event.preventDefault()
@@ -66,4 +66,4 @@ const Route = ({ stops, routeLine }) => {
     )
 }
 
-export default Route
+export default RouteOnMap
