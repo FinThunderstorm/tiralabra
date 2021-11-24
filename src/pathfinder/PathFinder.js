@@ -51,86 +51,60 @@ const heuristic = (startStop, endStop) => {
  */
 const search = async (startStop, endStop, uStartTime) => {
     console.log('is Pathfinder activated?')
+
     const log = new Logger()
     const queue = new PriorityQueue()
+
     let visited = []
     const startTime = uStartTime ?? new Date()
-    // console.log('Lähtöaika:', startTime.toUTCString())
     const startRoute = new Route(startStop, 0, startTime)
     queue.push(startRoute)
-    log.add({ msg: 'added startRoute', data: startRoute })
 
     let route = queue.pop()
-    while (route.stop.gtfsId !== endStop.gtfsId) {
-        // otetaan seuraava pysäkki
-        log.add({ msg: 'popped route from queue', data: route })
-        let ready = false
-        // console.log('Jonossa ennen käsittelyä:', queue.length)
 
+    while (route.stop.gtfsId !== endStop.gtfsId) {
         if (visited.indexOf(`${route.stop.gtfsId}:${route.route}`) === -1) {
             // lisätään vierailtuihin
             visited = visited.concat([`${route.stop.gtfsId}:${route.route}`])
-            // pyydetään listaus seuraavista lähdöistä.
+
             console.log(
-                `\nnow checking: ${route.stop.gtfsId} / ${route.stop.name} (${
+                `now checking: ${route.stop.gtfsId} / ${route.stop.name} (${
                     route.stop.code
                 }) - arrived with ${
                     route.route ?? ''
-                } at ${route.arrived.toUTCString()}`
+                } at ${route.arrived.toUTCString()}\n`
             )
-            log.add({
-                msg: 'added to not visited',
-                data: `${route.stop.gtfsId}:${route.route}`,
-            })
+
             const departures = await StopRepository.getNextDepartures(
                 route.stop.gtfsId,
                 route.arrived
             )
-            log.add({ msg: `asked next departures for stop`, data: departures })
+
             await departures.departures.forEach(async (departure) => {
-                // tarkastetaan, ettei kyseessä ole päättäri -> TODO ratkaista miten jatketaan
-                // console.log(
-                //     ` - route ${
-                //         departure.name.split(' ')[0]
-                //     }  departures at ${departure.departuresAt.toUTCString()}`
-                // )
+                // tarkastetaan, ettei ole linjan päätepysäkki
                 if (departure.nextStop !== null) {
                     const elapsed = departure.departuresAt - startTime
                     const takes =
                         departure.nextStop.arrivesAt - departure.departuresAt
                     const timeAfter =
                         elapsed + takes + heuristic(departure.nextStop, endStop)
-                    // console.log(
-                    //     'kulunut aikaa lähdöstä:',
-                    //     Math.round(elapsed / (1000 * 60)),
-                    //     '- seuraavalle pysäkille:',
-                    //     Math.round(takes / (1000 * 60)),
-                    //     '- Arvioitu aika loppuun',
-                    //     Math.round(
-                    //         heuristic(departure.nextStop, endStop) / (1000 * 60)
-                    //     )
-                    // )
 
                     const newRoute = new Route(
                         departure.nextStop,
                         timeAfter,
-                        departure.arrivesAt,
+                        departure.nextStop.arrivesAt,
                         departure.name.split(' ')[0],
                         route
                     )
-                    log.add({ msg: 'added new Route to queue', data: newRoute })
-                    await queue.push(newRoute)
+
+                    queue.push(newRoute)
                 }
             })
         }
-        if (queue.length > 0) {
-            log.add({ msg: 'Still left in queue', data: queue.length })
-            ready = true
+        if (queue.length === 0) {
+            break
         }
-        // console.log('Jonossa jälkeen:', queue.length)
-        if (ready) {
-            route = queue.pop()
-        }
+        route = queue.pop()
     }
     console.log(
         `Route search from ${startStop.code} to ${endStop.code} is ready`
@@ -139,7 +113,7 @@ const search = async (startStop, endStop, uStartTime) => {
         msg: `Route search from ${startStop.code} to ${endStop.code} is ready`,
         data: route,
     })
-    return [route, log]
+    return route
 }
 
 module.exports = { search }

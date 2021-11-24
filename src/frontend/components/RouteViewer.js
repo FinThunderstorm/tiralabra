@@ -18,7 +18,7 @@ const RouteViewer = ({ route }) => {
             </div>
             <div>
                 <p>Start time: {route.startTime}</p>
-                <p>Total travel time: {route.travelTime}</p>
+                <p>Total travel time: {route.travelTime / (60 * 1000)}</p>
                 <p>Arrived to destination: {route.arrived}</p>
             </div>
             <hr />

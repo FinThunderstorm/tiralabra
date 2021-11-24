@@ -30,8 +30,8 @@ app.post('/search', async (req, res) => {
     const attributes = req.body
     const startStop = await StopRepository.getStop(attributes.startStop)
     const endStop = await StopRepository.getStop(attributes.endStop)
-    PathFinder.search(startStop, endStop).then(({ searchedRoute }) => {
-        res.json(searchedRoute[0].toJSON())
+    PathFinder.search(startStop, endStop).then((searchedRoute) => {
+        res.json(searchedRoute.toJSON())
     })
 })
 

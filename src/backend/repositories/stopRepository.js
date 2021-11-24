@@ -39,7 +39,7 @@ const getStop = async (stopGtfsId) => {
     return stop
 }
 /**
- * Jokaisen pysäkiltä lähtevän linjan 5 seuraavaa lähtöä.
+ * Jokaisen pysäkiltä lähtevän linjan seuraava lähtö.
  * @summary Haetaan jokaisen pysäkiltä lähtevän linjan seuraavan lähdön, sekä niiden tiedot.
  * Esimerkki pysäkin gtfsid:stä: HSL:1240103
  * @param {String} stopGtfsId - pysäkin id GTFS-formaatissa
@@ -182,6 +182,9 @@ const getNextDepartures = async (stopGtfsId, startTime) => {
     departures.departures = departures.departures.sort(
         (a, b) => a.departuresAt - b.departuresAt
     )
+
+    // palautetaan vain ensimmäinen lähtö lähtöajalta, säästetään vähän resursseja
+    // departures.departures = [departures.departures[0]]
 
     return departures
 }
