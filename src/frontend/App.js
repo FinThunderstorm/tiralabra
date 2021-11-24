@@ -9,6 +9,7 @@ import axios from 'axios'
 import markerLogo from './marker.svg'
 import Departures from './components/Departures'
 import RouteOnMap from './components/RouteOnMap'
+import RouteViewer from './components/RouteViewer'
 
 const App = () => {
     const serviceName = 'työnimi pirkkaReittiopas'
@@ -99,6 +100,7 @@ const App = () => {
                 <RouteOnMap stops={route} routeLine={routeLine} />
             </MapContainer>
             <Departures departures={departures} />
+            <RouteViewer route={route} />
         </div>
     )
 }
