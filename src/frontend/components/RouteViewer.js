@@ -17,9 +17,19 @@ const RouteViewer = ({ route }) => {
                 <Stop stop={route.to} />
             </div>
             <div>
-                <p>Start time: {route.startTime}</p>
+                <p>
+                    Start time:{' '}
+                    {new Date(route.startTime).toLocaleString('fi-FI', {
+                        timeZone: 'Europe/Helsinki',
+                    })}
+                </p>
                 <p>Total travel time: {route.travelTime / (60 * 1000)}</p>
-                <p>Arrived to destination: {route.arrived}</p>
+                <p>
+                    Arrived to destination:{' '}
+                    {new Date(route.arrived).toLocaleString('fi-FI', {
+                        timeZone: 'Europe/Helsinki',
+                    })}
+                </p>
             </div>
             <hr />
             <div>
@@ -32,7 +42,12 @@ const RouteViewer = ({ route }) => {
                         </p>
                         <p>
                             Arrived with {stop.route}, arrives here at{' '}
-                            {stop.stop.arrivesAt}
+                            {new Date(stop.stop.arrivesAt).toLocaleString(
+                                'fi-FI',
+                                {
+                                    timeZone: 'Europe/Helsinki',
+                                }
+                            )}
                         </p>
                         <hr />
                     </div>

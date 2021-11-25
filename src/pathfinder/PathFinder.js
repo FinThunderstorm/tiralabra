@@ -52,12 +52,16 @@ const heuristic = (startStop, endStop) => {
 const search = async (startStop, endStop, uStartTime) => {
     console.log('is Pathfinder activated?')
 
-    const log = new Logger()
-    const queue = new PriorityQueue()
+    const queue = new PriorityQueue((a, b) => a.travelTime - b.travelTime)
+
+    const from = startStop
 
     let visited = []
-    const startTime = uStartTime ?? new Date()
-    const startRoute = new Route(startStop, 0, startTime)
+    console.log('uStartTime', uStartTime)
+    const startTime = new Date(uStartTime) ?? new Date()
+    console.log('startTime', startTime)
+    from.arrivesAt = startTime
+    const startRoute = new Route(from, 0, startTime)
     queue.push(startRoute)
 
     let route = queue.pop()
@@ -68,19 +72,21 @@ const search = async (startStop, endStop, uStartTime) => {
             visited = visited.concat([`${route.stop.gtfsId}:${route.route}`])
 
             console.log(
-                `now checking: ${route.stop.gtfsId} / ${route.stop.name} (${
+                `\nnow checking: ${route.stop.gtfsId} / ${route.stop.name} (${
                     route.stop.code
                 }) - arrived with ${
                     route.route ?? ''
-                } at ${route.arrived.toUTCString()}\n`
+                } at ${route.arrived.toUTCString()}`
             )
+            console.log('queue:', queue.arr.slice(0, 10).toString())
 
             const departures = await StopRepository.getNextDepartures(
                 route.stop.gtfsId,
                 route.arrived
             )
 
-            await departures.departures.forEach(async (departure) => {
+            // .filter((a) => Date.parse(a.departuresAt) >= Date.parse(route.arrived))
+            departures.departures.forEach(async (departure) => {
                 // tarkastetaan, ettei ole linjan päätepysäkki
                 if (departure.nextStop !== null) {
                     const elapsed = departure.departuresAt - startTime
@@ -104,15 +110,13 @@ const search = async (startStop, endStop, uStartTime) => {
         if (queue.length === 0) {
             break
         }
+        console.log('queue:', queue.arr.slice(0, 10).toString())
         route = queue.pop()
     }
     console.log(
         `Route search from ${startStop.code} to ${endStop.code} is ready`
     )
-    log.add({
-        msg: `Route search from ${startStop.code} to ${endStop.code} is ready`,
-        data: route,
-    })
+
     return route
 }
 

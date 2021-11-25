@@ -59,6 +59,10 @@ class Route {
 
         return output
     }
+
+    toString() {
+        return this.route
+    }
 }
 
 module.exports = Route

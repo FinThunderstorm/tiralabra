@@ -14,7 +14,7 @@ const RouteOnMap = ({ stops, routeLine }) => {
         const gtfsId = event.target.gtfsId.value
         const startTime = event.target.startTime.value
         console.log(gtfsId, startTime)
-        dispatch(setDepartures(gtfsId, Date.parse(startTime)))
+        dispatch(setDepartures(gtfsId, startTime))
     }
     const scale = 0.05
     if (stops === null || routeLine === null) {
@@ -22,6 +22,10 @@ const RouteOnMap = ({ stops, routeLine }) => {
     }
     console.log('stops:', stops)
 
+    console.log(
+        typeof stops.via[0].stop.arrivesAt,
+        new Date(stops.via[0].stop.arrivesAt).toLocaleString('fi-FI')
+    )
     return (
         <>
             {stops.via.map((stop) => (
@@ -48,7 +52,7 @@ const RouteOnMap = ({ stops, routeLine }) => {
                             <input
                                 name="startTime"
                                 hidden
-                                value={stop.stop.arrivesAt ?? stops.startTime}
+                                value={stop.stop.arrivesAt}
                             />
                             <button type="submit">
                                 {stop.stop.name} ({stop.stop.code}) -{' '}
@@ -56,7 +60,13 @@ const RouteOnMap = ({ stops, routeLine }) => {
                             </button>
                         </form>
                         <p>
-                            Arrived at: {stop.stop.arrivesAt ?? stops.startTime}
+                            Arrived at:{' '}
+                            {new Date(stop.stop.arrivesAt).toLocaleString(
+                                'fi-FI',
+                                {
+                                    timeZone: 'Europe/Helsinki',
+                                }
+                            )}
                         </p>
                     </Popup>
                 </Marker>

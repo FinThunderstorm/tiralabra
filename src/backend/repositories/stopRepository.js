@@ -94,9 +94,9 @@ const getNextDepartures = async (stopGtfsId, startTime) => {
             }
         }
     `
+    const arrived = convertDateToEpoch(new Date(startTime))
 
-    const arrived = convertDateToEpoch(startTime)
-    // console.log('Lähtöaika: ', arrived, convertDateToEpoch(startTime))
+    //console.log('Lähtöaika: ', arrived)
     const results = await api.request(QUERY, {
         id: stopGtfsId,
         startTime: arrived,
@@ -179,12 +179,9 @@ const getNextDepartures = async (stopGtfsId, startTime) => {
             departures.departures = departures.departures.concat([facts])
         })
     })
-    departures.departures = departures.departures.sort(
-        (a, b) => a.departuresAt - b.departuresAt
-    )
-
-    // palautetaan vain ensimmäinen lähtö lähtöajalta, säästetään vähän resursseja
-    // departures.departures = [departures.departures[0]]
+    departures.departures = departures.departures
+        .filter((a) => Date.parse(a.departuresAt) >= Date.parse(startTime))
+        .sort((a, b) => a.departuresAt - b.departuresAt)
 
     return departures
 }

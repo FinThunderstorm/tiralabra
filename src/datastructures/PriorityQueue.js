@@ -3,8 +3,9 @@
  * HOX! Toteutus on väliaikainen ei-tehokas, ja tullaan korvaamaan minimikeolla projektin edistyessä.
  */
 module.exports = class PriorityQueue {
-    constructor() {
+    constructor(sortMethod) {
         this.arr = []
+        this.sortMethod = sortMethod
     }
 
     /**
@@ -21,7 +22,7 @@ module.exports = class PriorityQueue {
      */
     push(item) {
         this.arr.push(item)
-        this.arr.sort()
+        this.arr.sort(this.sortMethod)
     }
 
     /**
