@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 
 const Departures = () => {
     const departures = useSelector((state) => state)
-
+    console.log('all departures', departures)
     if (departures === null) {
         return <></>
     }
@@ -18,7 +18,9 @@ const Departures = () => {
                 {departures.data.departures.map((dep) => (
                     <li>
                         {dep.name.split(' ')[0]} - departures at{' '}
-                        {dep.departuresAt}
+                        {new Date(dep.departuresAt).toLocaleString('fi-FI', {
+                            timeZone: 'Europe/Helsinki',
+                        })}
                     </li>
                 ))}
             </ul>

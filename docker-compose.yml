@@ -25,7 +25,7 @@ services:
         container_name: tiralabra-otp-hsl
         environment:
             - ROUTER_NAME=hsl
-            - JAVA_OPTS=-Xmx3g
+            - JAVA_OPTS=-Xmx7g
             - ROUTER_DATA_CONTAINER_URL=https://api.digitransit.fi/routing-data/v2/hsl
         ports:
             - 9080:8080

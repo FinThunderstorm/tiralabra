@@ -28,11 +28,14 @@ app.get('/health', (req, res) => {
 
 app.post('/search', async (req, res) => {
     const attributes = req.body
+    console.log('attr:', attributes)
     const startStop = await StopRepository.getStop(attributes.startStop)
     const endStop = await StopRepository.getStop(attributes.endStop)
-    PathFinder.search(startStop, endStop).then((searchedRoute) => {
-        res.json(searchedRoute.toJSON())
-    })
+    PathFinder.search(startStop, endStop, attributes.uStartTime).then(
+        (searchedRoute) => {
+            res.json(searchedRoute.toJSON())
+        }
+    )
 })
 
 app.get('/stop/:stopGtfsId', async (req, res) => {
@@ -51,7 +54,7 @@ app.get('/nextDepartures/:stopGtfsId', async (req, res) => {
 
 app.post('/nextDepartures', async (req, res) => {
     const attributes = req.body
-    console.log('attr:', attributes)
+    console.log('attr:', attributes.startTime)
     StopRepository.getNextDepartures(
         attributes.gtfsId,
         attributes.startTime

@@ -39,7 +39,7 @@ const getStop = async (stopGtfsId) => {
     return stop
 }
 /**
- * Jokaisen pysäkiltä lähtevän linjan 5 seuraavaa lähtöä.
+ * Jokaisen pysäkiltä lähtevän linjan seuraava lähtö.
  * @summary Haetaan jokaisen pysäkiltä lähtevän linjan seuraavan lähdön, sekä niiden tiedot.
  * Esimerkki pysäkin gtfsid:stä: HSL:1240103
  * @param {String} stopGtfsId - pysäkin id GTFS-formaatissa
@@ -94,9 +94,9 @@ const getNextDepartures = async (stopGtfsId, startTime) => {
             }
         }
     `
+    const arrived = convertDateToEpoch(new Date(startTime))
 
-    const arrived = convertDateToEpoch(startTime)
-    // console.log('Lähtöaika: ', arrived, convertDateToEpoch(startTime))
+    //console.log('Lähtöaika: ', arrived)
     const results = await api.request(QUERY, {
         id: stopGtfsId,
         startTime: arrived,
@@ -179,9 +179,9 @@ const getNextDepartures = async (stopGtfsId, startTime) => {
             departures.departures = departures.departures.concat([facts])
         })
     })
-    departures.departures = departures.departures.sort(
-        (a, b) => a.departuresAt - b.departuresAt
-    )
+    departures.departures = departures.departures
+        .filter((a) => Date.parse(a.departuresAt) >= Date.parse(startTime))
+        .sort((a, b) => a.departuresAt - b.departuresAt)
 
     return departures
 }

@@ -5,6 +5,7 @@ const haversine = require('haversine')
 const PriorityQueue = require('@datastructures/PriorityQueue')
 const StopRepository = require('@repositories/stopRepository')
 const Route = require('@datastructures/Route')
+const Logger = require('./Logger')
 
 /**
  * distanceBetweenTwoPoints laskee haversine-funktiolla kahden koordinaattipisteen välisen etäisyyden maapallon pintaa pitkin.
@@ -50,22 +51,26 @@ const heuristic = (startStop, endStop) => {
  */
 const search = async (startStop, endStop, uStartTime) => {
     console.log('is Pathfinder activated?')
-    const queue = new PriorityQueue()
+
+    const queue = new PriorityQueue((a, b) => a.travelTime - b.travelTime)
+
+    const from = startStop
+
     let visited = []
-    const startTime = uStartTime ?? new Date()
-    // console.log('Lähtöaika:', startTime.toUTCString())
-    queue.push(new Route(startStop, 0, startTime))
+    console.log('uStartTime', uStartTime)
+    const startTime = new Date(uStartTime) ?? new Date()
+    console.log('startTime', startTime)
+    from.arrivesAt = startTime
+    const startRoute = new Route(from, 0, startTime)
+    queue.push(startRoute)
 
     let route = queue.pop()
-    while (route.stop.gtfsId !== endStop.gtfsId) {
-        // otetaan seuraava pysäkki
-        let ready = false
-        // console.log('Jonossa ennen käsittelyä:', queue.length)
 
-        if (visited.indexOf(route.stop.gtfsId) === -1) {
+    while (route.stop.gtfsId !== endStop.gtfsId) {
+        if (visited.indexOf(`${route.stop.gtfsId}:${route.route}`) === -1) {
             // lisätään vierailtuihin
-            visited = visited.concat([route.stop.gtfsId])
-            // pyydetään listaus seuraavista lähdöistä.
+            visited = visited.concat([`${route.stop.gtfsId}:${route.route}`])
+
             console.log(
                 `\nnow checking: ${route.stop.gtfsId} / ${route.stop.name} (${
                     route.stop.code
@@ -73,56 +78,45 @@ const search = async (startStop, endStop, uStartTime) => {
                     route.route ?? ''
                 } at ${route.arrived.toUTCString()}`
             )
+            console.log('queue:', queue.arr.slice(0, 10).toString())
+
             const departures = await StopRepository.getNextDepartures(
                 route.stop.gtfsId,
                 route.arrived
             )
-            await departures.departures.forEach(async (departure) => {
-                // tarkastetaan, ettei kyseessä ole päättäri -> TODO ratkaista miten jatketaan
-                // console.log(
-                //     ` - route ${
-                //         departure.name.split(' ')[0]
-                //     }  departures at ${departure.departuresAt.toUTCString()}`
-                // )
+
+            // .filter((a) => Date.parse(a.departuresAt) >= Date.parse(route.arrived))
+            departures.departures.forEach(async (departure) => {
+                // tarkastetaan, ettei ole linjan päätepysäkki
                 if (departure.nextStop !== null) {
                     const elapsed = departure.departuresAt - startTime
                     const takes =
                         departure.nextStop.arrivesAt - departure.departuresAt
                     const timeAfter =
                         elapsed + takes + heuristic(departure.nextStop, endStop)
-                    // console.log(
-                    //     'kulunut aikaa lähdöstä:',
-                    //     Math.round(elapsed / (1000 * 60)),
-                    //     '- seuraavalle pysäkille:',
-                    //     Math.round(takes / (1000 * 60)),
-                    //     '- Arvioitu aika loppuun',
-                    //     Math.round(
-                    //         heuristic(departure.nextStop, endStop) / (1000 * 60)
-                    //     )
-                    // )
 
                     const newRoute = new Route(
                         departure.nextStop,
                         timeAfter,
-                        departure.arrivesAt,
+                        departure.nextStop.arrivesAt,
                         departure.name.split(' ')[0],
                         route
                     )
-                    await queue.push(newRoute)
+
+                    queue.push(newRoute)
                 }
             })
         }
-        if (queue.length > 0) {
-            ready = true
+        if (queue.length === 0) {
+            break
         }
-        // console.log('Jonossa jälkeen:', queue.length)
-        if (ready) {
-            route = queue.pop()
-        }
+        console.log('queue:', queue.arr.slice(0, 10).toString())
+        route = queue.pop()
     }
     console.log(
         `Route search from ${startStop.code} to ${endStop.code} is ready`
     )
+
     return route
 }
 
