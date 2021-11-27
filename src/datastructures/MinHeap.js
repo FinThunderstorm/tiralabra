@@ -17,29 +17,29 @@ module.exports = class MinHeap {
     minHeapify(index) {
         const leftIndex = left(index)
         const rightIndex = right(index)
-        let smallest = index
+        let largest = index
 
         if (
             leftIndex <= this.heapSize &&
-            this.arr[leftIndex] < this.arr[index]
+            this.arr[leftIndex] > this.arr[index]
         ) {
-            smallest = leftIndex
+            largest = leftIndex
         } else {
-            smallest = index
+            largest = index
         }
 
         if (
             rightIndex <= this.heapSize &&
-            this.arr[rightIndex] < this.arr[smallest]
+            this.arr[rightIndex] > this.arr[largest]
         ) {
-            smallest = rightIndex
+            largest = rightIndex
         }
 
-        if (smallest !== index) {
+        if (largest !== index) {
             const temp = this.arr[index]
-            this.arr[index] = this.arr[smallest]
-            this.arr[smallest] = temp
-            this.minHeapify(smallest)
+            this.arr[index] = this.arr[largest]
+            this.arr[largest] = temp
+            this.minHeapify(largest)
         }
     }
 
@@ -52,17 +52,17 @@ module.exports = class MinHeap {
 
     heapsort() {
         this.buildMinHeap()
-        for (let i = this.arr.length; i > 1; i--) {
+        for (let i = this.arr.length; i > 0; i--) {
             const temp = this.arr[i]
-            this.arr[i] = this.arr[1]
-            this.arr[1] = temp
+            this.arr[i] = this.arr[0]
+            this.arr[0] = temp
             this.heapSize--
-            this.minHeapify(1)
+            this.minHeapify(0)
         }
     }
 
     get min() {
-        return this.arr[1]
+        return this.arr[0]
     }
 
     /**
