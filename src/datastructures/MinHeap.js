@@ -19,29 +19,29 @@ module.exports = class MinHeap {
         const rightIndex = right(index)
         let largest = index
 
-        console.log(
-            'asked for index',
-            index,
-            '(',
-            index,
-            ':',
-            this.arr[index],
-            ') - (',
-            leftIndex,
-            ':',
-            this.arr[leftIndex],
-            ') - (',
-            rightIndex,
-            ':',
-            this.arr[rightIndex],
-            ')'
-        )
+        // console.log(
+        //     'asked for index',
+        //     index,
+        //     '(',
+        //     index,
+        //     ':',
+        //     this.arr[index],
+        //     ') - (',
+        //     leftIndex,
+        //     ':',
+        //     this.arr[leftIndex],
+        //     ') - (',
+        //     rightIndex,
+        //     ':',
+        //     this.arr[rightIndex],
+        //     ')'
+        // )
 
-        console.log(
-            '1:',
-            leftIndex <= this.heapSize,
-            this.arr[leftIndex] > this.arr[index]
-        )
+        // console.log(
+        //     '1:',
+        //     leftIndex <= this.heapSize,
+        //     this.arr[leftIndex] > this.arr[index]
+        // )
         if (
             leftIndex <= this.heapSize &&
             this.arr[leftIndex] > this.arr[index]
@@ -51,13 +51,13 @@ module.exports = class MinHeap {
             largest = index
         }
 
-        console.log('1: ', largest, '->', this.arr[largest])
+        // console.log('1: ', largest, '->', this.arr[largest])
 
-        console.log(
-            '2:',
-            rightIndex <= this.heapSize,
-            this.arr[rightIndex] > this.arr[largest]
-        )
+        // console.log(
+        //     '2:',
+        //     rightIndex <= this.heapSize,
+        //     this.arr[rightIndex] > this.arr[largest]
+        // )
         if (
             rightIndex <= this.heapSize &&
             this.arr[rightIndex] > this.arr[largest]
@@ -65,24 +65,24 @@ module.exports = class MinHeap {
             largest = rightIndex
         }
 
-        console.log('2:', largest, '->', this.arr[largest])
+        // console.log('2:', largest, '->', this.arr[largest])
 
         if (largest !== index) {
             const temp = this.arr[index]
             this.arr[index] = this.arr[largest]
             this.arr[largest] = temp
-            console.log(
-                'swaped',
-                index,
-                '<->',
-                largest,
-                ' | ',
-                this.arr[index],
-                '<->',
-                this.arr[largest],
-                '---',
-                this.arr.toString()
-            )
+            // console.log(
+            //     'swaped',
+            //     index,
+            //     '<->',
+            //     largest,
+            //     ' | ',
+            //     this.arr[index],
+            //     '<->',
+            //     this.arr[largest],
+            //     '---',
+            //     this.arr.toString()
+            // )
             this.minHeapify(largest)
         }
     }

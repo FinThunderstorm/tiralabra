@@ -36,4 +36,16 @@ describe('MinHeap', () => {
             [0, 16, 14, 10, 8, 7, 9, 3, 2, 4, 1].toString()
         )
     })
+
+    test('heapsort makes correct order', () => {
+        const queue = new MinHeap((a, b) => a - b)
+        const values = [4, 1, 3, 2, 16, 9, 10, 14, 8, 7]
+        values.forEach((value) => {
+            queue.arr.push(value)
+        })
+        queue.heapsort()
+        expect(queue.arr.toString()).toBe(
+            [0, 1, 2, 3, 4, 7, 8, 9, 10, 14, 16].toString()
+        )
+    })
 })
