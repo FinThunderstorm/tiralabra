@@ -9,7 +9,7 @@ const right = (index) => 2 * index + 1
 
 module.exports = class MinHeap {
     constructor(sortMethod) {
-        this.arr = []
+        this.arr = [0]
         this.sortMethod = sortMethod
         this.heapSize = 0
     }
@@ -19,6 +19,29 @@ module.exports = class MinHeap {
         const rightIndex = right(index)
         let largest = index
 
+        console.log(
+            'asked for index',
+            index,
+            '(',
+            index,
+            ':',
+            this.arr[index],
+            ') - (',
+            leftIndex,
+            ':',
+            this.arr[leftIndex],
+            ') - (',
+            rightIndex,
+            ':',
+            this.arr[rightIndex],
+            ')'
+        )
+
+        console.log(
+            '1:',
+            leftIndex <= this.heapSize,
+            this.arr[leftIndex] > this.arr[index]
+        )
         if (
             leftIndex <= this.heapSize &&
             this.arr[leftIndex] > this.arr[index]
@@ -28,6 +51,13 @@ module.exports = class MinHeap {
             largest = index
         }
 
+        console.log('1: ', largest, '->', this.arr[largest])
+
+        console.log(
+            '2:',
+            rightIndex <= this.heapSize,
+            this.arr[rightIndex] > this.arr[largest]
+        )
         if (
             rightIndex <= this.heapSize &&
             this.arr[rightIndex] > this.arr[largest]
@@ -35,29 +65,43 @@ module.exports = class MinHeap {
             largest = rightIndex
         }
 
+        console.log('2:', largest, '->', this.arr[largest])
+
         if (largest !== index) {
             const temp = this.arr[index]
             this.arr[index] = this.arr[largest]
             this.arr[largest] = temp
+            console.log(
+                'swaped',
+                index,
+                '<->',
+                largest,
+                ' | ',
+                this.arr[index],
+                '<->',
+                this.arr[largest],
+                '---',
+                this.arr.toString()
+            )
             this.minHeapify(largest)
         }
     }
 
     buildMinHeap() {
-        this.heapSize = this.arr.length
-        for (let i = Math.floor(this.arr.length / 2); i > 0; i--) {
+        this.heapSize = this.arr.length - 1
+        for (let i = Math.floor((this.arr.length - 1) / 2); i > 0; i--) {
             this.minHeapify(i)
         }
     }
 
     heapsort() {
         this.buildMinHeap()
-        for (let i = this.arr.length; i > 0; i--) {
+        for (let i = this.arr.length - 1; i > 1; i--) {
             const temp = this.arr[i]
-            this.arr[i] = this.arr[0]
-            this.arr[0] = temp
+            this.arr[i] = this.arr[1]
+            this.arr[1] = temp
             this.heapSize--
-            this.minHeapify(0)
+            this.minHeapify(1)
         }
     }
 
