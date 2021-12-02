@@ -120,7 +120,7 @@ module.exports = class MinHeap {
      */
     pop() {
         if (this.heapSize < 1) {
-            return null
+            return undefined
         }
         let min = this.arr[1]
         this.arr[1] = this.arr[this.heapSize]
@@ -131,7 +131,7 @@ module.exports = class MinHeap {
     }
 
     heapDecreaseKey(index, key) {
-        if (key < this.arr[index]) {
+        if (key > this.arr[index]) {
             return
         }
         this.arr[index] = key
@@ -150,7 +150,7 @@ module.exports = class MinHeap {
      */
     push(item) {
         this.heapSize++
-        this.arr.push(-Infinity)
+        this.arr.push(Infinity)
         this.heapDecreaseKey(this.heapSize, item)
     }
 
@@ -159,14 +159,18 @@ module.exports = class MinHeap {
      * @return {int} Tietorakenteessa olevien alkioiden määrä
      */
     get length() {
-        return this.arr.heapSize
+        return this.heapSize
     }
 
     /**
-     * Tuottaa tietorakenteesta merkkijonoesityksen, jonka perusteella tietorakenteen sisältöä voidaan tarkastella.
+     * Tuottaa tietorakenteesta merkkijonoesityksen pienin ensin suuruusjärjestyksessä, jonka perusteella tietorakenteen sisältöä voidaan tarkastella.
+     * TODO: tee fiksumpi tästä, nyt turhaa resurssien hukkausta :D
      * @returns {String} Merkkijonoesitys tietorakenteesta.
      */
     toString() {
-        return this.arr.toString()
+        this.heapsort()
+        const retVal = this.arr.slice(1).toString()
+        this.buildMinHeap()
+        return retVal
     }
 }

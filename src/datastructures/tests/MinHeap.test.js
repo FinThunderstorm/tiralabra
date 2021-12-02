@@ -38,10 +38,7 @@ describe('MinHeap', () => {
             queue.arr.push(value)
         })
         queue.heapSize = queue.arr.length - 1
-        console.log(queue.arr, queue.heapSize)
         queue.maxHeapify(2)
-        console.log(queue.arr)
-        // [1, 2, 3, 17, 19, 36, 7, 25, 100]
         expect(queue.arr.toString()).toBe(
             [0, 16, 14, 10, 8, 7, 9, 3, 2, 4, 1].toString()
         )
@@ -53,10 +50,7 @@ describe('MinHeap', () => {
         values.forEach((value) => {
             queue.arr.push(value)
         })
-        // console.log(queue.arr)
         queue.buildMaxHeap()
-        // console.log(queue.arr)
-        // [1, 2, 3, 17, 19, 36, 7, 25, 100]
         expect(queue.arr.toString()).toBe(
             [0, 16, 14, 10, 8, 7, 9, 3, 2, 4, 1].toString()
         )
@@ -96,6 +90,17 @@ describe('MinHeap', () => {
         expect(queue.min()).toBe(1)
     })
 
+    test('heapDecreaseKey does nothing, if correct', () => {
+        const queue = new MinHeap()
+        const values = [4, 1, 3, 2, 16, 9, 10, 14, 8, 7]
+        values.forEach((value) => {
+            queue.arr.push(value)
+        })
+        queue.buildMinHeap()
+        queue.heapDecreaseKey(10, 32)
+        expect(queue.arr[10]).toBe(16)
+    })
+
     test('pop takes correct value out and leaves heap into right state', () => {
         const queue = new MinHeap()
         const values = [4, 1, 3, 2, 16, 9, 10, 14, 8, 7]
@@ -110,9 +115,14 @@ describe('MinHeap', () => {
         )
     })
 
+    test('pop returns undefined if empty', () => {
+        const queue = new MinHeap()
+        const value = queue.pop()
+        expect(value).toBe(undefined)
+    })
+
     test('push works correctly', () => {
         const queue = new MinHeap()
-        // 4 1 3 2 16 9 10 14 8 7
         queue.push(8)
         expect(queue.arr.toString()).toBe([0, 8].toString())
         queue.push(7)
@@ -140,6 +150,27 @@ describe('MinHeap', () => {
         queue.push(4)
         expect(queue.arr.toString()).toBe(
             [0, 1, 2, 7, 3, 4, 16, 14, 10, 8, 9].toString()
+        )
+    })
+
+    test('length is correct', () => {
+        const queue = new MinHeap()
+        const values = [5, 3, 1, 7, 8, 2, 5, 3, 2]
+        values.forEach((value) => {
+            queue.push(value)
+        })
+        expect(queue.length).toBe(values.length)
+    })
+
+    test('toString prints correct', () => {
+        const queue = new MinHeap()
+        const values = [4, 1, 3, 2, 16, 9, 10, 14, 8, 7]
+        values.forEach((value) => {
+            queue.arr.push(value)
+        })
+        queue.buildMinHeap()
+        expect(queue.toString()).toBe(
+            [1, 2, 3, 4, 7, 8, 9, 10, 14, 16].toString()
         )
     })
 })
