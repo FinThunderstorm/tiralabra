@@ -96,7 +96,7 @@ const getNextDepartures = async (stopGtfsId, startTime) => {
     `
     const arrived = convertDateToEpoch(new Date(startTime))
 
-    //console.log('Lähtöaika: ', arrived)
+    // console.log('Lähtöaika: ', arrived)
     const results = await api.request(QUERY, {
         id: stopGtfsId,
         startTime: arrived,

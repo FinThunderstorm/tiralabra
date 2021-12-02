@@ -5,7 +5,6 @@ const haversine = require('haversine')
 const PriorityQueue = require('@datastructures/PriorityQueue')
 const StopRepository = require('@repositories/stopRepository')
 const Route = require('@datastructures/Route')
-const Logger = require('./Logger')
 
 /**
  * distanceBetweenTwoPoints laskee haversine-funktiolla kahden koordinaattipisteen välisen etäisyyden maapallon pintaa pitkin.

@@ -20,7 +20,7 @@ module.exports = class MinHeap {
 
         if (
             leftIndex <= this.heapSize &&
-            this.arr[leftIndex] < this.arr[index]
+            this.arr[leftIndex].valueOf() < this.arr[index].valueOf()
         ) {
             smallest = leftIndex
         } else {
@@ -29,7 +29,7 @@ module.exports = class MinHeap {
 
         if (
             rightIndex <= this.heapSize &&
-            this.arr[rightIndex] < this.arr[smallest]
+            this.arr[rightIndex].valueOf() < this.arr[smallest].valueOf()
         ) {
             smallest = rightIndex
         }
@@ -49,7 +49,7 @@ module.exports = class MinHeap {
 
         if (
             leftIndex <= this.heapSize &&
-            this.arr[leftIndex] > this.arr[index]
+            this.arr[leftIndex].valueOf() > this.arr[index].valueOf()
         ) {
             largest = leftIndex
         } else {
@@ -58,7 +58,7 @@ module.exports = class MinHeap {
 
         if (
             rightIndex <= this.heapSize &&
-            this.arr[rightIndex] > this.arr[largest]
+            this.arr[rightIndex].valueOf() > this.arr[largest].valueOf()
         ) {
             largest = rightIndex
         }
@@ -73,14 +73,14 @@ module.exports = class MinHeap {
 
     buildMinHeap() {
         this.heapSize = this.arr.length - 1
-        for (let i = Math.floor((this.arr.length - 1) / 2); i > 0; i--) {
+        for (let i = Math.floor((this.arr.length - 1) / 2); i > 0; i -= 1) {
             this.minHeapify(i)
         }
     }
 
     buildMaxHeap() {
         this.heapSize = this.arr.length - 1
-        for (let i = Math.floor((this.arr.length - 1) / 2); i > 0; i--) {
+        for (let i = Math.floor((this.arr.length - 1) / 2); i > 0; i -= 1) {
             this.maxHeapify(i)
         }
     }
@@ -88,11 +88,11 @@ module.exports = class MinHeap {
     // creates asc order
     heapsort() {
         this.buildMaxHeap()
-        for (let i = this.arr.length - 1; i > 1; i--) {
+        for (let i = this.arr.length - 1; i > 1; i -= 1) {
             const temp = this.arr[i]
-            this.arr[i] = this.arr[1]
+            this.arr[i] = this.arr[1] // eslint-disable-line prefer-destructuring
             this.arr[1] = temp
-            this.heapSize--
+            this.heapSize -= 1
             this.maxHeapify(1)
         }
     }
@@ -100,11 +100,11 @@ module.exports = class MinHeap {
     // creates desc order
     maxHeapsort() {
         this.buildMinHeap()
-        for (let i = this.arr.length - 1; i > 1; i--) {
+        for (let i = this.arr.length - 1; i > 1; i -= 1) {
             const temp = this.arr[i]
-            this.arr[i] = this.arr[1]
+            this.arr[i] = this.arr[1] // eslint-disable-line prefer-destructuring
             this.arr[1] = temp
-            this.heapSize--
+            this.heapSize -= 1
             this.minHeapify(1)
         }
     }
@@ -122,24 +122,25 @@ module.exports = class MinHeap {
         if (this.heapSize < 1) {
             return undefined
         }
-        let min = this.arr[1]
+        const min = this.arr[1]
         this.arr[1] = this.arr[this.heapSize]
-        this.heapSize--
+        this.heapSize -= 1
         this.minHeapify(1)
         this.arr.pop()
         return min
     }
 
     heapDecreaseKey(index, key) {
-        if (key > this.arr[index]) {
+        let i = index
+        if (key > this.arr[i]) {
             return
         }
-        this.arr[index] = key
-        while (index > 1 && this.arr[parent(index)] > this.arr[index]) {
-            const temp = this.arr[index]
-            this.arr[index] = this.arr[parent(index)]
-            this.arr[parent(index)] = temp
-            index = parent(index)
+        this.arr[i] = key
+        while (i > 1 && this.arr[parent(i)].valueOf() > this.arr[i].valueOf()) {
+            const temp = this.arr[i]
+            this.arr[i] = this.arr[parent(i)]
+            this.arr[parent(i)] = temp
+            i = parent(i)
         }
     }
 
@@ -149,7 +150,7 @@ module.exports = class MinHeap {
      * @param {ParamDataTypeHere} item - Lisättävä alkio
      */
     push(item) {
-        this.heapSize++
+        this.heapSize += 1
         this.arr.push(Infinity)
         this.heapDecreaseKey(this.heapSize, item)
     }
