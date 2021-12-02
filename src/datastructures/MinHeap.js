@@ -105,8 +105,8 @@ module.exports = class MinHeap {
         }
     }
 
-    get min() {
-        return this.arr[0]
+    min() {
+        return this.arr[1]
     }
 
     /**
@@ -114,7 +114,7 @@ module.exports = class MinHeap {
      * Palauttaa tietorakenteen ensimmäisen alkion, jolla pienin arvo.
      * @return {Any} Tietorakenteessa ollut ensimmäinen alkio.
      */
-    get pop() {
+    pop() {
         if (this.heapSize < 1) {
             return null
         }
@@ -122,17 +122,32 @@ module.exports = class MinHeap {
         this.arr[1] = this.arr[this.heapSize]
         this.heapSize--
         this.minHeapify(1)
+        this.arr.pop()
         return min
     }
 
     heapDecreaseKey(index, key) {
-        if (key > this.arr[index]) {
+        if (key < this.arr[index]) {
             return
         }
         this.arr[index] = key
-        while (index > 1 && this.arr[parent(index)] > this.arr[index]) {
-            console.log()
+        while (index > 1 && this.arr[parent(index)] < this.arr[index]) {
+            const temp = this.arr[index]
+            this.arr[index] = this.arr[parent(index)]
+            this.arr[parent(index)] = temp
+            index = parent(index)
         }
+    }
+
+    /**
+     * Min-Heap-Insert
+     * Push-funktiolla lisätään tietorakenteeseen uusi alkio.
+     * @param {ParamDataTypeHere} item - Lisättävä alkio
+     */
+    push(item) {
+        this.heapSize++
+        this.arr.push(-Infinity)
+        this.heapDecreaseKey(this.heapSize, item)
     }
 
     /**
@@ -140,16 +155,7 @@ module.exports = class MinHeap {
      * @return {int} Tietorakenteessa olevien alkioiden määrä
      */
     get length() {
-        return this.arr.length
-    }
-
-    /**
-     * Push-funktiolla lisätään tietorakenteeseen uusi alkio.
-     * @param {ParamDataTypeHere} item - Lisättävä alkio
-     */
-    push(item) {
-        this.arr.push(item)
-        this.arr.sort(this.sortMethod)
+        return this.arr.heapSize
     }
 
     /**
