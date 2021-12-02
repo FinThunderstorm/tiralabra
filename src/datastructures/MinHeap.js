@@ -8,40 +8,45 @@ const left = (index) => 2 * index
 const right = (index) => 2 * index + 1
 
 module.exports = class MinHeap {
-    constructor(sortMethod) {
+    constructor() {
         this.arr = [0]
-        this.sortMethod = sortMethod
         this.heapSize = 0
     }
 
     minHeapify(index) {
         const leftIndex = left(index)
         const rightIndex = right(index)
+        let smallest = index
+
+        if (
+            leftIndex <= this.heapSize &&
+            this.arr[leftIndex] < this.arr[index]
+        ) {
+            smallest = leftIndex
+        } else {
+            smallest = index
+        }
+
+        if (
+            rightIndex <= this.heapSize &&
+            this.arr[rightIndex] < this.arr[smallest]
+        ) {
+            smallest = rightIndex
+        }
+
+        if (smallest !== index) {
+            const temp = this.arr[index]
+            this.arr[index] = this.arr[smallest]
+            this.arr[smallest] = temp
+            this.minHeapify(smallest)
+        }
+    }
+
+    maxHeapify(index) {
+        const leftIndex = left(index)
+        const rightIndex = right(index)
         let largest = index
 
-        // console.log(
-        //     'asked for index',
-        //     index,
-        //     '(',
-        //     index,
-        //     ':',
-        //     this.arr[index],
-        //     ') - (',
-        //     leftIndex,
-        //     ':',
-        //     this.arr[leftIndex],
-        //     ') - (',
-        //     rightIndex,
-        //     ':',
-        //     this.arr[rightIndex],
-        //     ')'
-        // )
-
-        // console.log(
-        //     '1:',
-        //     leftIndex <= this.heapSize,
-        //     this.arr[leftIndex] > this.arr[index]
-        // )
         if (
             leftIndex <= this.heapSize &&
             this.arr[leftIndex] > this.arr[index]
@@ -51,13 +56,6 @@ module.exports = class MinHeap {
             largest = index
         }
 
-        // console.log('1: ', largest, '->', this.arr[largest])
-
-        // console.log(
-        //     '2:',
-        //     rightIndex <= this.heapSize,
-        //     this.arr[rightIndex] > this.arr[largest]
-        // )
         if (
             rightIndex <= this.heapSize &&
             this.arr[rightIndex] > this.arr[largest]
@@ -65,25 +63,11 @@ module.exports = class MinHeap {
             largest = rightIndex
         }
 
-        // console.log('2:', largest, '->', this.arr[largest])
-
         if (largest !== index) {
             const temp = this.arr[index]
             this.arr[index] = this.arr[largest]
             this.arr[largest] = temp
-            // console.log(
-            //     'swaped',
-            //     index,
-            //     '<->',
-            //     largest,
-            //     ' | ',
-            //     this.arr[index],
-            //     '<->',
-            //     this.arr[largest],
-            //     '---',
-            //     this.arr.toString()
-            // )
-            this.minHeapify(largest)
+            this.maxHeapify(largest)
         }
     }
 
@@ -94,7 +78,27 @@ module.exports = class MinHeap {
         }
     }
 
+    buildMaxHeap() {
+        this.heapSize = this.arr.length - 1
+        for (let i = Math.floor((this.arr.length - 1) / 2); i > 0; i--) {
+            this.maxHeapify(i)
+        }
+    }
+
+    // creates asc order
     heapsort() {
+        this.buildMaxHeap()
+        for (let i = this.arr.length - 1; i > 1; i--) {
+            const temp = this.arr[i]
+            this.arr[i] = this.arr[1]
+            this.arr[1] = temp
+            this.heapSize--
+            this.maxHeapify(1)
+        }
+    }
+
+    // creates desc order
+    maxHeapsort() {
         this.buildMinHeap()
         for (let i = this.arr.length - 1; i > 1; i--) {
             const temp = this.arr[i]
@@ -131,7 +135,7 @@ module.exports = class MinHeap {
             return
         }
         this.arr[index] = key
-        while (index > 1 && this.arr[parent(index)] < this.arr[index]) {
+        while (index > 1 && this.arr[parent(index)] > this.arr[index]) {
             const temp = this.arr[index]
             this.arr[index] = this.arr[parent(index)]
             this.arr[parent(index)] = temp
