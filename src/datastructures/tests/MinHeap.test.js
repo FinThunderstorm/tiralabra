@@ -1,4 +1,5 @@
 const MinHeap = require('@datastructures/MinHeap')
+const Route = require('@datastructures/Route')
 
 describe('MinHeap', () => {
     test('MinHeap initializes', () => {
@@ -172,5 +173,33 @@ describe('MinHeap', () => {
         expect(queue.toString()).toBe(
             [1, 2, 3, 4, 7, 8, 9, 10, 14, 16].toString()
         )
+    })
+
+    test('push works correctly with objects with valueOf() (Routes in this case)', () => {
+        const queue = new MinHeap()
+
+        const stop = {
+            name: 'Kumpulan kampus',
+            code: 'H3029',
+            coordinates: {
+                latitude: 60.203679,
+                longitude: 24.965952,
+            },
+            locationType: 'STOP',
+        }
+
+        const route1 = new Route(stop, 8, new Date(), '8')
+        const route2 = new Route(stop, 7, new Date(), '7')
+        const route3 = new Route(stop, 14, new Date(), '14')
+        const route4 = new Route(stop, 5, new Date(), '5')
+
+        queue.push(route1)
+        expect(queue.arr.toString()).toBe([0, 8].toString())
+        queue.push(route2)
+        expect(queue.arr.toString()).toBe([0, 7, 8].toString())
+        queue.push(route3)
+        expect(queue.arr.toString()).toBe([0, 7, 8, 14].toString())
+        queue.push(route4)
+        expect(queue.arr.toString()).toBe([0, 5, 7, 14, 8].toString())
     })
 })

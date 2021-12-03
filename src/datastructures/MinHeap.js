@@ -132,7 +132,7 @@ module.exports = class MinHeap {
 
     heapDecreaseKey(index, key) {
         let i = index
-        if (key > this.arr[i]) {
+        if (key.valueOf() > this.arr[i].valueOf()) {
             return
         }
         this.arr[i] = key
