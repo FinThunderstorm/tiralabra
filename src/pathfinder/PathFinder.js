@@ -2,7 +2,7 @@
 /* eslint-disable no-await-in-loop */
 
 const haversine = require('haversine')
-const PriorityQueue = require('@datastructures/PriorityQueue')
+const PriorityQueue = require('@datastructures/MinHeap')
 const StopRepository = require('@repositories/stopRepository')
 const Route = require('@datastructures/Route')
 
