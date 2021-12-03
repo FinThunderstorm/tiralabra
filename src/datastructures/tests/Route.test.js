@@ -124,4 +124,14 @@ describe('Route-object', () => {
         expect(routeJSON.travelTime).toBe(4)
         expect(JSON.stringify(routeJSON.via)).toBe(JSON.stringify(correctVia))
     })
+
+    test('valueOf() should return travelTime', () => {
+        const route = new Route(kumpulaStop, travelTime, null, routeName)
+        expect(route.valueOf()).toBe(travelTime)
+    })
+
+    test('toString() should return routeName', () => {
+        const route = new Route(kumpulaStop, travelTime, null, routeName)
+        expect(route.toString()).toBe(routeName)
+    })
 })
