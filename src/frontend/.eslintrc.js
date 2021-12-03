@@ -32,6 +32,7 @@ module.exports = {
                     ['@config', '../config'],
                     ['@components', '../frontend/components'],
                     ['@frontend', '../frontend'],
+                    ['@helpers', '../backend/utils/helpers.js'],
                 ],
             },
         },
