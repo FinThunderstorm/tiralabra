@@ -1,22 +1,31 @@
 /* eslint-disable no-loop-func */
 /* eslint-disable no-await-in-loop */
 
-const haversine = require('haversine')
 const PriorityQueue = require('@datastructures/MinHeap')
 const StopRepository = require('@repositories/stopRepository')
 const Route = require('@datastructures/Route')
 
 /**
  * distanceBetweenTwoPoints laskee haversine-funktiolla kahden koordinaattipisteen välisen etäisyyden maapallon pintaa pitkin.
- * TODO: toteuta kaavan laskutoimitukset itse korvaamalla valmis kirjasto.
+ * Lähde: Chamberlain B, 2001, "Q5.1: What is the best way to calculate the distance between 2 points?", luettu 3.12.2021. Saatavilla: https://web.archive.org/web/20041108132234/http://www.census.gov/cgi-bin/geo/gisfaq?Q5.1
  * @param {JSON} coord1 JSON-objekti, jossa on kentässä latitude leveysaste ja longitude pituusaste.
  * @param {JSON} coord2 JSON-objekti, jossa on kentässä latitude leveysaste ja longitude pituusaste.
  * @returns matka kilometreinä
  */
 const distanceBetweenTwoPoints = (coord1, coord2) => {
-    // console.log('coord1 >', coord1)
-    // console.log('coord2 >', coord2)
-    const distance = haversine(coord1, coord2)
+    const lonDiff =
+        coord2.longitude * (Math.PI / 180) - coord1.longitude * (Math.PI / 180)
+    const latDiff =
+        coord2.latitude * (Math.PI / 180) - coord1.latitude * (Math.PI / 180)
+
+    const haversine =
+        Math.sin(latDiff / 2) ** 2 +
+        Math.cos(coord1.latitude * (Math.PI / 180)) *
+            Math.cos(coord2.latitude * (Math.PI / 180)) *
+            Math.sin(lonDiff / 2) ** 2
+    const invertHaversine = 2 * Math.asin(Math.min(1, Math.sqrt(haversine)))
+    const earthRadius = 6367
+    const distance = earthRadius * invertHaversine
     return distance
 }
 
@@ -51,15 +60,13 @@ const heuristic = (startStop, endStop) => {
 const search = async (startStop, endStop, uStartTime) => {
     console.log('is Pathfinder activated?')
 
-    const queue = new PriorityQueue((a, b) => a.travelTime - b.travelTime)
-
-    const from = startStop
-
+    const queue = new PriorityQueue()
     let visited = []
-    console.log('uStartTime', uStartTime)
+
     const startTime = new Date(uStartTime) ?? new Date()
-    console.log('startTime', startTime)
+    const from = startStop
     from.arrivesAt = startTime
+
     const startRoute = new Route(from, 0, startTime)
     queue.push(startRoute)
 
@@ -77,14 +84,12 @@ const search = async (startStop, endStop, uStartTime) => {
                     route.route ?? ''
                 } at ${route.arrived.toUTCString()}`
             )
-            console.log('queue:', queue.arr.slice(0, 10).toString())
 
             const departures = await StopRepository.getNextDepartures(
                 route.stop.gtfsId,
                 route.arrived
             )
 
-            // .filter((a) => Date.parse(a.departuresAt) >= Date.parse(route.arrived))
             departures.departures.forEach(async (departure) => {
                 // tarkastetaan, ettei ole linjan päätepysäkki
                 if (departure.nextStop !== null) {
@@ -109,7 +114,7 @@ const search = async (startStop, endStop, uStartTime) => {
         if (queue.length === 0) {
             break
         }
-        console.log('queue:', queue.arr.slice(0, 10).toString())
+
         route = queue.pop()
     }
     console.log(
@@ -119,4 +124,4 @@ const search = async (startStop, endStop, uStartTime) => {
     return route
 }
 
-module.exports = { search }
+module.exports = { search, distanceBetweenTwoPoints, heuristic }
