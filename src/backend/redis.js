@@ -1,8 +1,11 @@
-const redis = require('async-redis')
+const redis = require('redis')
 const { defaultHost, cachetime } = require('@config/config')
 
-const client = redis.createClient({ host: defaultHost })
+const client = redis.createClient({ url: `redis://${defaultHost}:6379` })
 client.on('error', (error) => console.error(error))
+;(async () => {
+    await client.connect()
+})()
 
 const test = async () => {
     const status = await client.ping()
@@ -33,10 +36,22 @@ const getValid = async (key, value) => {
     return retValue
 }
 
+const getAllKeys = async () => {
+    const keys = await client.keys('*')
+    return keys
+}
+
+const getAllValues = async (keys) => {
+    const values = keys.map((key) => get(key))
+    return Promise.all(values)
+}
+
 module.exports = {
     test,
     check,
     set,
     get,
     getValid,
+    getAllKeys,
+    getAllValues,
 }

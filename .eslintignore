@@ -3,3 +3,4 @@ build
 utils
 *.md
 tests
+__mocks__
