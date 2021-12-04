@@ -1,9 +1,9 @@
+jest.mock('@repositories/stopRepository')
 const PathFinder = require('@pathfinder/PathFinder')
 const case1 = require('@pathfinder/tests/results/HSL1402157-HSL1320295.json')
 const case2 = require('@pathfinder/tests/results/HSL4620205-HSL1240118.json')
 const case3 = require('@pathfinder/tests/results/HSL9650105-HSL4510255.json')
 
-jest.mock('@repositories/stopRepository')
 jest.setTimeout(10 * 60 * 1000)
 
 const kumpulaStop = {
@@ -87,7 +87,7 @@ describe('PathFinder', () => {
             },
             locationType: 'STOP',
         }
-        const startTime = 1638784800000
+        const startTime = 1638784836000
         const resultCase1 = await PathFinder.search(
             startStop,
             endStop,
@@ -118,7 +118,7 @@ describe('PathFinder', () => {
             },
             locationType: 'STOP',
         }
-        const startTime = 1638784800000
+        const startTime = 1638784836000
         const resultCase2 = await PathFinder.search(
             startStop,
             endStop,
@@ -149,7 +149,7 @@ describe('PathFinder', () => {
             },
             locationType: 'STOP',
         }
-        const startTime = 1638784800000
+        const startTime = 1638784836000
         const resultCase3 = await PathFinder.search(
             startStop,
             endStop,

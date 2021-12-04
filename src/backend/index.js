@@ -1,10 +1,8 @@
 require('module-alias/register')
 const express = require('express')
 const cors = require('cors')
-const redis = require('async-redis')
 
 const app = express()
-const { defaultHost, cachetime } = require('@config/config')
 
 const cache = require('@backend/redis')
 

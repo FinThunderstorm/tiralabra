@@ -70,7 +70,7 @@ const heuristic = (startStop, endStop) => {
  */
 const search = async (startStop, endStop, uStartTime) => {
     // console.log('is Pathfinder activated?')
-    // console.log('startAttrs:', startStop, endStop, uStartTime)
+    console.log('startAttrs:', startStop, endStop, uStartTime)
 
     const queue = new PriorityQueue()
     let visited = []
@@ -83,13 +83,11 @@ const search = async (startStop, endStop, uStartTime) => {
     queue.push(startRoute)
 
     let route = queue.pop()
-    let i = 0
+
     while (route.stop.gtfsId !== endStop.gtfsId) {
         if (visited.indexOf(`${route.stop.gtfsId}:${route.route}`) === -1) {
             // lisätään vierailtuihin
             visited = visited.concat([`${route.stop.gtfsId}:${route.route}`])
-
-            i += 1
 
             // console.log(
             //     `\nnow checking: ${route.stop.gtfsId} / ${route.stop.name} (${
@@ -137,10 +135,6 @@ const search = async (startStop, endStop, uStartTime) => {
             })
         }
         if (queue.length === 0) {
-            break
-        }
-
-        if (i === 1000) {
             break
         }
 

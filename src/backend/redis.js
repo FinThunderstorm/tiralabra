@@ -1,7 +1,7 @@
 const redis = require('redis')
 const { defaultHost, cachetime } = require('@config/config')
 
-const client = redis.createClient({ url: `redis://tiralabra-cache:6379` })
+const client = redis.createClient({ url: `redis://${defaultHost}:6379` })
 client.on('error', (error) => console.error(error))
 ;(async () => {
     await client.connect()
