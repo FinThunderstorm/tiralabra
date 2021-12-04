@@ -6,11 +6,21 @@ const StopRepository = require('@repositories/stopRepository')
 const Route = require('@datastructures/Route')
 
 /**
- * distanceBetweenTwoPoints laskee haversine-funktiolla kahden koordinaattipisteen välisen etäisyyden maapallon pintaa pitkin.
- * Lähde: Chamberlain B, 2001, "Q5.1: What is the best way to calculate the distance between 2 points?", luettu 3.12.2021. Saatavilla: https://web.archive.org/web/20041108132234/http://www.census.gov/cgi-bin/geo/gisfaq?Q5.1
- * @param {JSON} coord1 JSON-objekti, jossa on kentässä latitude leveysaste ja longitude pituusaste.
- * @param {JSON} coord2 JSON-objekti, jossa on kentässä latitude leveysaste ja longitude pituusaste.
- * @returns matka kilometreinä
+ * PathFinderin funktioita käytetään reitin hakemiseen kahden pisteen välillä.
+ */
+
+/**
+ * distanceBetweenTwoPoints laskee haversine-funktiolla kahden koordinaattipisteen
+ * välisen etäisyyden maapallon pintaa pitkin.
+ * Lähde: Chamberlain B, 2001, "Q5.1: What is the best way to calculate the distance
+ *        between 2 points?", luettu 3.12.2021.
+ *        Saatavilla: https://web.archive.org/web/20041108132234/http://www.census.gov/cgi-bin/geo/gisfaq?Q5.1
+ *
+ * @param {JSON} coord1 JSON-objekti, jossa on kentässä latitude leveysaste
+ *                      ja longitude pituusaste.
+ * @param {JSON} coord2 JSON-objekti, jossa on kentässä latitude leveysaste
+ *                      ja longitude pituusaste.
+ * @returns {Number} matka kilometreinä
  */
 const distanceBetweenTwoPoints = (coord1, coord2) => {
     const lonDiff =
@@ -31,7 +41,10 @@ const distanceBetweenTwoPoints = (coord1, coord2) => {
 
 /**
  * Käytetään heuristisen aika-arvion laskemiseen lähtöpysäköiltä kohdepysäkille.
- * @summary Laskee tällä hetkellä heuristisen aika-arvion maapallon pintaa viivasuoraa etäisyyttä pysäkkien välillä hyödyntäen. Tällä hetkellä käyttää vain bussin keskimääräistä nopeutta HSL-liikenteessä.
+ * Laskee tällä hetkellä heuristisen aika-arvion maapallon pintaa viivasuoraa
+ * etäisyyttä pysäkkien välillä hyödyntäen. Tällä hetkellä käyttää vain bussin
+ * keskimääräistä nopeutta HSL-liikenteessä.
+ *
  * @param {Stop} startStop lähtöpysäkki
  * @param {Stop} endStop kohdepysäkki
  * @returns aika-arvio millisekunteissa (yhteensopivuus Date-olion kanssa)
@@ -47,11 +60,9 @@ const heuristic = (startStop, endStop) => {
 }
 
 /**
- * PathFinder-luokkaa käytetään reitin hakemiseen kahden pisteen välillä.
- */
-
-/**
- * search-funktiolla haetaan lyhin reitti ajallisesti kahden pysäkin välillä.
+ * search-funktiolla haetaan lyhin reitti ajallisesti kahden pysäkin välillä
+ * käyttäen A*-algoritmiä ja minimikekoa prioriteettijonona.
+ *
  * @param {*} startStop lähtöpysäkki
  * @param {*} endStop kohdepysäkki
  * @param {*} uStartTime vapaaehtoinen, käyttäjän spesifioima lähtöaika

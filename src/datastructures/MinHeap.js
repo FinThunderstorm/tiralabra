@@ -1,6 +1,6 @@
 /**
  * MinHeap-luokka mallintaa minimikekoa prioriteettijonotietorakenteena.
- * min-heap-priority => A[parent(i)] ≤ A[i]
+
  * Lähde: Stein, C. et al. (2009) Introduction to algorithms. The MIT Press.
  */
 const parent = (index) => Math.floor(index / 2)
@@ -13,6 +13,12 @@ module.exports = class MinHeap {
         this.heapSize = 0
     }
 
+    /**
+     * minHeapify tarkastaa noudattaako keko minimikeon periaatteita annetusta indeksistä alaspäin.
+     * Noudattaa minimikeon prioriteettiä A[parent(i)] ≤ A[i], missä i on kyseisen solmun indeksi.
+     *
+     * @param {Number} index indeksi, josta tarkastusta lähdetään tekemään.
+     */
     minHeapify(index) {
         const leftIndex = left(index)
         const rightIndex = right(index)
@@ -42,6 +48,13 @@ module.exports = class MinHeap {
         }
     }
 
+    /**
+     * maxHeapify tarkastaa noudattaako keko maksimikeon periaatteita annetusta indeksistä alaspäin.
+     * Noudattaa maksimikeon prioriteettiä A[parent(i)] ≥ A[i], missä i on kyseisen solmun indeksi.
+     * Toteutuksessa mukana, jotta voin tulostaa listan minimikeosta, jossa alkiot pienimmästä suurimpaan.
+     *
+     * @param {Number} index indeksi, josta tarkastusta lähdetään tekemään.
+     */
     maxHeapify(index) {
         const leftIndex = left(index)
         const rightIndex = right(index)
@@ -71,6 +84,11 @@ module.exports = class MinHeap {
         }
     }
 
+    /**
+     * buildMinHeap järjestelee keon vastaamaan minimikeon toteutusta.
+     * Toteuttaa kutsumalla minHeapifyä ensin puolivälistä kekoa viimeisestä
+     * lisätystä solmusta edeten sieltä kohti ylempiä solmuja.
+     */
     buildMinHeap() {
         this.heapSize = this.arr.length - 1
         for (let i = Math.floor((this.arr.length - 1) / 2); i > 0; i -= 1) {
@@ -78,6 +96,13 @@ module.exports = class MinHeap {
         }
     }
 
+    /**
+     * buildMaxHeap järjestelee keon vastaamaan maksimikeon toteutusta.
+     *   Toteuttaa kutsumalla maxHeapifyä ensin puolivälistä kekoa viimeisestä
+     * lisätystä solmusta edeten sieltä kohti ylempiä solmuja.
+     *   Toteutuksessa mukana, jotta voin tulostaa listan minimikeosta,
+     * jossa alkiot pienimmästä suurimpaan.
+     */
     buildMaxHeap() {
         this.heapSize = this.arr.length - 1
         for (let i = Math.floor((this.arr.length - 1) / 2); i > 0; i -= 1) {
@@ -85,7 +110,11 @@ module.exports = class MinHeap {
         }
     }
 
-    // creates asc order
+    /**
+     * heapsort järjestelee keon pienimmästä suurimpaan alkioon.
+     *   Toteutus on maksimikeon periaatetta noudattaen, käytetään
+     * keon tulostamiseen pienimmästä suurimpaan alkioon.
+     */
     heapsort() {
         this.buildMaxHeap()
         for (let i = this.arr.length - 1; i > 1; i -= 1) {
@@ -97,8 +126,11 @@ module.exports = class MinHeap {
         }
     }
 
-    // creates desc order
-    maxHeapsort() {
+    /**
+     * minHeapsort järjestelee alkiot suurimmasta pienimpään.
+     * Toteutus minimikeon periaatetta noudattaen.
+     */
+    minHeapsort() {
         this.buildMinHeap()
         for (let i = this.arr.length - 1; i > 1; i -= 1) {
             const temp = this.arr[i]
@@ -109,14 +141,20 @@ module.exports = class MinHeap {
         }
     }
 
+    /**
+     * min palauttaa keon pienimmän alkion, mutta ei poista sitä keosta.
+     *
+     * @returns {Any}
+     */
     min() {
         return this.arr[1]
     }
 
     /**
-     * HEAP-EXTRACT-MIN
-     * Palauttaa tietorakenteen ensimmäisen alkion, jolla pienin arvo.
-     * @return {Any} Tietorakenteessa ollut ensimmäinen alkio.
+     * pop palauttaa tietorakenteen pienimmän arvon
+     * omaavan alkion poistaen sen keosta.
+     *
+     * @return {Any} Tietorakenteessa ollut pienin alkio.
      */
     pop() {
         if (this.heapSize < 1) {
@@ -130,6 +168,14 @@ module.exports = class MinHeap {
         return min
     }
 
+    /**
+     * heapDecreaseKey järjestelee annettuun indeksiin (index)
+     * lisättävän arvon (key) oikeaan kohtaan minimikekoa.
+     *
+     * @param {*} index indeksi, johon arvo (key) asetetaan.
+     * @param {*} key kekoon talletettava arvo
+     * @returns kun lisättävä arvo on oikealla paikalla minimikekoa
+     */
     heapDecreaseKey(index, key) {
         let i = index
         if (key.valueOf() > this.arr[i].valueOf()) {
@@ -145,9 +191,9 @@ module.exports = class MinHeap {
     }
 
     /**
-     * Min-Heap-Insert
-     * Push-funktiolla lisätään tietorakenteeseen uusi alkio.
-     * @param {ParamDataTypeHere} item - Lisättävä alkio
+     * push lisää kekoon uusi alkio oikealle paikalle minimikekoa.
+     *
+     * @param {Any} item lisättävä alkio
      */
     push(item) {
         this.heapSize += 1
@@ -156,16 +202,19 @@ module.exports = class MinHeap {
     }
 
     /**
-     * Palauttaa tietorakenteessa olevien alkioiden määrän, eli tietorakenteen pituus.
-     * @return {int} Tietorakenteessa olevien alkioiden määrä
+     * Palauttaa keossa olevien alkioiden määrän.
+     *
+     * @return {Number} Keossa olevien alkioiden määrä
      */
     get length() {
         return this.heapSize
     }
 
     /**
-     * Tuottaa tietorakenteesta merkkijonoesityksen pienin ensin suuruusjärjestyksessä, jonka perusteella tietorakenteen sisältöä voidaan tarkastella.
+     * Tuottaa tietorakenteesta merkkijonoesityksen pienin ensin suuruusjärjestyksessä,
+     * jonka perusteella tietorakenteen sisältöä voidaan tarkastella.
      * TODO: tee fiksumpi tästä, nyt turhaa resurssien hukkausta :D
+     *
      * @returns {String} Merkkijonoesitys tietorakenteesta.
      */
     toString() {

@@ -69,13 +69,13 @@ describe('MinHeap', () => {
         )
     })
 
-    test('maxHeapsort makes correct order', () => {
+    test('minHeapsort makes correct order', () => {
         const queue = new MinHeap()
         const values = [4, 1, 3, 2, 16, 9, 10, 14, 8, 7]
         values.forEach((value) => {
             queue.arr.push(value)
         })
-        queue.maxHeapsort()
+        queue.minHeapsort()
         expect(queue.arr.toString()).toBe(
             [0, 16, 14, 10, 9, 8, 7, 4, 3, 2, 1].toString()
         )
