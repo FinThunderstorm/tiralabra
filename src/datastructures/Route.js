@@ -60,6 +60,103 @@ class Route {
         return output
     }
 
+    toJSONForTests() {
+        const output = {
+            to: {
+                name: this.stop.name,
+                code: this.stop.code,
+                gtfsId: this.stop.gtfsId,
+                coordinates: this.stop.coordinates,
+                locationType: this.stop.locationType,
+                arrivesAt: this.stop.arrivesAt.toISOString(),
+                realtimeArrivesAt: this.stop.realtimeArrivesAt.toISOString(),
+                departuresAt: this.stop.departuresAt.toISOString(),
+                realtimeDeparturesAt:
+                    this.stop.realtimeDeparturesAt.toISOString(),
+                serviceDay: this.stop.serviceDay.toISOString(),
+            },
+            from: null,
+            arrived: this.arrived.toISOString(),
+            startTime: this.arrived.toISOString(),
+            travelTime: this.travelTime,
+            via: [
+                {
+                    stop: {
+                        name: this.stop.name,
+                        code: this.stop.code,
+                        gtfsId: this.stop.gtfsId,
+                        coordinates: this.stop.coordinates,
+                        locationType: this.stop.locationType,
+                        arrivesAt: this.stop.arrivesAt.toISOString(),
+                        realtimeArrivesAt:
+                            this.stop.realtimeArrivesAt.toISOString(),
+                        departuresAt: this.stop.departuresAt.toISOString(),
+                        realtimeDeparturesAt:
+                            this.stop.realtimeDeparturesAt.toISOString(),
+                        serviceDay: this.stop.serviceDay.toISOString(),
+                    },
+                    route: this.route,
+                    travelTime: this.travelTime,
+                },
+            ],
+        }
+
+        let next = this.next // eslint-disable-line
+        while (next !== null) {
+            // console.log('next:', next)
+            if (next.next !== null) {
+                output.via = output.via.concat([
+                    {
+                        stop: {
+                            name: next.stop.name,
+                            code: next.stop.code,
+                            gtfsId: next.stop.gtfsId,
+                            coordinates: next.stop.coordinates,
+                            locationType: next.stop.locationType,
+                            arrivesAt: next.stop.arrivesAt.toISOString(),
+                            realtimeArrivesAt:
+                                next.stop.realtimeArrivesAt.toISOString(),
+                            departuresAt: next.stop.departuresAt.toISOString(),
+                            realtimeDeparturesAt:
+                                next.stop.realtimeDeparturesAt.toISOString(),
+                            serviceDay: next.stop.serviceDay.toISOString(),
+                        },
+                        route: next.route,
+                        travelTime: next.travelTime,
+                    },
+                ])
+            } else {
+                output.via = output.via.concat([
+                    {
+                        stop: {
+                            name: next.stop.name,
+                            code: next.stop.code,
+                            gtfsId: next.stop.gtfsId,
+                            coordinates: next.stop.coordinates,
+                            locationType: next.stop.locationType,
+                            arrivesAt: next.stop.arrivesAt.toISOString(),
+                        },
+                        route: next.route,
+                        travelTime: next.travelTime,
+                    },
+                ])
+            }
+
+            output.from = {
+                name: next.stop.name,
+                code: next.stop.code,
+                gtfsId: next.stop.gtfsId,
+                coordinates: next.stop.coordinates,
+                locationType: next.stop.locationType,
+                arrivesAt: next.stop.arrivesAt.toISOString(),
+            }
+            output.startTime = next.arrived.toISOString()
+            next = next.next
+        }
+
+        return output
+    }
+
     toString() {
         return this.route
     }

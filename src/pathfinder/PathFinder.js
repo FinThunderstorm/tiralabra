@@ -58,7 +58,8 @@ const heuristic = (startStop, endStop) => {
  * @returns {Route} suositeltu reitti Route-oliona.
  */
 const search = async (startStop, endStop, uStartTime) => {
-    console.log('is Pathfinder activated?')
+    // console.log('is Pathfinder activated?')
+    // console.log('startAttrs:', startStop, endStop, uStartTime)
 
     const queue = new PriorityQueue()
     let visited = []
@@ -79,13 +80,13 @@ const search = async (startStop, endStop, uStartTime) => {
 
             i += 1
 
-            console.log(
-                `\nnow checking: ${route.stop.gtfsId} / ${route.stop.name} (${
-                    route.stop.code
-                }) - arrived with ${
-                    route.route ?? ''
-                } at ${route.arrived.toUTCString()}`
-            )
+            // console.log(
+            //     `\nnow checking: ${route.stop.gtfsId} / ${route.stop.name} (${
+            //         route.stop.code
+            //     }) - arrived with ${
+            //         route.route ?? ''
+            //     } at ${route.arrived.toUTCString()}`
+            // )
 
             const departures = await StopRepository.getNextDepartures(
                 route.stop.gtfsId,
@@ -111,13 +112,6 @@ const search = async (startStop, endStop, uStartTime) => {
                     ) {
                         return
                     }
-
-                    console.log(
-                        'departuretype for',
-                        departure.name,
-                        'is',
-                        departure.boardable
-                    )
 
                     const newRoute = new Route(
                         departure.nextStop,
