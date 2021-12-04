@@ -71,11 +71,13 @@ const search = async (startStop, endStop, uStartTime) => {
     queue.push(startRoute)
 
     let route = queue.pop()
-
+    let i = 0
     while (route.stop.gtfsId !== endStop.gtfsId) {
         if (visited.indexOf(`${route.stop.gtfsId}:${route.route}`) === -1) {
             // lisätään vierailtuihin
             visited = visited.concat([`${route.stop.gtfsId}:${route.route}`])
+
+            i += 1
 
             console.log(
                 `\nnow checking: ${route.stop.gtfsId} / ${route.stop.name} (${
@@ -91,13 +93,31 @@ const search = async (startStop, endStop, uStartTime) => {
             )
 
             departures.departures.forEach(async (departure) => {
-                // tarkastetaan, ettei ole linjan päätepysäkki
-                if (departure.nextStop !== null) {
+                // tarkastetaan, ettei ole linjan päätepysäkki tai pysäkiltä ei voi hypätä kyytiin
+                if (
+                    departure.nextStop !== null &&
+                    departure.boardable === true
+                ) {
                     const elapsed = departure.departuresAt - startTime
                     const takes =
                         departure.nextStop.arrivesAt - departure.departuresAt
                     const timeAfter =
                         elapsed + takes + heuristic(departure.nextStop, endStop)
+
+                    // prevent to change bus, if departure time is same as arrival time and route is different than current
+                    if (
+                        departure.departuresAt === route.arrived &&
+                        departure.name.split(' ')[0] !== route.route
+                    ) {
+                        return
+                    }
+
+                    console.log(
+                        'departuretype for',
+                        departure.name,
+                        'is',
+                        departure.boardable
+                    )
 
                     const newRoute = new Route(
                         departure.nextStop,
@@ -112,6 +132,10 @@ const search = async (startStop, endStop, uStartTime) => {
             })
         }
         if (queue.length === 0) {
+            break
+        }
+
+        if (i === 1000) {
             break
         }
 

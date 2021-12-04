@@ -1,5 +1,6 @@
 const { gql } = require('graphql-request')
 const api = require('@backend/graphql')
+const cache = require('@backend/redis')
 
 const { convertEpochToDate } = require('@backend/utils/helpers')
 const { convertDateToEpoch } = require('../utils/helpers')
@@ -35,6 +36,8 @@ const getStop = async (stopGtfsId) => {
         },
         locationType: result.stop.locationType,
     }
+
+    await cache.set(`stop:${stopGtfsId}`, JSON.stringify(stop))
 
     return stop
 }
@@ -82,6 +85,7 @@ const getNextDepartures = async (stopGtfsId, startTime) => {
                                     lon
                                     locationType
                                 }
+                                pickupType
                                 scheduledArrival
                                 realtimeArrival
                                 scheduledDeparture
@@ -96,7 +100,6 @@ const getNextDepartures = async (stopGtfsId, startTime) => {
     `
     const arrived = convertDateToEpoch(new Date(startTime))
 
-    // console.log('Lähtöaika: ', arrived)
     const results = await api.request(QUERY, {
         id: stopGtfsId,
         startTime: arrived,
@@ -118,11 +121,14 @@ const getNextDepartures = async (stopGtfsId, startTime) => {
         route.stoptimes.forEach((stoptime) => {
             let res = null
             let check = false
+            let boardable = true
             stoptime.trip.stoptimes.forEach((stop) => {
-                // console.log('loop Stop', stop)
                 if (res && check) return
                 if (stop.stop.gtfsId === stopGtfsId) {
                     check = true
+                    if (stop.pickupType === 'NONE') {
+                        boardable = false
+                    }
                     return
                 }
                 if (!res && check) {
@@ -170,6 +176,7 @@ const getNextDepartures = async (stopGtfsId, startTime) => {
                     stoptime.realtimeDeparture + stoptime.serviceDay
                 ),
                 nextStop: res,
+                boardable,
                 unixTimestamps: {
                     scheduledDeparture: stoptime.scheduledDeparture,
                     realtimeDeparture: stoptime.realtimeDeparture,
@@ -182,6 +189,11 @@ const getNextDepartures = async (stopGtfsId, startTime) => {
     departures.departures = departures.departures
         .filter((a) => Date.parse(a.departuresAt) >= Date.parse(startTime))
         .sort((a, b) => a.departuresAt - b.departuresAt)
+
+    cache.set(
+        `nextDepartures:${stopGtfsId}@${startTime.valueOf()}`,
+        JSON.stringify(departures)
+    )
 
     return departures
 }
