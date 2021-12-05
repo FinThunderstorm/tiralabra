@@ -5,14 +5,16 @@ ENV PUBLIC_URL=/
 WORKDIR /tiralabra
 
 
-COPY package.json package-lock.json /tiralabra/
+COPY package.json package-lock.json ./
+
 
 RUN npm ci
 
 EXPOSE 3000
 EXPOSE 3001
 
-COPY . /tiralabra/
+COPY . .
+
 
 CMD ["npm","run","start:dev"]
 
