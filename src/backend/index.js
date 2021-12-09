@@ -137,12 +137,6 @@ app.post('/performanceTest', async (req, res) => {
                 .catch((error) => res.status(218).send(error))
         })
         .catch((error) => res.status(218).send(error))
-
-    // if ('endOtp' !== undefined) {
-    //     res.status(418).end()
-    // }
-
-    // res.json({ otpRes, endOtp })
 })
 
 app.get('/testing', async (req, res) => {
