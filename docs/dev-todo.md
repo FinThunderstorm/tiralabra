@@ -28,18 +28,20 @@ uStartTime: 1638784800000
 HSL: 641 -> 574 (vain bussi, vältä kävelyä)
 
 ma 6.12.2021 klo 1200 ->
-startStop: HSL:9650105 (Kievari Tu6041)
-endStop: HSL:1240118 (Kumpulan kampus H3028)
-uStartTime: 1638784800000
-HSL: 641 -> 711 (vain bussi, vältä kävelyä)
-HOX! V6106 jälkeen HSL vaihtaa suoraan 711 pysäkiltä V6148 -> niin kauan kun algoritmi ei saa "STATION"-tyyppiselle pysäkkikokonaisuudelle kaikkien sen pysäkkien tietoja, ei ole relevantti.
-
-ma 6.12.2021 klo 1200 ->
 startStop: HSL:1402157 (Porvarintie H3340)
 endStop: HSL:1320295 (Vanha Hämeenkyläntie H1581)
 uStartTime: 1638784800000
 HSL: 73 -> 71 -> 57 -> 345N (vain bussi, vältä kävelyä)
 HOX! Testiä vastaava tulos muutettu vastaamaan HSL tietyiltä osin. Tietyiltä osin testi eroaa, koska HSL ei arvosta 2 minuutin vaihtoaikaa hakurissaan. Toisaalta myöskään niin kauan, kun ei perata olisiko viimeiseen linjaan voitu vaihtaa jo aikaisemmin, niin myöskään 57 -> 37 -> 345N ole väärin suhteessa mahdolliseen 57 -> 345N vaihtoon samalla perille saapumisajalla.
+
+---
+
+ma 6.12.2021 klo 1200 ->
+startStop: HSL:9650105 (Kievari Tu6041)
+endStop: HSL:1240118 (Kumpulan kampus H3028)
+uStartTime: 1638784800000
+HSL: 641 -> 711 (vain bussi, vältä kävelyä)
+HOX! V6106 jälkeen HSL vaihtaa suoraan 711 pysäkiltä V6148 -> niin kauan kun algoritmi ei saa "STATION"-tyyppiselle pysäkkikokonaisuudelle kaikkien sen pysäkkien tietoja, ei ole relevantti.
 
 ma 6.12.2021 klo 1200 ->
 startStop: HSL:1495151 (Kutteritie H4104)

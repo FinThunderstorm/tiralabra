@@ -15,6 +15,7 @@ services:
             - ./:/tiralabra
         depends_on:
             - cache
+            - otp
 
     cache:
         image: redis:latest

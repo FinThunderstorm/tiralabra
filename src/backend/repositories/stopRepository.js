@@ -1,5 +1,5 @@
 const { gql } = require('graphql-request')
-const api = require('@backend/graphql')
+const { api } = require('@backend/graphql')
 const cache = require('@backend/redis')
 
 const { convertEpochToDate } = require('@backend/utils/helpers')
@@ -37,7 +37,7 @@ const getStop = async (stopGtfsId) => {
         locationType: result.stop.locationType,
     }
 
-    await cache.set(`stop:${stopGtfsId}`, JSON.stringify(stop))
+    // await cache.set(`stop:${stopGtfsId}`, JSON.stringify(stop))
 
     return stop
 }
@@ -99,6 +99,8 @@ const getNextDepartures = async (stopGtfsId, startTime) => {
         }
     `
     const arrived = convertDateToEpoch(new Date(startTime))
+
+    // const arrived = startTime // this shall be already in epoch
 
     const results = await api.request(QUERY, {
         id: stopGtfsId,
@@ -180,6 +182,8 @@ const getNextDepartures = async (stopGtfsId, startTime) => {
                 unixTimestamps: {
                     scheduledDeparture: stoptime.scheduledDeparture,
                     realtimeDeparture: stoptime.realtimeDeparture,
+                    // scheduledArrival: stoptime.scheduledArrival,
+                    // realtimeArrival: stoptime.realtimeArrival,
                     serviceDay: stoptime.serviceDay,
                 },
             }
@@ -188,10 +192,11 @@ const getNextDepartures = async (stopGtfsId, startTime) => {
     })
     departures.departures = departures.departures
         .filter((a) => Date.parse(a.departuresAt) >= Date.parse(startTime))
+        // .filter((a) => a.departuresAt >= startTime)
         .sort((a, b) => a.departuresAt - b.departuresAt)
 
     cache.set(
-        `nextDepartures:${stopGtfsId}@${startTime.valueOf()}`,
+        `nextDepartures:${stopGtfsId}@${arrived}`,
         JSON.stringify(departures)
     )
 

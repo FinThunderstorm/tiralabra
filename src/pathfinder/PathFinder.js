@@ -70,7 +70,7 @@ const heuristic = (startStop, endStop) => {
  */
 const search = async (startStop, endStop, uStartTime) => {
     // console.log('is Pathfinder activated?')
-    console.log('startAttrs:', startStop, endStop, uStartTime)
+    // console.log('startAttrs:', startStop, endStop, uStartTime)
 
     const queue = new PriorityQueue()
     let visited = []
@@ -82,8 +82,8 @@ const search = async (startStop, endStop, uStartTime) => {
     const startRoute = new Route(from, 0, startTime)
     queue.push(startRoute)
 
+    // let i = 0
     let route = queue.pop()
-
     while (route.stop.gtfsId !== endStop.gtfsId) {
         if (visited.indexOf(`${route.stop.gtfsId}:${route.route}`) === -1) {
             // lisätään vierailtuihin
@@ -101,7 +101,7 @@ const search = async (startStop, endStop, uStartTime) => {
                 route.stop.gtfsId,
                 route.arrived
             )
-
+            // if (i < 250) {
             departures.departures.forEach(async (departure) => {
                 // tarkastetaan, ettei ole linjan päätepysäkki tai pysäkiltä ei voi hypätä kyytiin
                 if (
@@ -133,10 +133,12 @@ const search = async (startStop, endStop, uStartTime) => {
                     queue.push(newRoute)
                 }
             })
+            // }
         }
         if (queue.length === 0) {
             break
         }
+        // i += 1
 
         route = queue.pop()
     }

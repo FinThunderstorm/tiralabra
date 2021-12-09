@@ -1,5 +1,5 @@
 const convertEpochToDate = (epoch) => new Date(epoch * 1000)
-const convertDateToEpoch = (date) => date.valueOf() / 1000
+const convertDateToEpoch = (date) => Math.floor(date.valueOf() / 1000)
 
 const speeds = {
     tram: 14,

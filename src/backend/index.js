@@ -9,6 +9,8 @@ const cache = require('@backend/redis')
 const StopRepository = require('@repositories/stopRepository')
 
 const PathFinder = require('@pathfinder/PathFinder')
+const PerformanceTest = require('@pathfinder/performanceTest')
+const { api, apiHealth } = require('./graphql')
 
 // const Route = require('../datastructures/Route')
 
@@ -17,8 +19,15 @@ const PathFinder = require('@pathfinder/PathFinder')
 app.use(cors())
 app.use(express.json())
 
-app.get('/health', (req, res) => {
-    res.send('<h1>Health check ok!</h1>')
+app.get('/health', async (req, res) => {
+    try {
+        const apiStatus = await apiHealth()
+        const redisStatus = await cache.test()
+        res.status(200).send('<h1>Health check ok!</h1>')
+    } catch (error) {
+        console.log('Error:', error)
+        res.status(503).end()
+    }
 })
 
 app.post('/search', async (req, res) => {
@@ -82,6 +91,58 @@ app.post('/travelTime', async (req, res) => {
         endStop,
         timeAfter,
     })
+})
+
+app.post('/performanceTest', async (req, res) => {
+    const attributes = req.body
+    console.log(attributes)
+    const startStop = await StopRepository.getStop(attributes.startStop)
+    const endStop = await StopRepository.getStop(attributes.endStop)
+    const startTime = new Date(Date.parse(attributes.startTime))
+
+    const otpStart = performance.now()
+    PerformanceTest.runOTP(startStop, endStop, startTime)
+        .then((otpResult) => {
+            const otpEnd = performance.now()
+            const pfStart = performance.now()
+            PerformanceTest.runPathFinder(startStop, endStop, startTime)
+                .then((pfResult) => {
+                    const pfEnd = performance.now()
+                    const otpTook = (otpEnd - otpStart) / 1000
+                    const pfTook = (pfEnd - pfStart) / 1000
+                    const percentage = ((pfTook - otpTook) / pfTook) * 100
+                    const difference = pfTook - otpTook
+
+                    res.json({
+                        results: {
+                            otp: otpResult,
+                            pathfinder: pfResult,
+                        },
+                        took: {
+                            otp: otpTook,
+                            pathfinder: pfTook,
+                            resultText: `OTP took ${otpTook.toFixed(
+                                3
+                            )} seconds and PathFinder took ${pfTook.toFixed(
+                                3
+                            )} seconds`,
+                            comparation: `PathFinder was ${percentage.toFixed(
+                                3
+                            )}% slower than optimized OpenTripPlanner\n -> Time difference was ${difference.toFixed(
+                                3
+                            )} seconds.`,
+                        },
+                    })
+                })
+                .catch((error) => res.status(218).send(error))
+        })
+        .catch((error) => res.status(218).send(error))
+
+    // if ('endOtp' !== undefined) {
+    //     res.status(418).end()
+    // }
+
+    // res.json({ otpRes, endOtp })
 })
 
 app.get('/testing', async (req, res) => {
