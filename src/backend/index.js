@@ -139,6 +139,12 @@ app.post('/performanceTest', async (req, res) => {
         .catch((error) => res.status(218).send(error))
 })
 
+app.get('/flushall', async (req, res) => {
+    const result = await cache.client.sendCommand(['FLUSHALL'])
+    console.log('result of flushall', result)
+    res.status(218).end()
+})
+
 app.get('/testing', async (req, res) => {
     const keys = await cache.getAllKeys()
     console.log('Keys in cache:', keys.length)

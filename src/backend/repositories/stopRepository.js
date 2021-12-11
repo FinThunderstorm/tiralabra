@@ -37,7 +37,7 @@ const getStop = async (stopGtfsId) => {
         locationType: result.stop.locationType,
     }
 
-    // await cache.set(`stop:${stopGtfsId}`, JSON.stringify(stop))
+    await cache.set(`stop:${stopGtfsId}`, JSON.stringify(stop))
 
     return stop
 }

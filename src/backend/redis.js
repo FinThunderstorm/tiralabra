@@ -54,4 +54,5 @@ module.exports = {
     getValid,
     getAllKeys,
     getAllValues,
+    client,
 }

@@ -82,8 +82,8 @@ const search = async (startStop, endStop, uStartTime) => {
     const startRoute = new Route(from, 0, startTime)
     queue.push(startRoute)
 
-    // let i = 0
     let route = queue.pop()
+    let routesCount = 0
     while (route.stop.gtfsId !== endStop.gtfsId) {
         if (visited.indexOf(`${route.stop.gtfsId}:${route.route}`) === -1) {
             // lisätään vierailtuihin
@@ -101,49 +101,65 @@ const search = async (startStop, endStop, uStartTime) => {
                 route.stop.gtfsId,
                 route.arrived
             )
-            // if (i < 250) {
-            departures.departures.forEach(async (departure) => {
-                // tarkastetaan, ettei ole linjan päätepysäkki tai pysäkiltä ei voi hypätä kyytiin
-                if (
-                    departure.nextStop !== null &&
-                    departure.boardable === true
-                ) {
-                    const elapsed = departure.departuresAt - startTime
-                    const takes =
-                        departure.nextStop.arrivesAt - departure.departuresAt
-                    const timeAfter =
-                        elapsed + takes + heuristic(departure.nextStop, endStop)
 
-                    // prevent to change bus, if departure time is same as arrival time and route is different than current
-                    if (
-                        departure.departuresAt === route.arrived &&
-                        departure.name.split(' ')[0] !== route.route
-                    ) {
-                        return
-                    }
+            if (departures !== undefined) {
+                if (routesCount < 4) {
+                    departures.departures.forEach(async (departure) => {
+                        // tarkastetaan, ettei ole linjan päätepysäkki tai pysäkiltä ei voi hypätä kyytiin
+                        if (
+                            departure.nextStop !== null &&
+                            departure.boardable === true
+                        ) {
+                            const elapsed = departure.departuresAt - startTime
+                            const takes =
+                                departure.nextStop.arrivesAt -
+                                departure.departuresAt
+                            const timeAfter =
+                                elapsed +
+                                takes +
+                                heuristic(departure.nextStop, endStop)
 
-                    const newRoute = new Route(
-                        departure.nextStop,
-                        timeAfter,
-                        departure.nextStop.arrivesAt,
-                        departure.name.split(' ')[0],
-                        route
-                    )
+                            // prevent to change bus, if departure time is same as arrival time and route is different than current
+                            if (
+                                departure.departuresAt.valueOf() ===
+                                    route.arrived.valueOf() &&
+                                departure.name.split(' ')[0] !== route.route
+                            ) {
+                                return
+                            }
 
-                    queue.push(newRoute)
+                            const newRoute = new Route(
+                                departure.nextStop,
+                                timeAfter,
+                                departure.nextStop.arrivesAt,
+                                departure.name.split(' ')[0],
+                                route
+                            )
+
+                            queue.push(newRoute)
+                        }
+                    })
                 }
-            })
-            // }
+            }
         }
+
         if (queue.length === 0) {
+            console.log('Jaahas')
             break
         }
-        // i += 1
+
+        if (route.stop.gtfsId === endStop.gtfsId) {
+            console.log('Route found, total now', routesCount + 1)
+            routesCount += 1
+        }
+        if (routesCount === 3) {
+            break
+        }
 
         route = queue.pop()
     }
     console.log(
-        `Route search from ${startStop.code} to ${endStop.code} is ready`
+        `Route search from ${startStop.code} to ${endStop.code} is ready (${startStop.code} -> ${endStop.code})`
     )
 
     return route
