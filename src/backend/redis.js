@@ -14,7 +14,6 @@ const test = async () => {
 
 const check = async (key) => {
     const expired = await client.ttl(key)
-    console.log(`key ${key} valid for ${expired}`)
     return expired > 0
 }
 

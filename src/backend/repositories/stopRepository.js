@@ -206,7 +206,6 @@ const getNextDepartures = async (stopGtfsId, startTime) => {
     })
     departures.departures = departures.departures
         .filter((a) => Date.parse(a.departuresAt) >= Date.parse(startTime))
-        // .filter((a) => a.departuresAt >= startTime)
         .sort((a, b) => a.departuresAt - b.departuresAt)
 
     cache.set(

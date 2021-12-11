@@ -193,4 +193,32 @@ describe('PathFinder', () => {
 
         expect(resultCase4.toJSONForTests()).toStrictEqual(case4)
     })
+
+    test('search returns null when no routes between', async () => {
+        const startStop = {
+            name: 'Kievari',
+            code: 'Tu6041',
+            gtfsId: 'HSL:9650105',
+            coordinates: { latitude: 60.398721, longitude: 25.02284 },
+            locationType: 'STOP',
+        }
+        const endStop = {
+            name: 'Upinniemen koulu',
+            code: 'Ki1006',
+            gtfsId: 'HSL:6100206',
+            coordinates: {
+                latitude: 60.032892,
+                longitude: 24.366045,
+            },
+            locationType: 'STOP',
+        }
+        const startTime = 1639566000000
+        const resultCase5 = await PathFinder.search(
+            startStop,
+            endStop,
+            startTime
+        )
+
+        expect(resultCase5).toBe(undefined)
+    })
 })

@@ -10,7 +10,7 @@ const StopRepository = require('@repositories/stopRepository')
 
 const PathFinder = require('@pathfinder/PathFinder')
 const PerformanceTest = require('@backend/performanceTest')
-const { api, apiHealth } = require('./graphql')
+const { apiHealth } = require('./graphql')
 
 // const Route = require('../datastructures/Route')
 
@@ -23,7 +23,9 @@ app.get('/health', async (req, res) => {
     try {
         const apiStatus = await apiHealth()
         const redisStatus = await cache.test()
-        res.status(200).send('<h1>Health check ok!</h1>')
+        res.status(200).send(
+            `<h1>Health check ok! API: ${apiStatus} CACHE: ${redisStatus}</h1>`
+        )
     } catch (error) {
         console.log('Error:', error)
         res.status(503).end()
@@ -108,7 +110,7 @@ app.post('/performanceTest', async (req, res) => {
             const otpEnd = performance.now()
             const uncachedPfStart = performance.now()
             PerformanceTest.runPathFinder(startStop, endStop, startTime)
-                .then((uncachedResult) => {
+                .then(() => {
                     const uncachedPfEnd = performance.now()
                     const pfStart = performance.now()
                     PerformanceTest.runPathFinder(startStop, endStop, startTime)

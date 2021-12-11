@@ -49,6 +49,8 @@ const runOTP = async (from, to, startTime) => {
         fromLon: from.coordinates.longitude,
         toLat: to.coordinates.latitude,
         toLon: to.coordinates.longitude,
+        date,
+        time,
     }
 
     const result = await api.request(QUERY, values)

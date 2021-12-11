@@ -4,10 +4,9 @@
 
 ![Github Actions](https://github.com/FinThunderstorm/tiralabra/workflows/Build&Test/badge.svg) [![codecov](https://codecov.io/gh/FinThunderstorm/tiralabra/branch/master/graph/badge.svg?token=agzbQdgG0v)](https://codecov.io/gh/FinThunderstorm/tiralabra)
 
-Testikattavuus viikolla 5 ajettaessa OTP-instanssia vasten tajuttuani selvitellessäni StopRepositoryn korkeaa testikattavuutta. Samalla huomasin Mockin kellonaikojen olevan pielessä ainakin osalla pysäkeistä 36 sekunttia.
-![TK VK5](./media/vk5-testikattavuus-ilman-mock-ja-ajamalla-otp-vasten.png)
+![Viikon 6 testikattavuus](./media/vk6-testikattavuus.png)
 
-Yksikkötestauksessa tullaan huomioimaan taustapalvelimen (backend), tietorakenteiden ja reitinhakualgoritmin toiminta. Yksikkötestauskattavuuden ulkopuolelle jätetään käyttöliittymän koodi.
+Yksikkötestauksessa tullaan huomioimaan tietorakenteiden ja reitinhakualgoritmin toiminta. Yksikkötestauskattavuuden ulkopuolelle jätetään käyttöliittymän koodi. API:sta haettavan tiedon osalta yksikkötestausta tullaan suorittamaan ainoastaan itse tehdylle muuntamiselle API:n omasta muodosta algoritmin käyttämään muotoon.
 
 ## Tekninen toteutus
 
@@ -81,7 +80,7 @@ took: {
     -   Suoritetaan Jestin avulla.
     -   Testataan sekä haversine-funktion toteuttava `distanceBetweenTwoPoints` että heuristiikan laskeva funktio `heuristic`, että palauttavat oikeat arvot.
     -   Reitinhaku testataan suorittamalla reitinhaku muutaman eri reittipisteen välillä sekä vertailemalla niitä HSL:n käyttämän OpenTripPlannerin laskemiin reitteihin A\*-algoritmillä asetuksin `vain bussit, vältä kävelyä`- tuloksiin. Täten saatavat reitit vastaavat toteuttamani algoritmin saamia suurin piirtein. Nämä tulokset ovat silti tarkastettu manuaalisesti, ja tehty tarvittavia muutoksia johtuen toteutukseni rajoituksista siirtyä muille lähipysäkeille esimerkiksi Tikkurilan matkakeskuksen kokonaisuudessa tai muille rajoitteille, jotka johtuvat OTP:n ja toteuttamani haun eroavaisuuksista.
-    -   Huomioitavaa, että `PathFinderin` kutsuma `StopRepository` on toteutettu mock-oliona, joka palauttaa kovakoodattuja arvoja, jotka ovat haettu ajamalla jokaista tarkasteluväliä kolmen eri reitin tarkastelun verran ja tallentamalla nämä StopRepositoryä kohden tehdyt kutsut välimuistiin, ja tekemällä kovakoodatun testidumpin sen pohjalta. Täten kovakoodattu testidumppi pysyy järkevänä.
+    -   Huomioitavaa, että `PathFinderin` kutsuma `StopRepository` on toteutettu mock-oliona, joka palauttaa kovakoodattuja arvoja, jotka ovat haettu ajamalla jokaista tarkasteluväliä kolmen eri reitin tarkastelun verran ja tallentamalla nämä StopRepositoryä kohden tehdyt kutsut välimuistiin, ja tekemällä kovakoodatun testidumpin sen pohjalta. Täten kovakoodattu testidumppi pysyy järkevänä. Kovakoodatun datan lähde on HSL ja © Helsinki Region Transport 2021 käyttöoikeudella [CC BY 4.0 International](Creative Commons BY 4.0 International).
     -   Testausta ei voi suorittaa todellista OTP-instanssia vasten, sillä se ei osaa hakea yli päivän menneisyydessä oleville kellonajoille lähtötietoja.
     -   Testattavat pysäkkivälit ovat:
         -   HSL:4620205 (Urheilutie V6205) ja HSL:1240118 (Kumpulan kampus H3028) lähtöajalla 15.12.2021 klo 1215
