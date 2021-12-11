@@ -65,17 +65,14 @@ const heuristic = (startStop, endStop) => {
  *
  * @param {*} startStop lähtöpysäkki
  * @param {*} endStop kohdepysäkki
- * @param {*} uStartTime vapaaehtoinen, käyttäjän spesifioima lähtöaika
+ * @param {*} uStartTime käyttäjän spesifioima lähtöaika
  * @returns {Route} suositeltu reitti Route-oliona.
  */
 const search = async (startStop, endStop, uStartTime) => {
-    // console.log('is Pathfinder activated?')
-    console.log('startAttrs:', startStop, endStop, uStartTime)
-
     const queue = new PriorityQueue()
     let visited = []
 
-    const startTime = new Date(uStartTime) ?? new Date()
+    const startTime = new Date(uStartTime)
     const from = startStop
     from.arrivesAt = startTime
 
@@ -83,65 +80,62 @@ const search = async (startStop, endStop, uStartTime) => {
     queue.push(startRoute)
 
     let route = queue.pop()
-
     while (route.stop.gtfsId !== endStop.gtfsId) {
         if (visited.indexOf(`${route.stop.gtfsId}:${route.route}`) === -1) {
-            // lisätään vierailtuihin
             visited = visited.concat([`${route.stop.gtfsId}:${route.route}`])
-
-            // console.log(
-            //     `\nnow checking: ${route.stop.gtfsId} / ${route.stop.name} (${
-            //         route.stop.code
-            //     }) - arrived with ${
-            //         route.route ?? ''
-            //     } at ${route.arrived.toUTCString()}`
-            // )
 
             const departures = await StopRepository.getNextDepartures(
                 route.stop.gtfsId,
                 route.arrived
             )
 
-            departures.departures.forEach(async (departure) => {
-                // tarkastetaan, ettei ole linjan päätepysäkki tai pysäkiltä ei voi hypätä kyytiin
-                if (
-                    departure.nextStop !== null &&
-                    departure.boardable === true
-                ) {
-                    const elapsed = departure.departuresAt - startTime
-                    const takes =
-                        departure.nextStop.arrivesAt - departure.departuresAt
-                    const timeAfter =
-                        elapsed + takes + heuristic(departure.nextStop, endStop)
-
-                    // prevent to change bus, if departure time is same as arrival time and route is different than current
+            if (departures !== undefined) {
+                departures.departures.forEach(async (departure) => {
+                    // tarkastetaan, ettei ole linjan päätepysäkki tai pysäkiltä ei voi hypätä kyytiin
                     if (
-                        departure.departuresAt === route.arrived &&
-                        departure.name.split(' ')[0] !== route.route
+                        departure.nextStop !== null &&
+                        departure.boardable === true
                     ) {
-                        return
+                        const elapsed = departure.departuresAt - startTime
+                        const takes =
+                            departure.nextStop.arrivesAt -
+                            departure.departuresAt
+                        const timeAfter =
+                            elapsed +
+                            takes +
+                            heuristic(departure.nextStop, endStop)
+
+                        // prevent to change bus, if departure time is same as arrival time and route is different than current
+                        if (
+                            departure.departuresAt.valueOf() ===
+                                route.arrived.valueOf() &&
+                            departure.name.split(' ')[0] !== route.route
+                        ) {
+                            return
+                        }
+
+                        const newRoute = new Route(
+                            departure.nextStop,
+                            timeAfter,
+                            departure.nextStop.arrivesAt,
+                            departure.name.split(' ')[0],
+                            route
+                        )
+
+                        queue.push(newRoute)
                     }
-
-                    const newRoute = new Route(
-                        departure.nextStop,
-                        timeAfter,
-                        departure.nextStop.arrivesAt,
-                        departure.name.split(' ')[0],
-                        route
-                    )
-
-                    queue.push(newRoute)
-                }
-            })
+                })
+            }
         }
+
         if (queue.length === 0) {
-            break
+            return undefined
         }
 
         route = queue.pop()
     }
     console.log(
-        `Route search from ${startStop.code} to ${endStop.code} is ready`
+        `Route search from ${startStop.code} to ${endStop.code} is ready (${startStop.code} -> ${endStop.code})`
     )
 
     return route

@@ -1,0 +1,380 @@
+{
+    "to": {
+        "name": "Munkkivuoren ostosk.",
+        "code": "H1432",
+        "gtfsId": "HSL:1304161",
+        "coordinates": { "latitude": 60.20542, "longitude": 24.87725 },
+        "locationType": "STOP",
+        "arrivesAt": "2021-12-15T11:40:00.000Z",
+        "realtimeArrivesAt": "2021-12-15T11:40:00.000Z",
+        "departuresAt": "2021-12-15T11:40:00.000Z",
+        "realtimeDeparturesAt": "2021-12-15T11:40:00.000Z",
+        "serviceDay": "2021-12-14T22:00:00.000Z"
+    },
+    "from": {
+        "name": "Herttoniemi (M)",
+        "code": "H4006",
+        "gtfsId": "HSL:1431187",
+        "coordinates": { "latitude": 60.19387, "longitude": 25.029568 },
+        "locationType": "STOP",
+        "arrivesAt": "2021-12-15T11:00:00.000Z"
+    },
+    "arrived": "2021-12-15T11:40:00.000Z",
+    "startTime": "2021-12-15T11:00:00.000Z",
+    "travelTime": 2400000,
+    "via": [
+        {
+            "stop": {
+                "name": "Munkkivuoren ostosk.",
+                "code": "H1432",
+                "gtfsId": "HSL:1304161",
+                "coordinates": { "latitude": 60.20542, "longitude": 24.87725 },
+                "locationType": "STOP",
+                "arrivesAt": "2021-12-15T11:40:00.000Z",
+                "realtimeArrivesAt": "2021-12-15T11:40:00.000Z",
+                "departuresAt": "2021-12-15T11:40:00.000Z",
+                "realtimeDeparturesAt": "2021-12-15T11:40:00.000Z",
+                "serviceDay": "2021-12-14T22:00:00.000Z"
+            },
+            "route": "500",
+            "travelTime": 2400000
+        },
+        {
+            "stop": {
+                "name": "Ulvilantie 11",
+                "code": "H1418",
+                "gtfsId": "HSL:1304159",
+                "coordinates": {
+                    "latitude": 60.203789,
+                    "longitude": 24.874112
+                },
+                "locationType": "STOP",
+                "arrivesAt": "2021-12-15T11:38:00.000Z",
+                "realtimeArrivesAt": "2021-12-15T11:38:00.000Z",
+                "departuresAt": "2021-12-15T11:38:00.000Z",
+                "realtimeDeparturesAt": "2021-12-15T11:38:00.000Z",
+                "serviceDay": "2021-12-14T22:00:00.000Z"
+            },
+            "route": "500",
+            "travelTime": 2325134.5343503086
+        },
+        {
+            "stop": {
+                "name": "Professorintie",
+                "code": "H1403",
+                "gtfsId": "HSL:1301146",
+                "coordinates": {
+                    "latitude": 60.201122,
+                    "longitude": 24.875988
+                },
+                "locationType": "STOP",
+                "arrivesAt": "2021-12-15T11:36:00.000Z",
+                "realtimeArrivesAt": "2021-12-15T11:36:00.000Z",
+                "departuresAt": "2021-12-15T11:36:00.000Z",
+                "realtimeDeparturesAt": "2021-12-15T11:36:00.000Z",
+                "serviceDay": "2021-12-14T22:00:00.000Z"
+            },
+            "route": "500",
+            "travelTime": 2246881.153568672
+        },
+        {
+            "stop": {
+                "name": "Laajalahden aukio",
+                "code": "H1401",
+                "gtfsId": "HSL:1301147",
+                "coordinates": {
+                    "latitude": 60.198302,
+                    "longitude": 24.876747
+                },
+                "locationType": "STOP",
+                "arrivesAt": "2021-12-15T11:34:00.000Z",
+                "realtimeArrivesAt": "2021-12-15T11:34:00.000Z",
+                "departuresAt": "2021-12-15T11:34:00.000Z",
+                "realtimeDeparturesAt": "2021-12-15T11:34:00.000Z",
+                "serviceDay": "2021-12-14T22:00:00.000Z"
+            },
+            "route": "500",
+            "travelTime": 2182465.7044834974
+        },
+        {
+            "stop": {
+                "name": "Munkkin. puistotie",
+                "code": "H1399",
+                "gtfsId": "HSL:1301148",
+                "coordinates": { "latitude": 60.197065, "longitude": 24.88267 },
+                "locationType": "STOP",
+                "arrivesAt": "2021-12-15T11:33:00.000Z",
+                "realtimeArrivesAt": "2021-12-15T11:33:00.000Z",
+                "departuresAt": "2021-12-15T11:33:00.000Z",
+                "realtimeDeparturesAt": "2021-12-15T11:33:00.000Z",
+                "serviceDay": "2021-12-14T22:00:00.000Z"
+            },
+            "route": "500",
+            "travelTime": 2155590.8586879475
+        },
+        {
+            "stop": {
+                "name": "Meilahdentie",
+                "code": "H1385",
+                "gtfsId": "HSL:1150111",
+                "coordinates": { "latitude": 60.19352, "longitude": 24.89467 },
+                "locationType": "STOP",
+                "arrivesAt": "2021-12-15T11:31:00.000Z",
+                "realtimeArrivesAt": "2021-12-15T11:31:00.000Z",
+                "departuresAt": "2021-12-15T11:31:00.000Z",
+                "realtimeDeparturesAt": "2021-12-15T11:31:00.000Z",
+                "serviceDay": "2021-12-14T22:00:00.000Z"
+            },
+            "route": "500",
+            "travelTime": 2154357.3418969284
+        },
+        {
+            "stop": {
+                "name": "Meilahden sairaala",
+                "code": "H1381",
+                "gtfsId": "HSL:1150116",
+                "coordinates": {
+                    "latitude": 60.191346,
+                    "longitude": 24.906254
+                },
+                "locationType": "STOP",
+                "arrivesAt": "2021-12-15T11:29:00.000Z",
+                "realtimeArrivesAt": "2021-12-15T11:29:00.000Z",
+                "departuresAt": "2021-12-15T11:29:00.000Z",
+                "realtimeDeparturesAt": "2021-12-15T11:29:00.000Z",
+                "serviceDay": "2021-12-14T22:00:00.000Z"
+            },
+            "route": "500",
+            "travelTime": 2142974.1173886904
+        },
+        {
+            "stop": {
+                "name": "Töölön tulli",
+                "code": "H1379",
+                "gtfsId": "HSL:1150133",
+                "coordinates": { "latitude": 60.1913, "longitude": 24.91195 },
+                "locationType": "STOP",
+                "arrivesAt": "2021-12-15T11:28:00.000Z",
+                "realtimeArrivesAt": "2021-12-15T11:28:00.000Z",
+                "departuresAt": "2021-12-15T11:28:00.000Z",
+                "realtimeDeparturesAt": "2021-12-15T11:28:00.000Z",
+                "serviceDay": "2021-12-14T22:00:00.000Z"
+            },
+            "route": "500",
+            "travelTime": 2125833.70381268
+        },
+        {
+            "stop": {
+                "name": "Auroran sairaala",
+                "code": "H2072",
+                "gtfsId": "HSL:1180121",
+                "coordinates": { "latitude": 60.19123, "longitude": 24.92366 },
+                "locationType": "STOP",
+                "arrivesAt": "2021-12-15T11:25:00.000Z",
+                "realtimeArrivesAt": "2021-12-15T11:25:00.000Z",
+                "departuresAt": "2021-12-15T11:25:00.000Z",
+                "realtimeDeparturesAt": "2021-12-15T11:25:00.000Z",
+                "serviceDay": "2021-12-14T22:00:00.000Z"
+            },
+            "route": "500",
+            "travelTime": 2041689.6587387167
+        },
+        {
+            "stop": {
+                "name": "Palkkatilanportti",
+                "code": "H2106",
+                "gtfsId": "HSL:1171153",
+                "coordinates": {
+                    "latitude": 60.197063,
+                    "longitude": 24.928488
+                },
+                "locationType": "STOP",
+                "arrivesAt": "2021-12-15T11:22:00.000Z",
+                "realtimeArrivesAt": "2021-12-15T11:22:00.000Z",
+                "departuresAt": "2021-12-15T11:22:00.000Z",
+                "realtimeDeparturesAt": "2021-12-15T11:22:00.000Z",
+                "serviceDay": "2021-12-14T22:00:00.000Z"
+            },
+            "route": "500",
+            "travelTime": 1856053.807497141
+        },
+        {
+            "stop": {
+                "name": "Pasilan asema",
+                "code": "H2101",
+                "gtfsId": "HSL:1174147",
+                "coordinates": { "latitude": 60.1981, "longitude": 24.93365 },
+                "locationType": "STOP",
+                "arrivesAt": "2021-12-15T11:19:00.000Z",
+                "realtimeArrivesAt": "2021-12-15T11:19:00.000Z",
+                "departuresAt": "2021-12-15T11:21:00.000Z",
+                "realtimeDeparturesAt": "2021-12-15T11:21:00.000Z",
+                "serviceDay": "2021-12-14T22:00:00.000Z"
+            },
+            "route": "500",
+            "travelTime": 1719431.7894025734
+        },
+        {
+            "stop": {
+                "name": "Sipoonkatu",
+                "code": "H2131",
+                "gtfsId": "HSL:1220125",
+                "coordinates": {
+                    "latitude": 60.194439,
+                    "longitude": 24.940817
+                },
+                "locationType": "STOP",
+                "arrivesAt": "2021-12-15T11:17:00.000Z",
+                "realtimeArrivesAt": "2021-12-15T11:17:00.000Z",
+                "departuresAt": "2021-12-15T11:17:00.000Z",
+                "realtimeDeparturesAt": "2021-12-15T11:17:00.000Z",
+                "serviceDay": "2021-12-14T22:00:00.000Z"
+            },
+            "route": "500",
+            "travelTime": 1688989.9419115097
+        },
+        {
+            "stop": {
+                "name": "Sturenkatu",
+                "code": "H0655",
+                "gtfsId": "HSL:1220109",
+                "coordinates": {
+                    "latitude": 60.191078,
+                    "longitude": 24.948312
+                },
+                "locationType": "STOP",
+                "arrivesAt": "2021-12-15T11:15:00.000Z",
+                "realtimeArrivesAt": "2021-12-15T11:15:00.000Z",
+                "departuresAt": "2021-12-15T11:15:00.000Z",
+                "realtimeDeparturesAt": "2021-12-15T11:15:00.000Z",
+                "serviceDay": "2021-12-14T22:00:00.000Z"
+            },
+            "route": "500",
+            "travelTime": 1662472.144027802
+        },
+        {
+            "stop": {
+                "name": "Fleminginkatu",
+                "code": "H0653",
+                "gtfsId": "HSL:1220107",
+                "coordinates": { "latitude": 60.18983, "longitude": 24.9519 },
+                "locationType": "STOP",
+                "arrivesAt": "2021-12-15T11:14:00.000Z",
+                "realtimeArrivesAt": "2021-12-15T11:14:00.000Z",
+                "departuresAt": "2021-12-15T11:14:00.000Z",
+                "realtimeDeparturesAt": "2021-12-15T11:14:00.000Z",
+                "serviceDay": "2021-12-14T22:00:00.000Z"
+            },
+            "route": "500",
+            "travelTime": 1644984.228205455
+        },
+        {
+            "stop": {
+                "name": "Junatie",
+                "code": "H2159",
+                "gtfsId": "HSL:1220118",
+                "coordinates": { "latitude": 60.1895, "longitude": 24.96051 },
+                "locationType": "STOP",
+                "arrivesAt": "2021-12-15T11:12:00.000Z",
+                "realtimeArrivesAt": "2021-12-15T11:12:00.000Z",
+                "departuresAt": "2021-12-15T11:12:00.000Z",
+                "realtimeDeparturesAt": "2021-12-15T11:12:00.000Z",
+                "serviceDay": "2021-12-14T22:00:00.000Z"
+            },
+            "route": "500",
+            "travelTime": 1606870.8651774882
+        },
+        {
+            "stop": {
+                "name": "Tynnyrintekijänkatu",
+                "code": "H2551",
+                "gtfsId": "HSL:1100159",
+                "coordinates": { "latitude": 60.18875, "longitude": 24.96923 },
+                "locationType": "STOP",
+                "arrivesAt": "2021-12-15T11:11:00.000Z",
+                "realtimeArrivesAt": "2021-12-15T11:11:00.000Z",
+                "departuresAt": "2021-12-15T11:11:00.000Z",
+                "realtimeDeparturesAt": "2021-12-15T11:11:00.000Z",
+                "serviceDay": "2021-12-14T22:00:00.000Z"
+            },
+            "route": "500",
+            "travelTime": 1633326.8340313032
+        },
+        {
+            "stop": {
+                "name": "Kalasatama (M)",
+                "code": "H2553",
+                "gtfsId": "HSL:1100110",
+                "coordinates": { "latitude": 60.18691, "longitude": 24.980621 },
+                "locationType": "STOP",
+                "arrivesAt": "2021-12-15T11:10:00.000Z",
+                "realtimeArrivesAt": "2021-12-15T11:10:00.000Z",
+                "departuresAt": "2021-12-15T11:10:00.000Z",
+                "realtimeDeparturesAt": "2021-12-15T11:10:00.000Z",
+                "serviceDay": "2021-12-14T22:00:00.000Z"
+            },
+            "route": "500",
+            "travelTime": 1692362.9070008548
+        },
+        {
+            "stop": {
+                "name": "Kulosaari",
+                "code": "H4000",
+                "gtfsId": "HSL:1420116",
+                "coordinates": { "latitude": 60.18756, "longitude": 25.00164 },
+                "locationType": "STOP",
+                "arrivesAt": "2021-12-15T11:08:00.000Z",
+                "realtimeArrivesAt": "2021-12-15T11:08:00.000Z",
+                "departuresAt": "2021-12-15T11:08:00.000Z",
+                "realtimeDeparturesAt": "2021-12-15T11:08:00.000Z",
+                "serviceDay": "2021-12-14T22:00:00.000Z"
+            },
+            "route": "500",
+            "travelTime": 1767226.13415737
+        },
+        {
+            "stop": {
+                "name": "Tupasaari",
+                "code": "H4002",
+                "gtfsId": "HSL:1420118",
+                "coordinates": { "latitude": 60.18896, "longitude": 25.01072 },
+                "locationType": "STOP",
+                "arrivesAt": "2021-12-15T11:07:00.000Z",
+                "realtimeArrivesAt": "2021-12-15T11:07:00.000Z",
+                "departuresAt": "2021-12-15T11:07:00.000Z",
+                "realtimeDeparturesAt": "2021-12-15T11:07:00.000Z",
+                "serviceDay": "2021-12-14T22:00:00.000Z"
+            },
+            "route": "500",
+            "travelTime": 1787139.7334502263
+        },
+        {
+            "stop": {
+                "name": "Kipparlahti",
+                "code": "H4004",
+                "gtfsId": "HSL:1431102",
+                "coordinates": { "latitude": 60.19172, "longitude": 25.02131 },
+                "locationType": "STOP",
+                "arrivesAt": "2021-12-15T11:06:00.000Z",
+                "realtimeArrivesAt": "2021-12-15T11:06:00.000Z",
+                "departuresAt": "2021-12-15T11:06:00.000Z",
+                "realtimeDeparturesAt": "2021-12-15T11:06:00.000Z",
+                "serviceDay": "2021-12-14T22:00:00.000Z"
+            },
+            "route": "500",
+            "travelTime": 1818106.2467991782
+        },
+        {
+            "stop": {
+                "name": "Herttoniemi (M)",
+                "code": "H4006",
+                "gtfsId": "HSL:1431187",
+                "coordinates": { "latitude": 60.19387, "longitude": 25.029568 },
+                "locationType": "STOP",
+                "arrivesAt": "2021-12-15T11:00:00.000Z"
+            },
+            "route": null,
+            "travelTime": 0
+        }
+    ]
+}

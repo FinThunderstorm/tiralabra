@@ -15,17 +15,35 @@ Tällä pyörimään oma OTP Hösselistä, niin ei tarvitse prodia sekottaa. ![V
 Hylkää jos linja vaihtuu pysäkin ja pysäkin jälkeen
 departures.departures PriorityQueueksi.
 
-ma 6.12.2021 klo 1200 ->
+ke 15.12.2021 klo 1215 ->
 startStop: HSL:4620205 (Urheilutie V6205)
 endStop: HSL:1240118 (Kumpulan kampus H3028)
-uStartTime: 1638784800000
+uStartTime: 1639563300000
 HSL: 711 (vain bussi, vältä kävelyä)
+-> testien vertailulopputulos ok
 
-ma 6.12.2021 klo 1200 ->
+ke 15.12.2021 klo 1305 ->
 startStop: HSL:9650105 (Kievari Tu6041)
 endStop: HSL:4510255 (Osuustie V5155)
-uStartTime: 1638784800000
+uStartTime: 1639566300000
 HSL: 641 -> 574 (vain bussi, vältä kävelyä)
+-> testien vertailulopputulos ok
+
+ke 15.12.2021 klo 1305 ->
+startStop: HSL:1361108 (Maaherrantie H3076)
+endStop: HSL:1150110 (Haartmaninkatu H1322)
+uStartTime: 1639566300000
+HSL: 57 -> 30 (tarjoaa seuraavalle lähdölle tätä, ei algoritmin löytämäle tarjoamalle versiolle)
+-> testien vertailulopputulos ok
+
+ke 15.12.2021 klo 1300 ->
+startStop: HSL:1431187 (Herttoniemi (M) H4006)
+endStop: HSL:1304161 (Munkkivuoren ostosk. H1432)
+uStartTime: 1639566000000
+HSL: 500
+-> testien vertailulopputulos ok
+
+---
 
 ma 6.12.2021 klo 1200 ->
 startStop: HSL:9650105 (Kievari Tu6041)
@@ -33,13 +51,6 @@ endStop: HSL:1240118 (Kumpulan kampus H3028)
 uStartTime: 1638784800000
 HSL: 641 -> 711 (vain bussi, vältä kävelyä)
 HOX! V6106 jälkeen HSL vaihtaa suoraan 711 pysäkiltä V6148 -> niin kauan kun algoritmi ei saa "STATION"-tyyppiselle pysäkkikokonaisuudelle kaikkien sen pysäkkien tietoja, ei ole relevantti.
-
-ma 6.12.2021 klo 1200 ->
-startStop: HSL:1402157 (Porvarintie H3340)
-endStop: HSL:1320295 (Vanha Hämeenkyläntie H1581)
-uStartTime: 1638784800000
-HSL: 73 -> 71 -> 57 -> 345N (vain bussi, vältä kävelyä)
-HOX! Testiä vastaava tulos muutettu vastaamaan HSL tietyiltä osin. Tietyiltä osin testi eroaa, koska HSL ei arvosta 2 minuutin vaihtoaikaa hakurissaan. Toisaalta myöskään niin kauan, kun ei perata olisiko viimeiseen linjaan voitu vaihtaa jo aikaisemmin, niin myöskään 57 -> 37 -> 345N ole väärin suhteessa mahdolliseen 57 -> 345N vaihtoon samalla perille saapumisajalla.
 
 ma 6.12.2021 klo 1200 ->
 startStop: HSL:1495151 (Kutteritie H4104)

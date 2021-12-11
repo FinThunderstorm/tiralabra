@@ -15,10 +15,13 @@ services:
             - ./:/tiralabra
         depends_on:
             - cache
+            - otp
 
     cache:
         image: redis:latest
         container_name: tiralabra-cache
+        ports:
+            - 6379:6379
 
     otp:
         image: hsldevcom/opentripplanner:prod

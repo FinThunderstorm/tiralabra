@@ -1,8 +1,11 @@
-jest.mock('@repositories/stopRepository')
+jest.mock('@backend/repositories/stopRepository')
+
 const PathFinder = require('@pathfinder/PathFinder')
-const case1 = require('@pathfinder/tests/results/HSL1402157-HSL1320295.json')
-const case2 = require('@pathfinder/tests/results/HSL4620205-HSL1240118.json')
-const case3 = require('@pathfinder/tests/results/HSL9650105-HSL4510255.json')
+
+const case1 = require('@pathfinder/tests/results/HSL4620205-HSL1240118.json')
+const case2 = require('@pathfinder/tests/results/HSL9650105-HSL4510255.json')
+const case3 = require('@pathfinder/tests/results/HSL1361108-HSL1150110.json')
+const case4 = require('@pathfinder/tests/results/HSL1431187-HSL1304161.json')
 
 jest.setTimeout(10 * 60 * 1000)
 
@@ -66,37 +69,6 @@ describe('PathFinder', () => {
         expect(result4).toBe(21461.155134023513)
     })
 
-    test('search works between HSL:1402157 and HSL:1320295', async () => {
-        const startStop = {
-            name: 'Porvarintie',
-            code: 'H3340',
-            gtfsId: 'HSL:1402157',
-            coordinates: {
-                latitude: 60.27136,
-                longitude: 25.03385,
-            },
-            locationType: 'STOP',
-        }
-        const endStop = {
-            name: 'Vanha Hämeenkyläntie',
-            code: 'H1581',
-            gtfsId: 'HSL:1320295',
-            coordinates: {
-                latitude: 60.24945,
-                longitude: 24.83561,
-            },
-            locationType: 'STOP',
-        }
-        const startTime = 1638784836000
-        const resultCase1 = await PathFinder.search(
-            startStop,
-            endStop,
-            startTime
-        )
-
-        expect(resultCase1.toJSONForTests()).toStrictEqual(case1)
-    })
-
     test('search works between HSL:4620205 and HSL:1240118', async () => {
         const startStop = {
             name: 'Urheilutie',
@@ -118,14 +90,14 @@ describe('PathFinder', () => {
             },
             locationType: 'STOP',
         }
-        const startTime = 1638784836000
-        const resultCase2 = await PathFinder.search(
+        const startTime = 1639563300000
+        const resultCase1 = await PathFinder.search(
             startStop,
             endStop,
             startTime
         )
 
-        expect(resultCase2.toJSONForTests()).toStrictEqual(case2)
+        expect(resultCase1.toJSONForTests()).toStrictEqual(case1)
     })
 
     test('search works between HSL:9650105 and HSL:4510255', async () => {
@@ -149,13 +121,104 @@ describe('PathFinder', () => {
             },
             locationType: 'STOP',
         }
-        const startTime = 1638784836000
+        const startTime = 1639566300000
+        const resultCase2 = await PathFinder.search(
+            startStop,
+            endStop,
+            startTime
+        )
+
+        expect(resultCase2.toJSONForTests()).toStrictEqual(case2)
+    })
+
+    test('search works between HSL:1361108 and HSL:1150110', async () => {
+        const startStop = {
+            name: 'Maaherrantie',
+            code: 'H3076',
+            gtfsId: 'HSL:1361108',
+            coordinates: {
+                latitude: 60.22744,
+                longitude: 25.00263,
+            },
+            locationType: 'STOP',
+        }
+        const endStop = {
+            name: 'Haartmaninkatu',
+            code: 'H1322',
+            gtfsId: 'HSL:1150110',
+            coordinates: {
+                latitude: 60.19067,
+                longitude: 24.90756,
+            },
+            locationType: 'STOP',
+        }
+        const startTime = 1639566300000
         const resultCase3 = await PathFinder.search(
             startStop,
             endStop,
             startTime
         )
 
+        // console.log(resultCase1.toJSONForTests())
         expect(resultCase3.toJSONForTests()).toStrictEqual(case3)
+    })
+
+    test('search works between HSL:1431187 and HSL:1304161', async () => {
+        const startStop = {
+            name: 'Herttoniemi (M)',
+            code: 'H4006',
+            gtfsId: 'HSL:1431187',
+            coordinates: {
+                latitude: 60.19387,
+                longitude: 25.029568,
+            },
+            locationType: 'STOP',
+        }
+        const endStop = {
+            name: 'Munkkivuoren ostosk.',
+            code: 'H1432',
+            gtfsId: 'HSL:1304161',
+            coordinates: {
+                latitude: 60.20542,
+                longitude: 24.87725,
+            },
+            locationType: 'STOP',
+        }
+        const startTime = 1639566000000
+        const resultCase4 = await PathFinder.search(
+            startStop,
+            endStop,
+            startTime
+        )
+
+        expect(resultCase4.toJSONForTests()).toStrictEqual(case4)
+    })
+
+    test('search returns null when no routes between', async () => {
+        const startStop = {
+            name: 'Kievari',
+            code: 'Tu6041',
+            gtfsId: 'HSL:9650105',
+            coordinates: { latitude: 60.398721, longitude: 25.02284 },
+            locationType: 'STOP',
+        }
+        const endStop = {
+            name: 'Upinniemen koulu',
+            code: 'Ki1006',
+            gtfsId: 'HSL:6100206',
+            coordinates: {
+                latitude: 60.032892,
+                longitude: 24.366045,
+            },
+            locationType: 'STOP',
+        }
+        const startTime = 1639566000000
+        const resultCase5 = await PathFinder.search(
+            startStop,
+            endStop,
+            startTime
+        )
+
+        expect(resultCase5).toBe(undefined)
     })
 })

@@ -1,9 +1,12 @@
 const { gql } = require('graphql-request')
-const api = require('@backend/graphql')
+const { api } = require('@backend/graphql')
 const cache = require('@backend/redis')
 
-const { convertEpochToDate } = require('@backend/utils/helpers')
-const { convertDateToEpoch } = require('../utils/helpers')
+const {
+    convertEpochToDate,
+    convertDateToEpoch,
+    fixDepartures,
+} = require('@backend/utils/helpers')
 
 /**
  * Hae pysäkin tiedot API:sta.
@@ -12,6 +15,13 @@ const { convertDateToEpoch } = require('../utils/helpers')
  * @return {JSON} Pysäkin tiedot.
  */
 const getStop = async (stopGtfsId) => {
+    const valid = await cache.check(`stop:${stopGtfsId}`)
+    if (valid) {
+        const stop = await cache.get(`stop:${stopGtfsId}`)
+
+        return JSON.parse(stop)
+    }
+
     const QUERY = gql`
         query stop($id: String!) {
             stop(id: $id) {
@@ -100,6 +110,12 @@ const getNextDepartures = async (stopGtfsId, startTime) => {
     `
     const arrived = convertDateToEpoch(new Date(startTime))
 
+    const valid = await cache.check(`nextDepartures:${stopGtfsId}@${arrived}`)
+    if (valid) {
+        const stop = await cache.get(`nextDepartures:${stopGtfsId}@${arrived}`)
+        return fixDepartures(JSON.parse(stop))
+    }
+
     const results = await api.request(QUERY, {
         id: stopGtfsId,
         startTime: arrived,
@@ -180,6 +196,8 @@ const getNextDepartures = async (stopGtfsId, startTime) => {
                 unixTimestamps: {
                     scheduledDeparture: stoptime.scheduledDeparture,
                     realtimeDeparture: stoptime.realtimeDeparture,
+                    // scheduledArrival: stoptime.scheduledArrival,
+                    // realtimeArrival: stoptime.realtimeArrival,
                     serviceDay: stoptime.serviceDay,
                 },
             }
@@ -191,7 +209,7 @@ const getNextDepartures = async (stopGtfsId, startTime) => {
         .sort((a, b) => a.departuresAt - b.departuresAt)
 
     cache.set(
-        `nextDepartures:${stopGtfsId}@${startTime.valueOf()}`,
+        `nextDepartures:${stopGtfsId}@${arrived}`,
         JSON.stringify(departures)
     )
 

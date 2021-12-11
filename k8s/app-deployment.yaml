@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Service
+metadata:
+    name: tiralabra-dev
+spec:
+    ports:
+        - port: 3000
+          name: '3000'
+          targetPort: 3000
+        - port: 3001
+          name: '3001'
+          targetPort: 3001
+    type: LoadBalancer
+    selector:
+        app: tiralabra-dev
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: tiralabra-dev
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: tiralabra-dev
+    template:
+        metadata:
+            labels:
+                app: tiralabra-dev
+        spec:
+            hostname: tiralabra-dev
+            containers:
+                - name: tiralabra-dev
+                  image: tiralabra-dev
+                  ports:
+                      - containerPort: 3000
+                      - containerPort: 3001

@@ -1,0 +1,23 @@
+apiVersion: skaffold/v2beta26
+kind: Config
+metadata:
+    name: tiralabra
+build:
+    artifacts:
+        - image: tiralabra-dev
+          context: ./
+
+profiles:
+    - name: dev
+      activation:
+          - command: dev
+      build:
+          artifacts:
+              - image: tiralabra-dev
+                context: ./
+                docker:
+                    dockerfile: utils/dev.Dockerfile
+                sync:
+                    manual:
+                        - src: 'src/**/*.js'
+                          dest: .

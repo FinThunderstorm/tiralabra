@@ -4,3 +4,4 @@ utils
 *.md
 tests
 __mocks__
+kubernetes
