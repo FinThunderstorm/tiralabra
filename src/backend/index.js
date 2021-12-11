@@ -9,7 +9,7 @@ const cache = require('@backend/redis')
 const StopRepository = require('@repositories/stopRepository')
 
 const PathFinder = require('@pathfinder/PathFinder')
-const PerformanceTest = require('@pathfinder/performanceTest')
+const PerformanceTest = require('@backend/performanceTest')
 const { api, apiHealth } = require('./graphql')
 
 // const Route = require('../datastructures/Route')
@@ -100,39 +100,51 @@ app.post('/performanceTest', async (req, res) => {
     const endStop = await StopRepository.getStop(attributes.endStop)
     const startTime = new Date(Date.parse(attributes.startTime))
 
+    await cache.flushall()
+
     const otpStart = performance.now()
     PerformanceTest.runOTP(startStop, endStop, startTime)
         .then((otpResult) => {
             const otpEnd = performance.now()
-            const pfStart = performance.now()
+            const uncachedPfStart = performance.now()
             PerformanceTest.runPathFinder(startStop, endStop, startTime)
-                .then((pfResult) => {
-                    const pfEnd = performance.now()
-                    const otpTook = (otpEnd - otpStart) / 1000
-                    const pfTook = (pfEnd - pfStart) / 1000
-                    const percentage = ((pfTook - otpTook) / pfTook) * 100
-                    const difference = pfTook - otpTook
+                .then((uncachedResult) => {
+                    const uncachedPfEnd = performance.now()
+                    const pfStart = performance.now()
+                    PerformanceTest.runPathFinder(startStop, endStop, startTime)
+                        .then((pfResult) => {
+                            const pfEnd = performance.now()
+                            const otpTook = (otpEnd - otpStart) / 1000
+                            const uncachedPfTook =
+                                (uncachedPfEnd - uncachedPfStart) / 1000
+                            const pfTook = (pfEnd - pfStart) / 1000
+                            const percentage =
+                                ((pfTook - otpTook) / pfTook) * 100
+                            const difference = pfTook - otpTook
 
-                    res.json({
-                        results: {
-                            otp: otpResult,
-                            pathfinder: pfResult,
-                        },
-                        took: {
-                            otp: otpTook,
-                            pathfinder: pfTook,
-                            resultText: `OTP took ${otpTook.toFixed(
-                                3
-                            )} seconds and PathFinder took ${pfTook.toFixed(
-                                3
-                            )} seconds`,
-                            comparation: `PathFinder was ${percentage.toFixed(
-                                3
-                            )}% slower than optimized OpenTripPlanner\n -> Time difference was ${difference.toFixed(
-                                3
-                            )} seconds.`,
-                        },
-                    })
+                            res.json({
+                                results: {
+                                    otp: otpResult,
+                                    pathfinder: pfResult,
+                                },
+                                took: {
+                                    otp: otpTook,
+                                    uncachedPathfinder: uncachedPfTook,
+                                    pathfinder: pfTook,
+                                    resultText: `OTP took ${otpTook.toFixed(
+                                        3
+                                    )} seconds and PathFinder took ${pfTook.toFixed(
+                                        3
+                                    )} seconds`,
+                                    comparation: `PathFinder was ${percentage.toFixed(
+                                        3
+                                    )}% slower than optimized OpenTripPlanner\n -> Time difference was ${difference.toFixed(
+                                        3
+                                    )} seconds.`,
+                                },
+                            })
+                        })
+                        .catch((error) => res.status(218).send(error))
                 })
                 .catch((error) => res.status(218).send(error))
         })
@@ -140,7 +152,7 @@ app.post('/performanceTest', async (req, res) => {
 })
 
 app.get('/flushall', async (req, res) => {
-    const result = await cache.client.sendCommand(['FLUSHALL'])
+    const result = await cache.flushall()
     console.log('result of flushall', result)
     res.status(218).end()
 })

@@ -80,12 +80,14 @@ took: {
 
     -   Suoritetaan Jestin avulla.
     -   Testataan sekä haversine-funktion toteuttava `distanceBetweenTwoPoints` että heuristiikan laskeva funktio `heuristic`, että palauttavat oikeat arvot.
-    -   Reitinhaku testataan suorittamalla reitinhaku muutaman eri reittipisteen välillä sekä vertailemalla niitä HSL:n käyttämän OpenTripPlannerin laskemiin reitteihin A\*-algoritmillä asetuksin `vain bussit, vältä kävelyä`- tuloksiin. Täten saatavat reitit vastaavat toteuttamani algoritmin saamia suurin piirtein. Nämä tulokset ovat silti tarkastettu manuaalisesti, ja tehty tarvittavia muutoksia johtuen toteutukseni rajoituksista siirtyä muille lähipysäkeille esimerkiksi Tikkurilan matkakeskuksen kokonaisuudessa.
-    -   Huomioitavaa, että `PathFinderin` kutsuma `StopRepository` on toteutettu mock-oliona, joka palauttaa kovakoodattuja arvoja, jotka ovat haettu ajamalla jokaista tarkasteluväliä 1000 pysäkin tarkastelun verran ja tallentamalla nämä StopRepositoryä kohden tehdyt kutsut välimuistiin, ja tekemällä dumpin sen pohjalta.
+    -   Reitinhaku testataan suorittamalla reitinhaku muutaman eri reittipisteen välillä sekä vertailemalla niitä HSL:n käyttämän OpenTripPlannerin laskemiin reitteihin A\*-algoritmillä asetuksin `vain bussit, vältä kävelyä`- tuloksiin. Täten saatavat reitit vastaavat toteuttamani algoritmin saamia suurin piirtein. Nämä tulokset ovat silti tarkastettu manuaalisesti, ja tehty tarvittavia muutoksia johtuen toteutukseni rajoituksista siirtyä muille lähipysäkeille esimerkiksi Tikkurilan matkakeskuksen kokonaisuudessa tai muille rajoitteille, jotka johtuvat OTP:n ja toteuttamani haun eroavaisuuksista.
+    -   Huomioitavaa, että `PathFinderin` kutsuma `StopRepository` on toteutettu mock-oliona, joka palauttaa kovakoodattuja arvoja, jotka ovat haettu ajamalla jokaista tarkasteluväliä kolmen eri reitin tarkastelun verran ja tallentamalla nämä StopRepositoryä kohden tehdyt kutsut välimuistiin, ja tekemällä kovakoodatun testidumpin sen pohjalta. Täten kovakoodattu testidumppi pysyy järkevänä.
+    -   Testausta ei voi suorittaa todellista OTP-instanssia vasten, sillä se ei osaa hakea yli päivän menneisyydessä oleville kellonajoille lähtötietoja.
     -   Testattavat pysäkkivälit ovat:
-        -   HSL:4620205 (Urheilutie V6205) ja HSL:1240118 (Kumpulan kampus H3028) lähtöajalla 6.12.2021 klo 1200
-        -   HSL:9650105 (Kievari Tu6041) ja HSL:4510255 (Osuustie V5155) lähtöajalla 6.12.2021 klo 1200
-        -   HSL:1402157 (Porvarintie H3340) ja HSL:1320295 (Vanha Hämeenkyläntie H1581) lähtöajalla 6.12.2021 klo 1200
+        -   HSL:4620205 (Urheilutie V6205) ja HSL:1240118 (Kumpulan kampus H3028) lähtöajalla 15.12.2021 klo 1215
+        -   HSL:9650105 (Kievari Tu6041) ja HSL:4510255 (Osuustie V5155) lähtöajalla 15.12.2021 klo 1305
+        -   HSL:1361108 (Maaherrantie H3076) ja HSL:1150110 (Haartmaninkatu H1322) lähtöajalla 15.12.2021 klo 1305
+        -   HSL:1431187 (Herttoniemi (M) H4006) ja HSL:1304161 (Munkkivuoren ostosk. H1432) lähtöajalla 15.12.2021 klo 1300
     -   Suorituskykytestaus on kuvattu tarkemmin kohdassa _”Suorituskykytestaus”_.
 
 -   Avustajafunktioita tarjoava [helpers](../src/backend/utils/helpers.js) [(testit)](../src/backend/tests/helpers.test.js)

@@ -1,4 +1,4 @@
-const { convertDateToEpoch } = require('@backend/utils/helpers')
+const { convertDateToEpoch, fixDepartures } = require('@backend/utils/helpers')
 const stopsAndDepartures = require('./stopsAndDepartures.json')
 
 const getStop = (stopGtfsId) => {
@@ -26,52 +26,7 @@ const getNextDepartures = (stopGtfsId, startTime) => {
         return undefined
     }
 
-    let departuresList = []
-    departures.departures.forEach((departure) => {
-        const values = {
-            name: departure.name,
-            code: departure.code,
-            tripGtfsId: departure.tripGtfsId,
-            headsign: departure.headsign,
-            realtime: departure.realtime,
-            arrivesAt: new Date(Date.parse(departure.arrivesAt)),
-            realtimeArrivesAt: new Date(
-                Date.parse(departure.realtimeArrivesAt)
-            ),
-            departuresAt: new Date(Date.parse(departure.departuresAt)),
-            realtimeDeparturesAt: new Date(
-                Date.parse(departure.realtimeDeparturesAt)
-            ),
-            nextStop: null,
-            boardable: departure.boardable,
-            unixTimestamps: departure.unixTimestamps,
-        }
-        if (departure.nextStop !== null) {
-            values.nextStop = {
-                name: departure.nextStop.name,
-                code: departure.nextStop.code,
-                gtfsId: departure.nextStop.gtfsId,
-                coordinates: departure.nextStop.coordinates,
-                locationType: departure.nextStop.locationType,
-                arrivesAt: new Date(Date.parse(departure.nextStop.arrivesAt)),
-                realtimeArrivesAt: new Date(
-                    Date.parse(departure.nextStop.realtimeArrivesAt)
-                ),
-                departuresAt: new Date(
-                    Date.parse(departure.nextStop.departuresAt)
-                ),
-                realtimeDeparturesAt: new Date(
-                    Date.parse(departure.nextStop.realtimeDeparturesAt)
-                ),
-                serviceDay: new Date(Date.parse(departure.nextStop.serviceDay)),
-            }
-        }
-        departuresList = departuresList.concat([values])
-    })
-    departures.departures = departuresList
-
-    // console.log(`nextDepartures:${stopGtfsId}@${time}`, departures)
-    return departures
+    return fixDepartures(departures)
 }
 
 module.exports = {

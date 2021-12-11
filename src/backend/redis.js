@@ -14,7 +14,8 @@ const test = async () => {
 
 const check = async (key) => {
     const expired = await client.ttl(key)
-    return expired < 0
+    console.log(`key ${key} valid for ${expired}`)
+    return expired > 0
 }
 
 const set = async (key, value) => {
@@ -46,6 +47,11 @@ const getAllValues = async (keys) => {
     return Promise.all(values)
 }
 
+const flushall = async () => {
+    const result = await client.sendCommand(['FLUSHALL'])
+    return result
+}
+
 module.exports = {
     test,
     check,
@@ -54,5 +60,5 @@ module.exports = {
     getValid,
     getAllKeys,
     getAllValues,
-    client,
+    flushall,
 }
