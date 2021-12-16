@@ -15,7 +15,6 @@ const departuresReducer = (state = null, action) => {
 export default departuresReducer
 
 export const setDepartures = (gtfsId, startTime) => {
-    console.log('>', gtfsId, startTime)
     return async (dispatch) => {
         const departures = await axios.post(
             'http://localhost:3001/nextDepartures',

@@ -8,8 +8,8 @@ import {
     Button,
     CircularProgress,
     CardContent,
-    Grid,
-    Typography,
+    Stack,
+    CardHeader,
 } from '@mui/material'
 
 import { findRoute } from '../reducers/routeReducer'
@@ -29,56 +29,42 @@ const Search = () => {
 
     return (
         <Card>
+            <CardHeader title="Hae reittiä" />
             <CardContent>
-                <Grid
-                    container
+                <Stack
                     spacing={2}
                     direction="column"
                     margin="normal"
                     id="searchBox"
-                    justifyContent="flex-start"
                 >
-                    <Grid item>
-                        <Typography variant="h6">Hae reittiä</Typography>
-                    </Grid>
-                    <Grid item>
-                        <TextField
-                            label="Lähtöpysäkki:"
-                            onChange={(event) =>
-                                setStartStop(event.target.value)
-                            }
-                            value={startStop}
-                        />
-                    </Grid>
+                    <TextField
+                        label="Lähtöpysäkki:"
+                        onChange={(event) => setStartStop(event.target.value)}
+                        value={startStop}
+                    />
 
-                    <Grid item>
-                        <TextField
-                            label="Kohdepysäkki:"
-                            onChange={(event) => setEndStop(event.target.value)}
-                            value={endStop}
-                        />
-                    </Grid>
+                    <TextField
+                        label="Kohdepysäkki:"
+                        onChange={(event) => setEndStop(event.target.value)}
+                        value={endStop}
+                    />
 
-                    <Grid item>
-                        <DateTimePicker
-                            renderInput={(props) => <TextField {...props} />}
-                            label="Lähtöaika:"
-                            value={startTime}
-                            onChange={(newValue) => setStartTime(newValue)}
-                        />
-                    </Grid>
+                    <DateTimePicker
+                        renderInput={(props) => <TextField {...props} />}
+                        label="Lähtöaika:"
+                        value={startTime}
+                        onChange={(newValue) => setStartTime(newValue)}
+                    />
 
-                    <Grid item>
-                        <Button
-                            size="large"
-                            variant="outlined"
-                            onClick={(event) => handleFindRoute(event)}
-                            type="submit"
-                        >
-                            Etsi
-                        </Button>
-                    </Grid>
-                </Grid>
+                    <Button
+                        size="large"
+                        variant="outlined"
+                        onClick={(event) => handleFindRoute(event)}
+                        type="submit"
+                    >
+                        Etsi
+                    </Button>
+                </Stack>
             </CardContent>
 
             {searching ? <CircularProgress /> : <></>}

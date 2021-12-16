@@ -1,30 +1,50 @@
 /* eslint-disable react/prop-types */
+import {
+    Card,
+    CardContent,
+    CardHeader,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+} from '@mui/material'
+import DirectionsBusIcon from '@mui/icons-material/DirectionsBus'
 import React from 'react'
 import { useSelector } from 'react-redux'
 
 const Departures = () => {
     const departures = useSelector((state) => state.departures)
-    console.log('all departures', departures)
+
     if (departures === null) {
         return <></>
     }
+
+    const subheader = `${departures.data.stop.name} (
+                    ${departures.data.stop.code} / ${departures.data.stop.gtfsId})`
     return (
-        <>
-            <h2>
-                Departures for stop {departures.data.stop.name} (
-                {departures.data.stop.code} / {departures.data.stop.gtfsId})
-            </h2>
-            <ul>
-                {departures.data.departures.map((dep) => (
-                    <li>
-                        {dep.name.split(' ')[0]} - departures at{' '}
-                        {new Date(dep.departuresAt).toLocaleString('fi-FI', {
-                            timeZone: 'Europe/Helsinki',
-                        })}
-                    </li>
-                ))}
-            </ul>
-        </>
+        <Card>
+            <CardContent>
+                <CardHeader title="Departures for stop" subheader={subheader} />
+                <List>
+                    {departures.data.departures.map((dep) => (
+                        <ListItem>
+                            <ListItemIcon>
+                                <DirectionsBusIcon />
+                            </ListItemIcon>
+                            <ListItemText>
+                                {dep.name.split(' ')[0]} - departures at{' '}
+                                {new Date(dep.departuresAt).toLocaleString(
+                                    'fi-FI',
+                                    {
+                                        timeZone: 'Europe/Helsinki',
+                                    }
+                                )}
+                            </ListItemText>
+                        </ListItem>
+                    ))}
+                </List>
+            </CardContent>
+        </Card>
     )
 }
 

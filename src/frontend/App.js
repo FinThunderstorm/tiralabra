@@ -16,6 +16,7 @@ const App = () => {
                     </Typography>
                 </Toolbar>
             </AppBar>
+            <Toolbar />
             <Routes>
                 <Route path="/" element={<Application />} />
                 <Route path="/performance" element={<PerformanceTest />} />

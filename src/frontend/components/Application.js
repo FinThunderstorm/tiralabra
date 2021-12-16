@@ -7,7 +7,7 @@ import DateTimePicker from '@mui/lab/DateTimePicker'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
 import { useDispatch } from 'react-redux'
 // import './App.css'
-import { TextField, Button, CircularProgress } from '@mui/material'
+import { TextField, Button, CircularProgress, Grid, Stack } from '@mui/material'
 
 import { findRoute } from '../reducers/routeReducer'
 import Departures from './Departures'
@@ -30,13 +30,21 @@ const Application = () => {
 
     return (
         <LocalizationProvider dateAdapter={AdapterDateFns} locale="fi">
-            <div className="App">
-                <h1>T</h1>
-                <Search />
-                <Map />
-                <Departures />
-                <RouteViewer />
-            </div>
+            <Grid container className="App" margin="normal" spacing={2}>
+                <Grid item xs={3}>
+                    <Stack spacing={2} direction="column" margin="normal">
+                        <Search />
+                        <RouteViewer />
+                    </Stack>
+                </Grid>
+
+                <Grid item xs={9}>
+                    <Stack spacing={2} direction="column" margin="normal">
+                        <Map />
+                        <Departures />
+                    </Stack>
+                </Grid>
+            </Grid>
         </LocalizationProvider>
     )
 }
