@@ -3,7 +3,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 
 const Departures = () => {
-    const departures = useSelector((state) => state)
+    const departures = useSelector((state) => state.departures)
     console.log('all departures', departures)
     if (departures === null) {
         return <></>

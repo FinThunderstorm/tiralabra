@@ -1,16 +1,26 @@
+import { AppBar, Toolbar, Typography } from '@mui/material'
 import React from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Application from './components/Application'
 import PerformanceTest from './components/PerformanceTest'
 
 const App = () => {
-    console.log('toot')
+    const appName = 'työnimi pirkkaReittiopas'
 
     return (
-        <Routes>
-            <Route path="/" element={<Application />} />
-            <Route path="/performance" element={<PerformanceTest />} />
-        </Routes>
+        <>
+            <AppBar color="primary">
+                <Toolbar>
+                    <Typography variant="h5" noWrap component="div">
+                        {appName}
+                    </Typography>
+                </Toolbar>
+            </AppBar>
+            <Routes>
+                <Route path="/" element={<Application />} />
+                <Route path="/performance" element={<PerformanceTest />} />
+            </Routes>
+        </>
     )
 }
 

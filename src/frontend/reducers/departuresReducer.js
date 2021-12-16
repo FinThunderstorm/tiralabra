@@ -17,7 +17,6 @@ export default departuresReducer
 export const setDepartures = (gtfsId, startTime) => {
     console.log('>', gtfsId, startTime)
     return async (dispatch) => {
-        console.log('>>', gtfsId, startTime)
         const departures = await axios.post(
             'http://localhost:3001/nextDepartures',
             {
@@ -28,6 +27,10 @@ export const setDepartures = (gtfsId, startTime) => {
         dispatch({
             type: 'SET_STOP',
             data: departures,
+        })
+        dispatch({
+            type: 'SET_LOADING',
+            data: false,
         })
     }
 }

@@ -1,11 +1,17 @@
 /* eslint-disable react/prop-types */
 import React from 'react'
+import { useSelector } from 'react-redux'
 import Stop from './Stop'
 
-const RouteViewer = ({ route }) => {
-    if (route === null) {
+const RouteViewer = () => {
+    const routeState = useSelector((state) => state.route)
+
+    if (routeState === null) {
         return <></>
     }
+
+    const { route } = routeState
+
     return (
         <>
             <div>
