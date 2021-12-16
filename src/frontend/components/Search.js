@@ -2,7 +2,15 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import DateTimePicker from '@mui/lab/DateTimePicker'
-import { Grid, TextField, Button, CircularProgress } from '@mui/material'
+import {
+    Card,
+    TextField,
+    Button,
+    CircularProgress,
+    CardContent,
+    Grid,
+    Typography,
+} from '@mui/material'
 
 import { findRoute } from '../reducers/routeReducer'
 
@@ -20,51 +28,61 @@ const Search = () => {
     }
 
     return (
-        <Grid
-            container
-            spacing={2}
-            direction="row"
-            margin="normal"
-            id="searchBox"
-            alignItems="center"
-        >
-            <Grid item>
-                <TextField
-                    label="Lähtöpysäkki:"
-                    onChange={(event) => setStartStop(event.target.value)}
-                    value={startStop}
-                />
-            </Grid>
-
-            <Grid item>
-                <TextField
-                    label="Kohdepysäkki:"
-                    onChange={(event) => setEndStop(event.target.value)}
-                    value={endStop}
-                />
-            </Grid>
-
-            <Grid item>
-                <DateTimePicker
-                    renderInput={(props) => <TextField {...props} />}
-                    label="Lähtöaika:"
-                    value={startTime}
-                    onChange={(newValue) => setStartTime(newValue)}
-                />
-            </Grid>
-            <Grid item>
-                <Button
-                    size="large"
-                    variant="outlined"
-                    onClick={(event) => handleFindRoute(event)}
-                    type="submit"
+        <Card>
+            <CardContent>
+                <Grid
+                    container
+                    spacing={2}
+                    direction="column"
+                    margin="normal"
+                    id="searchBox"
+                    justifyContent="flex-start"
                 >
-                    Etsi
-                </Button>
-            </Grid>
+                    <Grid item>
+                        <Typography variant="h6">Hae reittiä</Typography>
+                    </Grid>
+                    <Grid item>
+                        <TextField
+                            label="Lähtöpysäkki:"
+                            onChange={(event) =>
+                                setStartStop(event.target.value)
+                            }
+                            value={startStop}
+                        />
+                    </Grid>
+
+                    <Grid item>
+                        <TextField
+                            label="Kohdepysäkki:"
+                            onChange={(event) => setEndStop(event.target.value)}
+                            value={endStop}
+                        />
+                    </Grid>
+
+                    <Grid item>
+                        <DateTimePicker
+                            renderInput={(props) => <TextField {...props} />}
+                            label="Lähtöaika:"
+                            value={startTime}
+                            onChange={(newValue) => setStartTime(newValue)}
+                        />
+                    </Grid>
+
+                    <Grid item>
+                        <Button
+                            size="large"
+                            variant="outlined"
+                            onClick={(event) => handleFindRoute(event)}
+                            type="submit"
+                        >
+                            Etsi
+                        </Button>
+                    </Grid>
+                </Grid>
+            </CardContent>
 
             {searching ? <CircularProgress /> : <></>}
-        </Grid>
+        </Card>
     )
 }
 
