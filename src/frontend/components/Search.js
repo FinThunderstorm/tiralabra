@@ -1,16 +1,16 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import DateTimePicker from '@mui/lab/DateTimePicker'
 import {
     Card,
     TextField,
     Button,
-    CircularProgress,
     CardContent,
     Stack,
     CardHeader,
 } from '@mui/material'
+import SearchIcon from '@mui/icons-material/Search'
 
 import { findRoute } from '../reducers/routeReducer'
 
@@ -18,8 +18,6 @@ const Search = () => {
     const [startStop, setStartStop] = useState('HSL:4620205')
     const [endStop, setEndStop] = useState('HSL:1240118')
     const [startTime, setStartTime] = useState(new Date())
-
-    const searching = useSelector((state) => state.loading)
 
     const dispatch = useDispatch()
     const handleFindRoute = (event) => {
@@ -29,7 +27,11 @@ const Search = () => {
 
     return (
         <Card>
-            <CardHeader title="Hae reittiä" />
+            <CardHeader
+                avatar={<SearchIcon fontSize="large" />}
+                title="Hae reittiä"
+                titleTypographyProps={{ variant: 'h5' }}
+            />
             <CardContent>
                 <Stack
                     spacing={2}
@@ -58,7 +60,8 @@ const Search = () => {
 
                     <Button
                         size="large"
-                        variant="outlined"
+                        variant="contained"
+                        color="secondary"
                         onClick={(event) => handleFindRoute(event)}
                         type="submit"
                     >
@@ -66,8 +69,6 @@ const Search = () => {
                     </Button>
                 </Stack>
             </CardContent>
-
-            {searching ? <CircularProgress /> : <></>}
         </Card>
     )
 }

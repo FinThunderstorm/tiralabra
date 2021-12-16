@@ -6,6 +6,7 @@ import 'leaflet/dist/leaflet.css'
 import { Marker, Polyline, Popup } from 'react-leaflet'
 import markerLogo from '../marker.svg'
 import { setDepartures } from '../reducers/departuresReducer'
+import { Button, Stack, Typography } from '@mui/material'
 
 const RouteOnMap = () => {
     const routeState = useSelector((state) => state.route)
@@ -41,32 +42,42 @@ const RouteOnMap = () => {
                     ]}
                 >
                     <Popup>
-                        <h1>{stop.route}</h1>
-                        <form onSubmit={handleDepartures}>
-                            <input
-                                name="gtfsId"
-                                hidden
-                                value={stop.stop.gtfsId}
-                            />
-                            <input
-                                name="startTime"
-                                hidden
-                                value={stop.stop.arrivesAt}
-                            />
-                            <button type="submit">
-                                {stop.stop.name} ({stop.stop.code}) -{' '}
-                                {stop.stop.gtfsId}
-                            </button>
-                        </form>
-                        <p>
-                            Arrived at:{' '}
-                            {new Date(stop.stop.arrivesAt).toLocaleString(
-                                'fi-FI',
-                                {
-                                    timeZone: 'Europe/Helsinki',
-                                }
-                            )}
-                        </p>
+                        <Stack spacing={2} direction="column" margin="normal">
+                            <Typography variant="h5">
+                                Arrived with {stop.route}
+                            </Typography>
+                            <form onSubmit={handleDepartures}>
+                                <input
+                                    name="gtfsId"
+                                    hidden
+                                    readOnly
+                                    value={stop.stop.gtfsId}
+                                />
+                                <input
+                                    name="startTime"
+                                    hidden
+                                    readOnly
+                                    value={stop.stop.arrivesAt}
+                                />
+                                <Button
+                                    color="secondary"
+                                    variant="contained"
+                                    type="submit"
+                                >
+                                    {stop.stop.name} ({stop.stop.code}) -{' '}
+                                    {stop.stop.gtfsId}
+                                </Button>
+                            </form>
+                            <Typography variant="body2">
+                                Arrived at:{' '}
+                                {new Date(stop.stop.arrivesAt).toLocaleString(
+                                    'fi-FI',
+                                    {
+                                        timeZone: 'Europe/Helsinki',
+                                    }
+                                )}
+                            </Typography>
+                        </Stack>
                     </Popup>
                 </Marker>
             ))}

@@ -35,80 +35,69 @@ const RouteViewer = () => {
     const { route } = routeState
 
     return (
-        <Card>
-            <CardContent>
-                <Stack spacing={2} direction="column" margin="normal">
-                    <Stop stop={route.from} title="From" color="error" />
-                    <Stop stop={route.to} title="Destination" color="success" />
+        <Stack spacing={2} direction="column" margin="normal">
+            <Stop stop={route.from} title="From" color="error" />
+            <Stop stop={route.to} title="Destination" color="success" />
 
-                    <Card>
-                        <CardContent>
-                            <Typography variant="body1">
-                                Start time:{' '}
-                                {new Date(route.startTime).toLocaleString(
-                                    'fi-FI',
-                                    {
+            <Card>
+                <CardContent>
+                    <Typography variant="body1">
+                        Start time:{' '}
+                        {new Date(route.startTime).toLocaleString('fi-FI', {
+                            timeZone: 'Europe/Helsinki',
+                        })}
+                    </Typography>
+                    <Typography variant="body1">
+                        Total travel time:{' '}
+                        {(route.travelTime / (60 * 1000)).toFixed(0)} minutes
+                    </Typography>
+                    <Typography variant="body1">
+                        Arrived to destination:{' '}
+                        {new Date(route.arrived).toLocaleString('fi-FI', {
+                            timeZone: 'Europe/Helsinki',
+                        })}
+                    </Typography>
+                    <hr />
+                    <Timeline>
+                        {route.via.map((stop) => (
+                            <TimelineItem>
+                                <TimelineOppositeContent>
+                                    {new Date(
+                                        stop.stop.arrivesAt
+                                    ).toLocaleString('fi-FI', {
                                         timeZone: 'Europe/Helsinki',
-                                    }
-                                )}
-                            </Typography>
-                            <Typography variant="body1">
-                                Total travel time:{' '}
-                                {(route.travelTime / (60 * 1000)).toFixed(0)}{' '}
-                                minutes
-                            </Typography>
-                            <Typography variant="body1">
-                                Arrived to destination:{' '}
-                                {new Date(route.arrived).toLocaleString(
-                                    'fi-FI',
-                                    {
-                                        timeZone: 'Europe/Helsinki',
-                                    }
-                                )}
-                            </Typography>
-                            <hr />
-                            <Timeline>
-                                {route.via.map((stop) => (
-                                    <TimelineItem>
-                                        <TimelineOppositeContent>
-                                            {new Date(
-                                                stop.stop.arrivesAt
-                                            ).toLocaleString('fi-FI', {
-                                                timeZone: 'Europe/Helsinki',
-                                            })}
-                                        </TimelineOppositeContent>
-                                        <TimelineSeparator>
-                                            <TimelineDot />
-                                            <TimelineConnector />
-                                        </TimelineSeparator>
-                                        <TimelineContent>
-                                            <List>
-                                                <ListItem>
-                                                    <ListItemIcon>
-                                                        <LocationOnIcon />
-                                                    </ListItemIcon>
-                                                    <ListItemText>
-                                                        {`${stop.stop.name} (${stop.stop.code} / ${stop.stop.gtfsId})`}
-                                                    </ListItemText>
-                                                </ListItem>
-                                                <ListItem>
-                                                    <ListItemIcon>
-                                                        <RouteIcon />
-                                                    </ListItemIcon>
-                                                    <ListItemText>
-                                                        {`Arrived with ${stop.route}`}
-                                                    </ListItemText>
-                                                </ListItem>
-                                            </List>
-                                        </TimelineContent>
-                                    </TimelineItem>
-                                ))}
-                            </Timeline>
-                        </CardContent>
-                    </Card>
-                </Stack>
-            </CardContent>
-        </Card>
+                                    })}
+                                </TimelineOppositeContent>
+                                <TimelineSeparator>
+                                    <TimelineDot />
+                                    <TimelineConnector />
+                                </TimelineSeparator>
+                                <TimelineContent>
+                                    <List>
+                                        <ListItem>
+                                            <ListItemIcon>
+                                                <LocationOnIcon />
+                                            </ListItemIcon>
+                                            <ListItemText>
+                                                {`${stop.stop.name} (${stop.stop.code} / ${stop.stop.gtfsId})`}
+                                            </ListItemText>
+                                        </ListItem>
+                                        <ListItem>
+                                            <ListItemIcon>
+                                                <RouteIcon />
+                                            </ListItemIcon>
+                                            <ListItemText>
+                                                {`Arrived with ${stop.route}`}
+                                            </ListItemText>
+                                        </ListItem>
+                                    </List>
+                                </TimelineContent>
+                            </TimelineItem>
+                        ))}
+                    </Timeline>
+                </CardContent>
+            </Card>
+        </Stack>
     )
 }
 
