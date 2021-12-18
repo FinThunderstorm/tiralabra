@@ -84,6 +84,12 @@ const search = async (startStop, endStop, uStartTime) => {
         if (visited.indexOf(`${route.stop.gtfsId}:${route.route}`) === -1) {
             visited = visited.concat([`${route.stop.gtfsId}:${route.route}`])
 
+            console.log(
+                'tsek',
+                typeof route.arrived,
+                route.arrived,
+                new Date(route.arrived - 1000)
+            )
             const departures = await StopRepository.getNextDepartures(
                 route.stop.gtfsId,
                 route.arrived
@@ -111,6 +117,13 @@ const search = async (startStop, endStop, uStartTime) => {
                                 route.arrived.valueOf() &&
                             departure.name.split(' ')[0] !== route.route
                         ) {
+                            if (route.stop.gtfsId === 'HSL:1240123') {
+                                console.log(
+                                    'Throw',
+                                    departure.name.split(' ')[0],
+                                    'out'
+                                )
+                            }
                             return
                         }
 

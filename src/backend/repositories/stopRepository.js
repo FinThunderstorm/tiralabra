@@ -71,6 +71,7 @@ const getNextDepartures = async (stopGtfsId, startTime) => {
                 stoptimesForPatterns(
                     numberOfDepartures: 1
                     startTime: $startTime
+                    omitNonPickups: true
                 ) {
                     pattern {
                         code
@@ -259,7 +260,6 @@ const getRouteline = async (stop, time, route) => {
         nextStop.nextStop.coordinates.longitude,
         nextStop.nextStop.coordinates.latitude,
     ]
-    console.log(startCoords, nextCoords)
 
     const result = await api.request(QUERY, { tripId: nextStop.tripGtfsId })
     const points = result.trip.geometry
@@ -287,7 +287,6 @@ const getRouteline = async (stop, time, route) => {
             nearestNext = { point, distance: distanceToNext, index: i }
         }
     }
-    console.log(nearestStart, nearestNext)
     const slicedPoints = points.slice(nearestStart.index, nearestNext.index + 1)
     let converted = []
     slicedPoints.forEach((point) => {

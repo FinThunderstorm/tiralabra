@@ -45,7 +45,7 @@ const RouteOnMap = () => {
                     <Popup>
                         <Stack spacing={2} direction="column" margin="normal">
                             <Typography variant="h5">
-                                Arrived with {stop.route}
+                                Arrived with {stop.route ?? 'your choice'}
                             </Typography>
                             <form onSubmit={handleDepartures}>
                                 <input
