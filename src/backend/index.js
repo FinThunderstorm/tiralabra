@@ -68,6 +68,17 @@ app.post('/nextDepartures', async (req, res) => {
     })
 })
 
+app.post('/routeLine', async (req, res) => {
+    const attributes = req.body
+    StopRepository.getRouteline(
+        attributes.stopGtfsId,
+        attributes.time,
+        attributes.route
+    ).then((result) => {
+        res.status(218).json(result)
+    })
+})
+
 /* nextStop is gtfsId for nextStop
  * endStop is gtfsId for endStop
  * startTime is given in search, what is time after take a look into route

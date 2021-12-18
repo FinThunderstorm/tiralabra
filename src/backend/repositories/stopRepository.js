@@ -6,6 +6,7 @@ const {
     convertEpochToDate,
     convertDateToEpoch,
     fixDepartures,
+    distanceBetweenTwoPoints,
 } = require('@backend/utils/helpers')
 
 /**
@@ -18,7 +19,6 @@ const getStop = async (stopGtfsId) => {
     const valid = await cache.check(`stop:${stopGtfsId}`)
     if (valid) {
         const stop = await cache.get(`stop:${stopGtfsId}`)
-
         return JSON.parse(stop)
     }
 
@@ -56,6 +56,7 @@ const getStop = async (stopGtfsId) => {
  * @summary Haetaan jokaisen pysäkiltä lähtevän linjan seuraavan lähdön, sekä niiden tiedot.
  * Esimerkki pysäkin gtfsid:stä: HSL:1240103
  * @param {String} stopGtfsId - pysäkin id GTFS-formaatissa
+ * @param {Number} startTime - aloitusaika UNIX-formaatissa (millisekuntit mukana)
  * @return {JSON} Pysäkin perustiedot ja seuraava lähtö jokaiselle kulkevalle linjalle lähtöaikajärjestyksessä.
  */
 const getNextDepartures = async (stopGtfsId, startTime) => {
@@ -216,7 +217,90 @@ const getNextDepartures = async (stopGtfsId, startTime) => {
     return departures
 }
 
+const getRouteline = async (stop, time, route) => {
+    const valid = await cache.check(`routeLine:${stop}@${route}`)
+    if (valid) {
+        const routeLine = await cache.get(`routeLine:${stop}@${route}`)
+        return JSON.parse(routeLine)
+    }
+
+    if (route === null) {
+        return undefined
+    }
+    const startStop = await getStop(stop)
+    const departures = await getNextDepartures(stop, time)
+    const nextStop = departures.departures.filter(
+        (value) => value.name.split(' ')[0] === route
+    )[0]
+
+    if (nextStop === undefined) {
+        return undefined
+    }
+
+    const QUERY = gql`
+        query ($tripId: String!) {
+            trip(id: $tripId) {
+                routeShortName
+                stops {
+                    gtfsId
+                    lat
+                    lon
+                }
+                geometry
+            }
+        }
+    `
+
+    const startCoords = [
+        startStop.coordinates.longitude,
+        startStop.coordinates.latitude,
+    ]
+    const nextCoords = [
+        nextStop.nextStop.coordinates.longitude,
+        nextStop.nextStop.coordinates.latitude,
+    ]
+    console.log(startCoords, nextCoords)
+
+    const result = await api.request(QUERY, { tripId: nextStop.tripGtfsId })
+    const points = result.trip.geometry
+
+    let nearestStart = {
+        point: points[0],
+        distance: Number.MAX_VALUE,
+        index: 0,
+    }
+    let nearestNext = { point: points[0], distance: Number.MAX_VALUE, index: 0 }
+    for (let i = 0; i < points.length; i += 1) {
+        const point = points[i]
+        const distanceToStart = distanceBetweenTwoPoints(
+            { longitude: startCoords[0], latitude: startCoords[1] },
+            { longitude: point[0], latitude: point[1] }
+        )
+        const distanceToNext = distanceBetweenTwoPoints(
+            { longitude: nextCoords[0], latitude: nextCoords[1] },
+            { longitude: point[0], latitude: point[1] }
+        )
+        if (distanceToStart < nearestStart.distance) {
+            nearestStart = { point, distance: distanceToStart, index: i }
+        }
+        if (distanceToNext < nearestNext.distance) {
+            nearestNext = { point, distance: distanceToNext, index: i }
+        }
+    }
+    console.log(nearestStart, nearestNext)
+    const slicedPoints = points.slice(nearestStart.index, nearestNext.index + 1)
+    let converted = []
+    slicedPoints.forEach((point) => {
+        converted = converted.concat([[point[1], point[0]]])
+    })
+
+    cache.set(`routeLine:${stop}@${route}`, JSON.stringify(converted))
+
+    return converted
+}
+
 module.exports = {
     getStop,
     getNextDepartures,
+    getRouteline,
 }

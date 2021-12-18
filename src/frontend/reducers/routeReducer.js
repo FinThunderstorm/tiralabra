@@ -14,6 +14,31 @@ const routeReducer = (state = null, action) => {
 
 export default routeReducer
 
+const formatRouteLine = async (route) => {
+    let routeLine = []
+
+    const firstPath = await axios.post('http://localhost:3001/routeLine', {
+        stopGtfsId: route.data.via[route.data.via.length - 1].stop.gtfsId,
+        time: 0,
+        route: route.data.via[route.data.via.length - 2].route,
+    })
+    routeLine = routeLine.concat([firstPath.data])
+
+    for (let i = 1; i < route.data.via.length; i += 1) {
+        const stop = route.data.via[i]
+        const points = await axios.post('http://localhost:3001/routeLine', {
+            stopGtfsId: stop.stop.gtfsId,
+            time: 0,
+            route: stop.route,
+        })
+        if (points === undefined) {
+            return
+        }
+        routeLine = routeLine.concat([points.data])
+    }
+    return routeLine
+}
+
 export const findRoute = (startStopGtfsId, endStopGtfsId, startTime) => {
     const uStartTime = Date.parse(startTime)
     return async (dispatch) => {
@@ -31,15 +56,8 @@ export const findRoute = (startStopGtfsId, endStopGtfsId, startTime) => {
             endStop: endStopGtfsId,
             uStartTime,
         })
-        let routeLine = []
-        route.data.via.forEach((stop) => {
-            routeLine = routeLine.concat([
-                [
-                    stop.stop.coordinates.latitude,
-                    stop.stop.coordinates.longitude,
-                ],
-            ])
-        })
+        const routeLine = await formatRouteLine(route)
+
         dispatch({
             type: 'SET_ROUTE',
             data: { route: route.data, routeLine },

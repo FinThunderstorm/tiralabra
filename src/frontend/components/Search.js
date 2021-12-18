@@ -29,7 +29,7 @@ const Search = () => {
         <Card>
             <CardHeader
                 avatar={<SearchIcon fontSize="large" />}
-                title="Hae reittiä"
+                title="Find route"
                 titleTypographyProps={{ variant: 'h5' }}
             />
             <CardContent>
@@ -40,20 +40,25 @@ const Search = () => {
                     id="searchBox"
                 >
                     <TextField
-                        label="Lähtöpysäkki:"
+                        color="secondary"
+                        label="From:"
                         onChange={(event) => setStartStop(event.target.value)}
                         value={startStop}
                     />
 
                     <TextField
-                        label="Kohdepysäkki:"
+                        color="secondary"
+                        label="Destination:"
                         onChange={(event) => setEndStop(event.target.value)}
                         value={endStop}
                     />
 
                     <DateTimePicker
-                        renderInput={(props) => <TextField {...props} />}
-                        label="Lähtöaika:"
+                        color="secondary"
+                        renderInput={(props) => (
+                            <TextField color="secondary" {...props} />
+                        )}
+                        label="Start time:"
                         value={startTime}
                         onChange={(newValue) => setStartTime(newValue)}
                     />
@@ -65,7 +70,7 @@ const Search = () => {
                         onClick={(event) => handleFindRoute(event)}
                         type="submit"
                     >
-                        Etsi
+                        Find
                     </Button>
                 </Stack>
             </CardContent>
