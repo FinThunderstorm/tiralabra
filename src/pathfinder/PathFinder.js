@@ -84,12 +84,6 @@ const search = async (startStop, endStop, uStartTime) => {
         if (visited.indexOf(`${route.stop.gtfsId}:${route.route}`) === -1) {
             visited = visited.concat([`${route.stop.gtfsId}:${route.route}`])
 
-            console.log(
-                'tsek',
-                typeof route.arrived,
-                route.arrived,
-                new Date(route.arrived - 1000)
-            )
             const departures = await StopRepository.getNextDepartures(
                 route.stop.gtfsId,
                 route.arrived
@@ -102,10 +96,11 @@ const search = async (startStop, endStop, uStartTime) => {
                         departure.nextStop !== null &&
                         departure.boardable === true
                     ) {
-                        const elapsed = departure.departuresAt - startTime
+                        const elapsed =
+                            departure.realtimeDeparturesAt - startTime
                         const takes =
-                            departure.nextStop.arrivesAt -
-                            departure.departuresAt
+                            departure.nextStop.realtimeArrivesAt -
+                            departure.realtimeDeparturesAt
                         const timeAfter =
                             elapsed +
                             takes +
@@ -113,24 +108,17 @@ const search = async (startStop, endStop, uStartTime) => {
 
                         // prevent to change bus, if departure time is same as arrival time and route is different than current
                         if (
-                            departure.departuresAt.valueOf() ===
+                            departure.realtimeDeparturesAt.valueOf() ===
                                 route.arrived.valueOf() &&
                             departure.name.split(' ')[0] !== route.route
                         ) {
-                            if (route.stop.gtfsId === 'HSL:1240123') {
-                                console.log(
-                                    'Throw',
-                                    departure.name.split(' ')[0],
-                                    'out'
-                                )
-                            }
                             return
                         }
 
                         const newRoute = new Route(
                             departure.nextStop,
                             timeAfter,
-                            departure.nextStop.arrivesAt,
+                            departure.nextStop.realtimeArrivesAt,
                             departure.name.split(' ')[0],
                             route
                         )
