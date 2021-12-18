@@ -60,7 +60,7 @@ const RouteViewer = () => {
                     <hr />
                     <Timeline>
                         {route.via.map((stop) => (
-                            <TimelineItem>
+                            <TimelineItem key={stop.gtfsId}>
                                 <TimelineOppositeContent>
                                     {new Date(
                                         stop.stop.arrivesAt

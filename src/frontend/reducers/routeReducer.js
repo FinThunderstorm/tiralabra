@@ -24,12 +24,14 @@ const formatRouteLine = async (route) => {
     })
     routeLine = routeLine.concat([firstPath.data])
 
-    for (let i = 1; i < route.data.via.length; i += 1) {
+    for (let i = route.data.via.length - 1; i > 0; i -= 1) {
         const stop = route.data.via[i]
+        const nextStop = route.data.via[i - 1]
+
         const points = await axios.post('http://localhost:3001/routeLine', {
             stopGtfsId: stop.stop.gtfsId,
             time: 0,
-            route: stop.route,
+            route: nextStop.route,
         })
         if (points === undefined) {
             return
