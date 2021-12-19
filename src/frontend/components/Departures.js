@@ -33,12 +33,11 @@ const Departures = () => {
                             </ListItemIcon>
                             <ListItemText>
                                 {dep.name.split(' ')[0]} - departures at{' '}
-                                {new Date(dep.departuresAt).toLocaleString(
-                                    'fi-FI',
-                                    {
-                                        timeZone: 'Europe/Helsinki',
-                                    }
-                                )}
+                                {new Date(
+                                    dep.realtimeDeparturesAt
+                                ).toLocaleString('fi-FI', {
+                                    timeZone: 'Europe/Helsinki',
+                                })}
                             </ListItemText>
                         </ListItem>
                     ))}

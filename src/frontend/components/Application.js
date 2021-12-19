@@ -15,6 +15,7 @@ import Map from './Map'
 import RouteViewer from './RouteViewer'
 import Search from './Search'
 import Loading from './Loading'
+import Error from './Error'
 
 const Application = () => {
     const [startStop, setStartStop] = useState('HSL:4620205')
@@ -35,6 +36,7 @@ const Application = () => {
                 <Grid item xs={3}>
                     <Stack spacing={2} direction="column" margin="normal">
                         <Search />
+                        <Error />
                         <Loading />
                         <RouteViewer />
                     </Stack>

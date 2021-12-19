@@ -11,11 +11,13 @@ import App from './App'
 import departuresReducer from './reducers/departuresReducer'
 import routeReducer from './reducers/routeReducer'
 import loadingReducer from './reducers/loadingReducer'
+import errorReducer from './reducers/errorReducer'
 
 const reducer = combineReducers({
     departures: departuresReducer,
     route: routeReducer,
     loading: loadingReducer,
+    error: errorReducer,
 })
 
 const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)))

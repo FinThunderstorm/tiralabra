@@ -15,14 +15,7 @@ const routeReducer = (state = null, action) => {
 export default routeReducer
 
 const formatRouteLine = async (route) => {
-    let routeLine = []
-
-    const firstPath = await axios.post('http://localhost:3001/routeLine', {
-        stopGtfsId: route.data.via[route.data.via.length - 1].stop.gtfsId,
-        time: 0,
-        route: route.data.via[route.data.via.length - 2].route,
-    })
-    routeLine = routeLine.concat([firstPath.data])
+    let routeLine = {}
 
     for (let i = route.data.via.length - 1; i > 0; i -= 1) {
         const stop = route.data.via[i]
@@ -36,7 +29,14 @@ const formatRouteLine = async (route) => {
         if (points === undefined) {
             return
         }
-        routeLine = routeLine.concat([points.data])
+
+        if (routeLine[nextStop.route] === undefined) {
+            routeLine[nextStop.route] = []
+        }
+
+        routeLine[nextStop.route] = routeLine[nextStop.route].concat([
+            points.data,
+        ])
     }
     return routeLine
 }
@@ -53,20 +53,37 @@ export const findRoute = (startStopGtfsId, endStopGtfsId, startTime) => {
             data: null,
         })
 
-        const route = await axios.post('http://localhost:3001/search', {
-            startStop: startStopGtfsId,
-            endStop: endStopGtfsId,
-            uStartTime,
-        })
-        const routeLine = await formatRouteLine(route)
+        try {
+            const route = await axios.post('http://localhost:3001/search', {
+                startStop: startStopGtfsId,
+                endStop: endStopGtfsId,
+                uStartTime,
+            })
+            const routeLine = await formatRouteLine(route)
 
-        dispatch({
-            type: 'SET_ROUTE',
-            data: { route: route.data, routeLine },
-        })
-        dispatch({
-            type: 'SET_LOADING',
-            data: false,
-        })
+            dispatch({
+                type: 'SET_ROUTE',
+                data: { route: route.data, routeLine },
+            })
+            dispatch({
+                type: 'SET_LOADING',
+                data: false,
+            })
+        } catch {
+            dispatch({
+                type: 'SET_ERROR',
+                data: 'Something happened during search, please check your input and try again',
+            })
+            setTimeout(() => {
+                dispatch({
+                    type: 'SET_ERROR',
+                    data: null,
+                })
+            }, 5000)
+            dispatch({
+                type: 'SET_LOADING',
+                data: false,
+            })
+        }
     }
 }

@@ -34,11 +34,18 @@ app.get('/health', async (req, res) => {
 
 app.post('/search', async (req, res) => {
     const attributes = req.body
-    console.log('attr:', attributes)
     const startStop = await StopRepository.getStop(attributes.startStop)
     const endStop = await StopRepository.getStop(attributes.endStop)
+    if (startStop === null || endStop === null) {
+        res.status(400).end()
+        return
+    }
     PathFinder.search(startStop, endStop, attributes.uStartTime).then(
         (searchedRoute) => {
+            if (searchedRoute === null) {
+                res.status(400).end()
+                return
+            }
             res.json(searchedRoute.toJSON())
         }
     )
@@ -46,6 +53,10 @@ app.post('/search', async (req, res) => {
 
 app.get('/stop/:stopGtfsId', async (req, res) => {
     StopRepository.getStop(req.params.stopGtfsId).then((stop) => {
+        if (stop === null) {
+            res.status(400).end()
+            return
+        }
         res.json(stop)
     })
 })
@@ -53,6 +64,10 @@ app.get('/stop/:stopGtfsId', async (req, res) => {
 app.get('/nextDepartures/:stopGtfsId', async (req, res) => {
     StopRepository.getNextDepartures(req.params.stopGtfsId, new Date()).then(
         (departures) => {
+            if (departures === null) {
+                res.status(400).end()
+                return
+            }
             res.json(departures)
         }
     )
@@ -64,8 +79,27 @@ app.post('/nextDepartures', async (req, res) => {
         attributes.gtfsId,
         attributes.startTime
     ).then((departures) => {
+        if (departures === null) {
+            res.status(400).end()
+            return
+        }
         res.json(departures)
     })
+})
+
+app.post('/findStops', async (req, res) => {
+    const attributes = req.body
+    const stopNameResults = await StopRepository.findStopsByName(
+        attributes.searchTerm
+    )
+    if (stopNameResults.stops.length !== 0) {
+        res.json(stopNameResults)
+        return
+    }
+    const textResults = await StopRepository.findStopsByText(
+        attributes.searchTerm
+    )
+    res.status(218).json(textResults)
 })
 
 app.post('/routeLine', async (req, res) => {

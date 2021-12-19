@@ -17,6 +17,8 @@ const Map = () => {
                     style={{ height: '60vh', width: '25wh' }}
                 >
                     <TileLayer
+                        attribution='Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, 
+                        <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
                         id="hsl-map"
                         tileSize={512}
                         zoomOffset={-1}

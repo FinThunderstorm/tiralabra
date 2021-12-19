@@ -96,7 +96,7 @@ const RouteViewer = () => {
                             <TimelineItem key={stop.gtfsId}>
                                 <TimelineOppositeContent>
                                     {new Date(
-                                        stop.stop.arrivesAt
+                                        stop.stop.realtimeArrivesAt
                                     ).toLocaleString('fi-FI', {
                                         timeZone: 'Europe/Helsinki',
                                     })}
@@ -130,7 +130,7 @@ const RouteViewer = () => {
                         <TimelineItem key={endStop.gtfsId}>
                             <TimelineOppositeContent>
                                 {new Date(
-                                    endStop.stop.arrivesAt
+                                    endStop.stop.realtimeArrivesAt
                                 ).toLocaleString('fi-FI', {
                                     timeZone: 'Europe/Helsinki',
                                 })}

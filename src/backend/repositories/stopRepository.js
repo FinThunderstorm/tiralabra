@@ -1,3 +1,5 @@
+/* eslint-disable no-await-in-loop */
+const axios = require('axios')
 const { gql } = require('graphql-request')
 const { api } = require('@backend/graphql')
 const cache = require('@backend/redis')
@@ -35,6 +37,10 @@ const getStop = async (stopGtfsId) => {
     `
 
     const result = await api.request(QUERY, { id: stopGtfsId })
+
+    if (result.stop === null) {
+        return null
+    }
 
     const stop = {
         name: result.stop.name,
@@ -88,7 +94,7 @@ const getNextDepartures = async (stopGtfsId, startTime) => {
                         trip {
                             gtfsId
                             routeShortName
-                            stoptimes {
+                            stoptimesForDate {
                                 stop {
                                     code
                                     name
@@ -136,13 +142,17 @@ const getNextDepartures = async (stopGtfsId, startTime) => {
     }
     departures.departures = []
     results.stop.stoptimesForPatterns.forEach((route) => {
+        // console.log('Tsek', route)
         route.stoptimes.forEach((stoptime) => {
             let res = null
             let check = false
             let boardable = true
-            stoptime.trip.stoptimes.forEach((stop) => {
+            stoptime.trip.stoptimesForDate.forEach((stop) => {
                 if (res && check) return
                 if (stop.stop.gtfsId === stopGtfsId) {
+                    if (route.pattern.code === 'HSL:1007:1:02') {
+                        console.log('ds', route.pattern, stop)
+                    }
                     check = true
                     if (stop.pickupType === 'NONE') {
                         boardable = false
@@ -203,17 +213,27 @@ const getNextDepartures = async (stopGtfsId, startTime) => {
                     serviceDay: stoptime.serviceDay,
                 },
             }
+            // if (route.pattern.code === 'HSL:1007:1:02') {
+            //     console.log('facts:', facts)
+            // }
             departures.departures = departures.departures.concat([facts])
         })
     })
+    console.log('before:', departures.departures)
     departures.departures = departures.departures
-        .filter((a) => Date.parse(a.departuresAt) >= Date.parse(startTime))
-        .sort((a, b) => a.departuresAt - b.departuresAt)
+        .filter(
+            (a) =>
+                a.realtimeDeparturesAt.valueOf() >=
+                Date.parse(startTime).valueOf()
+        )
+        .sort((a, b) => a.realtimeDeparturesAt - b.realtimeDeparturesAt)
 
     cache.set(
         `nextDepartures:${stopGtfsId}@${arrived}`,
         JSON.stringify(departures)
     )
+
+    console.log('after:', departures.departures)
 
     return departures
 }
@@ -298,8 +318,140 @@ const getRouteline = async (stop, time, route) => {
     return converted
 }
 
+const findStopsByName = async (searchTerm) => {
+    const valid = await cache.check(`findStopsByName:${searchTerm}`)
+    if (valid) {
+        const stops = await cache.get(`findStopsByName:${searchTerm}`)
+        return JSON.parse(stops)
+    }
+
+    const QUERY = gql`
+        query ($term: String!) {
+            stops(name: $term) {
+                name
+                code
+                gtfsId
+                platformCode
+                vehicleMode
+            }
+        }
+    `
+
+    const result = await api.request(QUERY, { term: searchTerm })
+
+    cache.set(`findStopsByName:${searchTerm}`, JSON.stringify(result))
+
+    return result
+}
+
+const findStopsByCoords = async (lon, lat) => {
+    const valid = await cache.check(`findStopsByCoords:${lon};${lat}`)
+    if (valid) {
+        const stops = await cache.get(`findStopsByCoords:${lon};${lat}`)
+        return JSON.parse(stops)
+    }
+
+    const QUERY = gql`
+        query ($lon: Float!, $lat: Float!) {
+            stopsByRadius(lon: $lon, lat: $lat, radius: 500) {
+                edges {
+                    node {
+                        stop {
+                            name
+                            code
+                            gtfsId
+                            platformCode
+                            vehicleMode
+                        }
+                        distance
+                    }
+                }
+            }
+        }
+    `
+
+    const result = await api.request(QUERY, { lon, lat })
+
+    cache.set(`findStopsByCoords:${lon};${lat}`, JSON.stringify(result))
+
+    return result
+}
+
+const findStopsByText = async (searchTerm) => {
+    const valid = await cache.check(`findStopsByText:${searchTerm}`)
+    if (valid) {
+        const stops = await cache.get(`findStopsByText:${searchTerm}`)
+        return JSON.parse(stops)
+    }
+
+    const result = await axios.get(
+        'https://api.digitransit.fi/geocoding/v1/search',
+        {
+            params: {
+                text: searchTerm,
+                'focus.point.lat': 60.2,
+                'focus.point.lon': 24.936,
+                sources: 'gtfshsl,osm',
+            },
+        }
+    )
+
+    const check = new Set()
+    const stops = {
+        stops: [],
+    }
+
+    for (let i = 0; i < result.data.features.length; i += 1) {
+        const feature = result.data.features[i]
+        if (feature.properties.source === 'gtfshsl') {
+            console.log(feature.properties.addendum)
+            const gtfsId = feature.properties.id.split('#')[0].split('GTFS:')[1]
+            if (!check.has(gtfsId)) {
+                stops.stops = stops.stops.concat([
+                    {
+                        name: feature.properties.name,
+                        code: feature.properties.id.split('#')[1],
+                        gtfsId,
+                        vehicleMode: feature.properties.addendum.GTFS.modes[0],
+                    },
+                ])
+                check.add(gtfsId)
+            }
+        } else if (feature.properties.source === 'openstreetmap') {
+            const coordsStops = await findStopsByCoords(
+                feature.geometry.coordinates[0],
+                feature.geometry.coordinates[1]
+            )
+
+            coordsStops.stopsByRadius.edges.forEach((node) => {
+                if (!check.has(node.node.stop.gtfsId)) {
+                    stops.stops = stops.stops.concat([node.node.stop])
+                    check.add(node.node.stop.gtfsId)
+                }
+            })
+        }
+    }
+
+    /*
+    {
+        "stops": [
+            {
+                "name": "Kamppi",
+                "gtfsId": "HSL:1040279"
+            }
+        ]
+    }
+    */
+
+    cache.set(`findStopsByText:${searchTerm}`, JSON.stringify(result.data))
+
+    return stops
+}
+
 module.exports = {
     getStop,
     getNextDepartures,
     getRouteline,
+    findStopsByName,
+    findStopsByText,
 }

@@ -5,7 +5,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { Marker, Polyline, Popup } from 'react-leaflet'
-import markerLogo from '../marker.svg'
+import markerLogo from '../marker2.svg'
+import dotLogo from '../dot2.svg'
 import { setDepartures } from '../reducers/departuresReducer'
 import { Button, Stack, Typography } from '@mui/material'
 
@@ -26,6 +27,25 @@ const RouteOnMap = () => {
     const scale = 0.05
 
     const { route, routeLine } = routeState
+
+    const colors = [
+        '#00bfa6',
+        '#dd2c00',
+        '#ff0000',
+        '#ffff00',
+        '#03a9f4',
+        '#00ea00',
+    ]
+
+    let colorIndex = 0
+    const getColor = () => {
+        const ret = colorIndex
+        colorIndex += 1
+        if (colorIndex == colors.length) {
+            colorIndex = 0
+        }
+        return ret
+    }
 
     return (
         <>
@@ -82,7 +102,37 @@ const RouteOnMap = () => {
                     </Popup>
                 </Marker>
             ))}
-            <Polyline pathOptions={{ color: 'purple' }} positions={routeLine} />
+            {Object.keys(routeLine).map((key) => (
+                <>
+                    <Marker
+                        position={routeLine[key][0][0]}
+                        icon={L.icon({
+                            iconUrl: dotLogo,
+                            iconSize: [256 * scale, 256 * scale],
+                            iconAnchor: [5, 5],
+                        })}
+                    />
+                    <Polyline
+                        pathOptions={{
+                            color: colors[getColor()],
+                        }}
+                        positions={routeLine[key]}
+                    />
+                    <Marker
+                        position={
+                            routeLine[key][routeLine[key].length - 1][
+                                routeLine[key][routeLine[key].length - 1]
+                                    .length - 1
+                            ]
+                        }
+                        icon={L.icon({
+                            iconUrl: dotLogo,
+                            iconSize: [256 * scale, 256 * scale],
+                            iconAnchor: [5, 5],
+                        })}
+                    />
+                </>
+            ))}
         </>
     )
 }
