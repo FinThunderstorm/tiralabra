@@ -143,51 +143,38 @@ const getNextDepartures = async (stopGtfsId, startTime) => {
     }
     departures.departures = []
     results.stop.stoptimesForPatterns.forEach((route) => {
-        // console.log('Tsek', route)
         route.stoptimes.forEach((stoptime) => {
             let res = null
-            let check = false
             let boardable = true
-            // console.log(
-            //     '>',
-            //     stoptime.stopSequence,
-            //     stoptime.trip.stoptimesForDate[stoptime.stopSequence]
-            // )
-            stoptime.trip.stoptimesForDate.forEach((stop) => {
-                if (res && check) return
-                if (stop.stop.gtfsId === stopGtfsId) {
-                    check = true
-                    if (stop.pickupType === 'NONE') {
-                        boardable = false
-                    }
-                    return
-                }
-                if (!res && check) {
-                    res = {
-                        name: stop.stop.name,
-                        code: stop.stop.code,
-                        gtfsId: stop.stop.gtfsId,
-                        coordinates: {
-                            latitude: stop.stop.lat,
-                            longitude: stop.stop.lon,
-                        },
-                        locationType: stop.stop.locationType,
-                        arrivesAt: convertEpochToDate(
-                            stop.scheduledArrival + stoptime.serviceDay
-                        ),
-                        realtimeArrivesAt: convertEpochToDate(
-                            stop.realtimeArrival + stoptime.serviceDay
-                        ),
-                        departuresAt: convertEpochToDate(
-                            stop.scheduledDeparture + stoptime.serviceDay
-                        ),
-                        realtimeDeparturesAt: convertEpochToDate(
-                            stop.realtimeDeparture + stoptime.serviceDay
-                        ),
-                        serviceDay: convertEpochToDate(stoptime.serviceDay),
-                    }
-                }
-            })
+
+            const stop = stoptime.trip.stoptimesForDate[stoptime.stopSequence]
+            res = {
+                name: stop.stop.name,
+                code: stop.stop.code,
+                gtfsId: stop.stop.gtfsId,
+                coordinates: {
+                    latitude: stop.stop.lat,
+                    longitude: stop.stop.lon,
+                },
+                locationType: stop.stop.locationType,
+                arrivesAt: convertEpochToDate(
+                    stop.scheduledArrival + stoptime.serviceDay
+                ),
+                realtimeArrivesAt: convertEpochToDate(
+                    stop.realtimeArrival + stoptime.serviceDay
+                ),
+                departuresAt: convertEpochToDate(
+                    stop.scheduledDeparture + stoptime.serviceDay
+                ),
+                realtimeDeparturesAt: convertEpochToDate(
+                    stop.realtimeDeparture + stoptime.serviceDay
+                ),
+                serviceDay: convertEpochToDate(stoptime.serviceDay),
+            }
+            if (stop.pickupType === 'NONE') {
+                boardable = false
+            }
+
             const facts = {
                 name: route.pattern.name,
                 code: route.pattern.code,
@@ -216,9 +203,7 @@ const getNextDepartures = async (stopGtfsId, startTime) => {
                     serviceDay: stoptime.serviceDay,
                 },
             }
-            // if (route.pattern.code === 'HSL:1007:1:02') {
-            //     console.log('facts:', facts)
-            // }
+
             departures.departures = departures.departures.concat([facts])
         })
     })

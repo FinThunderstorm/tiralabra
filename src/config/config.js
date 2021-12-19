@@ -1,4 +1,4 @@
-const cachetime = 60 * 1000
+const cachetime = 60 * 0
 const defaultHost = 'tiralabra-cache'
 
 module.exports = {
