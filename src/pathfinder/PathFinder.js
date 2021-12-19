@@ -92,6 +92,7 @@ const search = async (startStop, endStop, uStartTime) => {
             if (departures !== undefined) {
                 departures.departures.forEach(async (departure) => {
                     // tarkastetaan, ettei ole linjan päätepysäkki tai pysäkiltä ei voi hypätä kyytiin
+                    // console.log('departure', departure)
                     if (
                         departure.nextStop !== null &&
                         departure.boardable === true
@@ -112,6 +113,10 @@ const search = async (startStop, endStop, uStartTime) => {
                                 route.arrived.valueOf() &&
                             departure.name.split(' ')[0] !== route.route
                         ) {
+                            console.log(
+                                'lemppasin',
+                                departure.name.split(' ')[0]
+                            )
                             return
                         }
 
@@ -132,6 +137,11 @@ const search = async (startStop, endStop, uStartTime) => {
         if (queue.length === 0) {
             return undefined
         }
+
+        // if (route.stop.gtfsId === 'HSL:4660201') {
+        //     console.log(queue.toString())
+        // }
+        // console.log(queue.toString())
 
         route = queue.pop()
     }

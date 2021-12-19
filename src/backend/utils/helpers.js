@@ -52,10 +52,11 @@ const fixDepartures = (departure) => {
 }
 
 const speeds = {
-    tram: 14,
-    bus: 20,
+    TRAM: 14,
+    BUS: 20,
     mainlineBus: 26,
-    metro: 44,
+    SUBWAY: 44,
+    WALK: 5,
 }
 
 /**

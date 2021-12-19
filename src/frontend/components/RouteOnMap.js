@@ -22,6 +22,7 @@ const RouteOnMap = () => {
         event.preventDefault()
         const gtfsId = event.target.gtfsId.value
         const startTime = event.target.startTime.value
+        console.log(new Date(startTime).toISOString())
         dispatch(setDepartures(gtfsId, startTime))
     }
     const scale = 0.05
@@ -78,7 +79,10 @@ const RouteOnMap = () => {
                                     name="startTime"
                                     hidden
                                     readOnly
-                                    value={stop.stop.arrivesAt}
+                                    value={
+                                        stop.stop.realtimeArrivesAt ??
+                                        stop.stop.arrivesAt
+                                    }
                                 />
                                 <Button
                                     color="secondary"
@@ -91,12 +95,12 @@ const RouteOnMap = () => {
                             </form>
                             <Typography variant="body2">
                                 Arrived at:{' '}
-                                {new Date(stop.stop.arrivesAt).toLocaleString(
-                                    'fi-FI',
-                                    {
+                                {stop.stop.realtimeArrivesAt &&
+                                    new Date(
+                                        stop.stop.realtimeArrivesAt
+                                    ).toLocaleString('fi-FI', {
                                         timeZone: 'Europe/Helsinki',
-                                    }
-                                )}
+                                    })}
                             </Typography>
                         </Stack>
                     </Popup>

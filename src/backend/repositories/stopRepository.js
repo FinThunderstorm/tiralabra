@@ -91,6 +91,7 @@ const getNextDepartures = async (stopGtfsId, startTime) => {
                         realtimeArrival
                         realtime
                         serviceDay
+                        stopSequence
                         trip {
                             gtfsId
                             routeShortName
@@ -147,12 +148,14 @@ const getNextDepartures = async (stopGtfsId, startTime) => {
             let res = null
             let check = false
             let boardable = true
+            // console.log(
+            //     '>',
+            //     stoptime.stopSequence,
+            //     stoptime.trip.stoptimesForDate[stoptime.stopSequence]
+            // )
             stoptime.trip.stoptimesForDate.forEach((stop) => {
                 if (res && check) return
                 if (stop.stop.gtfsId === stopGtfsId) {
-                    if (route.pattern.code === 'HSL:1007:1:02') {
-                        console.log('ds', route.pattern, stop)
-                    }
                     check = true
                     if (stop.pickupType === 'NONE') {
                         boardable = false
@@ -219,7 +222,6 @@ const getNextDepartures = async (stopGtfsId, startTime) => {
             departures.departures = departures.departures.concat([facts])
         })
     })
-    console.log('before:', departures.departures)
     departures.departures = departures.departures
         .filter(
             (a) =>
@@ -232,8 +234,6 @@ const getNextDepartures = async (stopGtfsId, startTime) => {
         `nextDepartures:${stopGtfsId}@${arrived}`,
         JSON.stringify(departures)
     )
-
-    console.log('after:', departures.departures)
 
     return departures
 }
