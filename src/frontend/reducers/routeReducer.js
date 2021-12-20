@@ -54,11 +54,29 @@ export const findRoute = (startStopGtfsId, endStopGtfsId, startTime) => {
         })
 
         try {
+            const startTime = performance.now()
             const route = await axios.post('http://localhost:3001/search', {
                 startStop: startStopGtfsId,
                 endStop: endStopGtfsId,
                 uStartTime,
             })
+            const endTime = performance.now()
+            dispatch({
+                type: 'SET_ERROR',
+                data: {
+                    msg: `Route found, formatting... took ${(
+                        (endTime - startTime) /
+                        1000
+                    ).toFixed(1)} seconds`,
+                    type: 'success',
+                },
+            })
+            setTimeout(() => {
+                dispatch({
+                    type: 'SET_ERROR',
+                    data: null,
+                })
+            }, 15000)
             const routeLine = await formatRouteLine(route)
 
             dispatch({
@@ -72,14 +90,17 @@ export const findRoute = (startStopGtfsId, endStopGtfsId, startTime) => {
         } catch {
             dispatch({
                 type: 'SET_ERROR',
-                data: 'Something happened during search, please check your input and try again',
+                data: {
+                    msg: 'Something happened during search, please check your input and try again',
+                    type: 'error',
+                },
             })
             setTimeout(() => {
                 dispatch({
                     type: 'SET_ERROR',
                     data: null,
                 })
-            }, 5000)
+            }, 10000)
             dispatch({
                 type: 'SET_LOADING',
                 data: false,

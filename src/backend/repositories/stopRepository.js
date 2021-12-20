@@ -236,7 +236,7 @@ const getNextDepartures = async (stopGtfsId, startTime) => {
             )
 
             const facts = {
-                name: `Walk -> (${stop.stop.name}/${stop.stop.code}/${stop.stop.gtfsId})`,
+                name: `Walk to ${stop.stop.name} ${stop.stop.code} (${stop.stop.gtfsId})`,
                 code: 'Walk',
                 tripGtfsId: `WALK:${stopGtfsId}:${stop.stop.gtfsId}`,
                 headsign: 'Walk',

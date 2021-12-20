@@ -5,6 +5,7 @@ Julkisen liikenteen keskinopeudet:
 -   ratikka 14 km/h (https://www.helsinginuutiset.fi/paikalliset/1199214)
 -   metro 44 km/h (http://jlf.fi/f29/3408-joukkoliikennevalineiden-keskinopeudet/) & (https://fi.wikipedia.org/wiki/Helsingin_metro)
 -   juna 54 km/h (http://junakalusto.fi/fi/lahijunaliikenne)
+-   suomenlinnan lautta ~9 solmua eli ~17km/h (https://turvallisuustutkinta.fi/material/attachments/otkes/tutkintaselostukset/fi/vesiliikenneonnettomuuksientutkinta/2016/UfLyPxJPF/M2016-02_Suomenlinnan_lautan_ja_purjeveneen_yhteentormays_Helsingissa_2.9.2016.pdf)
 
 selvitä how to prevent return of value as promise, wait for promise to resolve before return
 

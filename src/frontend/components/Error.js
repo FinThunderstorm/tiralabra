@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 
 const Error = () => {
     const msg = useSelector((state) => state.error)
-    return <>{msg && <Alert severity="error">{msg}</Alert>}</>
+    return <>{msg && <Alert severity={msg.type}>{msg.msg}</Alert>}</>
 }
 
 export default Error

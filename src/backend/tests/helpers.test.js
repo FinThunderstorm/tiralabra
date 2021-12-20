@@ -8,6 +8,7 @@ describe('helpers', () => {
         expect(helpers.speeds.WALK).toBe(5)
         expect(helpers.speeds.SUBWAY).toBe(44)
         expect(helpers.speeds.RAIL).toBe(54)
+        expect(helpers.speeds.FERRY).toBe(17)
     })
     test('convertEpochToDate converts correctly', () => {
         const epoch = 1609502400
