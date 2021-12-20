@@ -2,10 +2,12 @@ const helpers = require('@helpers')
 
 describe('helpers', () => {
     test('speeds returns right values', () => {
-        expect(helpers.speeds.tram).toBe(14)
-        expect(helpers.speeds.bus).toBe(20)
+        expect(helpers.speeds.TRAM).toBe(14)
+        expect(helpers.speeds.BUS).toBe(20)
         expect(helpers.speeds.mainlineBus).toBe(26)
-        expect(helpers.speeds.metro).toBe(44)
+        expect(helpers.speeds.WALK).toBe(5)
+        expect(helpers.speeds.SUBWAY).toBe(44)
+        expect(helpers.speeds.RAIL).toBe(54)
     })
     test('convertEpochToDate converts correctly', () => {
         const epoch = 1609502400

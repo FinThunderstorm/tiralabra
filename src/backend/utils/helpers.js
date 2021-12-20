@@ -57,6 +57,7 @@ const speeds = {
     mainlineBus: 26,
     SUBWAY: 44,
     WALK: 5,
+    RAIL: 54,
 }
 
 /**

@@ -4,6 +4,7 @@
 const PriorityQueue = require('@datastructures/MinHeap')
 const StopRepository = require('@repositories/stopRepository')
 const Route = require('@datastructures/Route')
+const { speeds } = require('@helpers')
 
 /**
  * PathFinderin funktioita käytetään reitin hakemiseen kahden pisteen välillä.
@@ -49,12 +50,12 @@ const distanceBetweenTwoPoints = (coord1, coord2) => {
  * @param {Stop} endStop kohdepysäkki
  * @returns aika-arvio millisekunteissa (yhteensopivuus Date-olion kanssa)
  */
-const heuristic = (startStop, endStop) => {
+const heuristic = (startStop, endStop, mode = 'BUS') => {
     const distance = distanceBetweenTwoPoints(
         startStop.coordinates,
         endStop.coordinates
     )
-    const speed = 20 // bussi 20km/h
+    const speed = speeds[mode] // bussi 20km/h
     const time = distance / speed
     return time * 60 * 60 * 1000
 }
@@ -84,6 +85,15 @@ const search = async (startStop, endStop, uStartTime) => {
         if (visited.indexOf(`${route.stop.gtfsId}:${route.route}`) === -1) {
             visited = visited.concat([`${route.stop.gtfsId}:${route.route}`])
 
+            // console.log(
+            //     'Tarkastellaan pysäkkiä',
+            //     route.stop.gtfsId,
+            //     route.stop.name,
+            //     route.stop.code,
+            //     'ajassa',
+            //     route.arrived.toISOString()
+            // )
+
             const departures = await StopRepository.getNextDepartures(
                 route.stop.gtfsId,
                 route.arrived
@@ -92,11 +102,15 @@ const search = async (startStop, endStop, uStartTime) => {
             if (departures !== undefined) {
                 departures.departures.forEach(async (departure) => {
                     // tarkastetaan, ettei ole linjan päätepysäkki tai pysäkiltä ei voi hypätä kyytiin
-                    // console.log('departure', departure)
+
                     if (
                         departure.nextStop !== null &&
-                        departure.boardable === true
+                        departure.boardable !== 'NONE'
                     ) {
+                        // fallback for older syntax
+                        if (departure.boardable === false) {
+                            return
+                        }
                         const elapsed =
                             departure.realtimeDeparturesAt - startTime
                         const takes =
@@ -105,18 +119,19 @@ const search = async (startStop, endStop, uStartTime) => {
                         const timeAfter =
                             elapsed +
                             takes +
-                            heuristic(departure.nextStop, endStop)
+                            heuristic(
+                                departure.nextStop,
+                                endStop,
+                                departure.mode
+                            )
 
                         // prevent to change bus, if departure time is same as arrival time and route is different than current
                         if (
                             departure.realtimeDeparturesAt.valueOf() ===
                                 route.arrived.valueOf() &&
-                            departure.name.split(' ')[0] !== route.route
+                            departure.name.split(' ')[0] !==
+                                route.route.split(' ')[0]
                         ) {
-                            console.log(
-                                'lemppasin',
-                                departure.name.split(' ')[0]
-                            )
                             return
                         }
 
@@ -124,7 +139,7 @@ const search = async (startStop, endStop, uStartTime) => {
                             departure.nextStop,
                             timeAfter,
                             departure.nextStop.realtimeArrivesAt,
-                            departure.name.split(' ')[0],
+                            departure.name,
                             route
                         )
 

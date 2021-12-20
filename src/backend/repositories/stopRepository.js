@@ -9,6 +9,7 @@ const {
     convertDateToEpoch,
     fixDepartures,
     distanceBetweenTwoPoints,
+    speeds,
 } = require('@backend/utils/helpers')
 
 /**
@@ -83,6 +84,9 @@ const getNextDepartures = async (stopGtfsId, startTime) => {
                         code
                         name
                         headsign
+                        route {
+                            mode
+                        }
                     }
                     stoptimes {
                         scheduledDeparture
@@ -144,36 +148,7 @@ const getNextDepartures = async (stopGtfsId, startTime) => {
     departures.departures = []
     results.stop.stoptimesForPatterns.forEach((route) => {
         route.stoptimes.forEach((stoptime) => {
-            let res = null
-            let boardable = true
-
             const stop = stoptime.trip.stoptimesForDate[stoptime.stopSequence]
-            res = {
-                name: stop.stop.name,
-                code: stop.stop.code,
-                gtfsId: stop.stop.gtfsId,
-                coordinates: {
-                    latitude: stop.stop.lat,
-                    longitude: stop.stop.lon,
-                },
-                locationType: stop.stop.locationType,
-                arrivesAt: convertEpochToDate(
-                    stop.scheduledArrival + stoptime.serviceDay
-                ),
-                realtimeArrivesAt: convertEpochToDate(
-                    stop.realtimeArrival + stoptime.serviceDay
-                ),
-                departuresAt: convertEpochToDate(
-                    stop.scheduledDeparture + stoptime.serviceDay
-                ),
-                realtimeDeparturesAt: convertEpochToDate(
-                    stop.realtimeDeparture + stoptime.serviceDay
-                ),
-                serviceDay: convertEpochToDate(stoptime.serviceDay),
-            }
-            if (stop.pickupType === 'NONE') {
-                boardable = false
-            }
 
             const facts = {
                 name: route.pattern.name,
@@ -193,8 +168,33 @@ const getNextDepartures = async (stopGtfsId, startTime) => {
                 realtimeDeparturesAt: convertEpochToDate(
                     stoptime.realtimeDeparture + stoptime.serviceDay
                 ),
-                nextStop: res,
-                boardable,
+                mode: route.pattern.route.mode,
+                nextStop: {
+                    name: stop.stop.name,
+                    code: stop.stop.code,
+                    gtfsId: stop.stop.gtfsId,
+                    coordinates: {
+                        latitude: stop.stop.lat,
+                        longitude: stop.stop.lon,
+                    },
+                    locationType: stop.stop.locationType,
+                    arrivesAt: convertEpochToDate(
+                        stop.scheduledArrival + stoptime.serviceDay
+                    ),
+                    realtimeArrivesAt: convertEpochToDate(
+                        stop.realtimeArrival + stoptime.serviceDay
+                    ),
+                    departuresAt: convertEpochToDate(
+                        stop.scheduledDeparture + stoptime.serviceDay
+                    ),
+                    realtimeDeparturesAt: convertEpochToDate(
+                        stop.realtimeDeparture + stoptime.serviceDay
+                    ),
+                    serviceDay: convertEpochToDate(stoptime.serviceDay),
+                },
+                boardable:
+                    stoptime.trip.stoptimesForDate[stoptime.stopSequence - 1]
+                        .pickupType,
                 unixTimestamps: {
                     scheduledDeparture: stoptime.scheduledDeparture,
                     realtimeDeparture: stoptime.realtimeDeparture,
@@ -204,9 +204,75 @@ const getNextDepartures = async (stopGtfsId, startTime) => {
                 },
             }
 
-            departures.departures = departures.departures.concat([facts])
+            departures.departures = [...departures.departures, facts]
         })
     })
+
+    // const nearestStops = await getNearestStops(
+    //     results.stop.lat,
+    //     results.stop.lon
+    // )
+
+    const transferStops = await getTransferStops(stopGtfsId)
+
+    transferStops
+        // .filter((stop) => stop.stop.gtfsId !== stopGtfsId)
+        .forEach((stop) => {
+            const walkTime =
+                (stop.distance / 1000 / speeds.WALK) * 60 * 60 * 1000
+            const arrivedDate = convertEpochToDate(arrived + 1)
+            const safeTime = 2 * 60 * 1000 // 2 minutes
+            const afterWalk = new Date(
+                arrivedDate.valueOf() + walkTime + safeTime
+            )
+
+            const serviceDay = new Date(
+                new Date(
+                    arrivedDate.getFullYear(),
+                    arrivedDate.getMonth(),
+                    arrivedDate.getDate()
+                ).valueOf() -
+                    2 * 60 * 60 * 1000
+            )
+
+            const facts = {
+                name: `Walk -> (${stop.stop.name}/${stop.stop.code}/${stop.stop.gtfsId})`,
+                code: 'Walk',
+                tripGtfsId: `WALK:${stopGtfsId}:${stop.stop.gtfsId}`,
+                headsign: 'Walk',
+                realtime: true,
+                arrivesAt: convertEpochToDate(arrived + 1),
+                realtimeArrivesAt: convertEpochToDate(arrived + 1),
+                departuresAt: convertEpochToDate(arrived + 1),
+                realtimeDeparturesAt: convertEpochToDate(arrived + 1),
+                mode: 'WALK',
+                nextStop: {
+                    name: stop.stop.name,
+                    code: stop.stop.code,
+                    gtfsId: stop.stop.gtfsId,
+                    coordinates: {
+                        latitude: stop.stop.lat,
+                        longitude: stop.stop.lon,
+                    },
+                    locationType: stop.stop.locationType,
+                    arrivesAt: afterWalk,
+                    realtimeArrivesAt: afterWalk,
+                    departuresAt: afterWalk,
+                    realtimeDeparturesAt: afterWalk,
+                    serviceDay,
+                },
+                boardable: 'SCHEDULED',
+                unixTimestamps: {
+                    scheduledDeparture: convertDateToEpoch(arrived),
+                    realtimeDeparture: convertDateToEpoch(arrived),
+                    // scheduledArrival: stoptime.scheduledArrival,
+                    // realtimeArrival: stoptime.realtimeArrival,
+                    serviceDay: convertDateToEpoch(serviceDay),
+                },
+            }
+            departures.departures = [...departures.departures, facts]
+        })
+
     departures.departures = departures.departures
         .filter(
             (a) =>
@@ -223,6 +289,90 @@ const getNextDepartures = async (stopGtfsId, startTime) => {
     return departures
 }
 
+const getTransferStops = async (stopGtfsId, maxDistance = 250) => {
+    const QUERY = gql`
+        query ($id: String!, $maxDistance: Int!) {
+            stop(id: $id) {
+                name
+                code
+                lat
+                lon
+                locationType
+                transfers(maxDistance: $maxDistance) {
+                    stop {
+                        name
+                        code
+                        gtfsId
+                        lat
+                        lon
+                        locationType
+                    }
+                    distance
+                }
+            }
+        }
+    `
+
+    const results = await api.request(QUERY, {
+        id: stopGtfsId,
+        maxDistance,
+    })
+
+    let stops = []
+
+    results.stop.transfers.forEach((stop) => {
+        stops = [...stops, { stop: stop.stop, distance: stop.distance }]
+    })
+
+    return stops
+}
+
+const getNearestStops = async (lat, lon, maxDistance = 250) => {
+    const QUERY = gql`
+        query ($lat: Float!, $lon: Float!, $maxDistance: Int!) {
+            nearest(
+                lat: $lat
+                lon: $lon
+                filterByPlaceTypes: STOP
+                maxDistance: $maxDistance
+            ) {
+                edges {
+                    node {
+                        place {
+                            ... on Stop {
+                                name
+                                code
+                                gtfsId
+                                lat
+                                lon
+                                locationType
+                            }
+                        }
+                        distance
+                    }
+                }
+            }
+        }
+    `
+
+    const results = await api.request(QUERY, {
+        lat,
+        lon,
+        maxDistance,
+    })
+
+    let stops = []
+
+    results.nearest.edges.forEach((node) => {
+        stops = [
+            ...stops,
+            { stop: node.node.place, distance: node.node.distance },
+        ]
+    })
+
+    return stops
+}
+
 const getRouteline = async (stop, time, route) => {
     const valid = await cache.check(`routeLine:${stop}@${route}`)
     if (valid) {
@@ -236,7 +386,7 @@ const getRouteline = async (stop, time, route) => {
     const startStop = await getStop(stop)
     const departures = await getNextDepartures(stop, time)
     const nextStop = departures.departures.filter(
-        (value) => value.name.split(' ')[0] === route
+        (value) => value.name.split(' ')[0] === route.split(' ')[0]
     )[0]
 
     if (nextStop === undefined) {
@@ -298,7 +448,10 @@ const getRouteline = async (stop, time, route) => {
         converted = converted.concat([[point[1], point[0]]])
     })
 
-    cache.set(`routeLine:${stop}@${route}`, JSON.stringify(converted))
+    cache.set(
+        `routeLine:${stop}@${route.split(' ')[0]}`,
+        JSON.stringify(converted)
+    )
 
     return converted
 }
@@ -435,6 +588,8 @@ const findStopsByText = async (searchTerm) => {
 
 module.exports = {
     getStop,
+    getNearestStops,
+    getTransferStops,
     getNextDepartures,
     getRouteline,
     findStopsByName,

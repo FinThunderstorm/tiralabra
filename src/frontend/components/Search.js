@@ -143,7 +143,8 @@ const Search = () => {
                                 }}
                             >
                                 {startStopOption.name} {startStopOption.code} (
-                                {startStopOption.vehicleMode})
+                                {startStopOption.vehicleMode}) (
+                                {startStopOption.platformCode})
                             </Button>
                         ))}
 
@@ -178,7 +179,8 @@ const Search = () => {
                                 }}
                             >
                                 {endStopOption.name} {endStopOption.code} (
-                                {endStopOption.vehicleMode})
+                                {endStopOption.vehicleMode}) (
+                                {endStopOption.platformCode})
                             </Button>
                         ))}
 

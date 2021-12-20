@@ -30,13 +30,13 @@ const formatRouteLine = async (route) => {
             return
         }
 
-        if (routeLine[nextStop.route] === undefined) {
-            routeLine[nextStop.route] = []
+        if (routeLine[nextStop.route.split(' ')[0]] === undefined) {
+            routeLine[nextStop.route.split(' ')[0]] = []
         }
 
-        routeLine[nextStop.route] = routeLine[nextStop.route].concat([
-            points.data,
-        ])
+        routeLine[nextStop.route.split(' ')[0]] = routeLine[
+            nextStop.route.split(' ')[0]
+        ].concat([points.data])
     }
     return routeLine
 }

@@ -1,47 +1,62 @@
 # HSL:4610206
 
 {
-station(id: "HSL:4000011") {
+stop(id: "HSL:4610553") {
 name
+code
+lat
+lon
 locationType
-stops {
-cluster {
-id
+vehicleMode
+parentStation {
+parentStation {
+name
+}
 name
 gtfsId
 stops {
 name
 code
 gtfsId
+vehicleMode
+}
+}
 platformCode
+cluster {
+name
+gtfsId
+stops {
+name
+code
+gtfsId
+vehicleMode
+}
+}
+}
 }
 
-      }
-      name
-      code
-      platformCode
-      transfers(maxDistance: 100) {
-        distance
-        id
-        stop {
-          name
-          code
-          gtfsId
-        }
-      }
-    }
-
-}
-}
+HSL:4610206 - tiksin bussien jättölaituri nro 17
 
 {
-cluster(id: "C650") {
+stop(id: "HSL:4620205") {
 name
-stops{
+code
+lat
+lon
+locationType
+vehicleMode
+platformCode
+cluster {
+name
+gtfsId
+lat
+lon
+stops {
 name
 code
 gtfsId
-platformCode
+vehicleMode
+}
 }
 }
 }

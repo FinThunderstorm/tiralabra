@@ -46,7 +46,12 @@ app.post('/search', async (req, res) => {
                 res.status(400).end()
                 return
             }
-            res.json(searchedRoute.toJSON())
+            try {
+                const routeJSON = searchedRoute.toJSON()
+                res.json(routeJSON)
+            } catch {
+                res.status(400).end()
+            }
         }
     )
 })
@@ -58,6 +63,16 @@ app.get('/stop/:stopGtfsId', async (req, res) => {
             return
         }
         res.json(stop)
+    })
+})
+
+app.get('/getTransferStops/:stopGtfsId', async (req, res) => {
+    StopRepository.getTransferStops(req.params.stopGtfsId).then((stops) => {
+        if (stops === null) {
+            res.status(400).end()
+            return
+        }
+        res.json(stops)
     })
 })
 

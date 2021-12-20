@@ -106,37 +106,39 @@ const RouteOnMap = () => {
                     </Popup>
                 </Marker>
             ))}
-            {Object.keys(routeLine).map((key) => (
-                <>
-                    <Marker
-                        position={routeLine[key][0][0]}
-                        icon={L.icon({
-                            iconUrl: dotLogo,
-                            iconSize: [256 * scale, 256 * scale],
-                            iconAnchor: [5, 5],
-                        })}
-                    />
-                    <Polyline
-                        pathOptions={{
-                            color: colors[getColor()],
-                        }}
-                        positions={routeLine[key]}
-                    />
-                    <Marker
-                        position={
-                            routeLine[key][routeLine[key].length - 1][
-                                routeLine[key][routeLine[key].length - 1]
-                                    .length - 1
-                            ]
-                        }
-                        icon={L.icon({
-                            iconUrl: dotLogo,
-                            iconSize: [256 * scale, 256 * scale],
-                            iconAnchor: [5, 5],
-                        })}
-                    />
-                </>
-            ))}
+            {Object.keys(routeLine)
+                .filter((key) => key !== 'Walk')
+                .map((key) => (
+                    <>
+                        <Marker
+                            position={routeLine[key][0][0]}
+                            icon={L.icon({
+                                iconUrl: dotLogo,
+                                iconSize: [256 * scale, 256 * scale],
+                                iconAnchor: [5, 5],
+                            })}
+                        />
+                        <Polyline
+                            pathOptions={{
+                                color: colors[getColor()],
+                            }}
+                            positions={routeLine[key]}
+                        />
+                        <Marker
+                            position={
+                                routeLine[key][routeLine[key].length - 1][
+                                    routeLine[key][routeLine[key].length - 1]
+                                        .length - 1
+                                ]
+                            }
+                            icon={L.icon({
+                                iconUrl: dotLogo,
+                                iconSize: [256 * scale, 256 * scale],
+                                iconAnchor: [5, 5],
+                            })}
+                        />
+                    </>
+                ))}
         </>
     )
 }
