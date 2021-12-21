@@ -208,70 +208,60 @@ const getNextDepartures = async (stopGtfsId, startTime) => {
         })
     })
 
-    // const nearestStops = await getNearestStops(
-    //     results.stop.lat,
-    //     results.stop.lon
-    // )
-
     const transferStops = await getTransferStops(stopGtfsId)
 
-    transferStops
-        // .filter((stop) => stop.stop.gtfsId !== stopGtfsId)
-        .forEach((stop) => {
-            const walkTime =
-                (stop.distance / 1000 / speeds.WALK) * 60 * 60 * 1000
-            const arrivedDate = convertEpochToDate(arrived + 1)
-            const safeTime = 2 * 60 * 1000 // 2 minutes
-            const afterWalk = new Date(
-                arrivedDate.valueOf() + walkTime + safeTime
-            )
+    transferStops.forEach((stop) => {
+        const walkTime = (stop.distance / 1000 / speeds.WALK) * 60 * 60 * 1000
+        const arrivedDate = convertEpochToDate(arrived + 1)
+        const safeTime = 2 * 60 * 1000 // 2 minutes
+        const afterWalk = new Date(arrivedDate.valueOf() + walkTime + safeTime)
 
-            const serviceDay = new Date(
-                new Date(
-                    arrivedDate.getFullYear(),
-                    arrivedDate.getMonth(),
-                    arrivedDate.getDate()
-                ).valueOf() -
-                    2 * 60 * 60 * 1000
-            )
+        const serviceDay = new Date(
+            new Date(
+                arrivedDate.getFullYear(),
+                arrivedDate.getMonth(),
+                arrivedDate.getDate()
+            ).valueOf() -
+                2 * 60 * 60 * 1000
+        )
 
-            const facts = {
-                name: `Walk to ${stop.stop.name} ${stop.stop.code} (${stop.stop.gtfsId})`,
-                code: 'Walk',
-                tripGtfsId: `WALK:${stopGtfsId}:${stop.stop.gtfsId}`,
-                headsign: 'Walk',
-                realtime: true,
-                arrivesAt: convertEpochToDate(arrived + 1),
-                realtimeArrivesAt: convertEpochToDate(arrived + 1),
-                departuresAt: convertEpochToDate(arrived + 1),
-                realtimeDeparturesAt: convertEpochToDate(arrived + 1),
-                mode: 'WALK',
-                nextStop: {
-                    name: stop.stop.name,
-                    code: stop.stop.code,
-                    gtfsId: stop.stop.gtfsId,
-                    coordinates: {
-                        latitude: stop.stop.lat,
-                        longitude: stop.stop.lon,
-                    },
-                    locationType: stop.stop.locationType,
-                    arrivesAt: afterWalk,
-                    realtimeArrivesAt: afterWalk,
-                    departuresAt: afterWalk,
-                    realtimeDeparturesAt: afterWalk,
-                    serviceDay,
+        const facts = {
+            name: `Walk to ${stop.stop.name} ${stop.stop.code} (${stop.stop.gtfsId})`,
+            code: 'Walk',
+            tripGtfsId: `WALK:${stopGtfsId}:${stop.stop.gtfsId}`,
+            headsign: 'Walk',
+            realtime: true,
+            arrivesAt: convertEpochToDate(arrived + 1),
+            realtimeArrivesAt: convertEpochToDate(arrived + 1),
+            departuresAt: convertEpochToDate(arrived + 1),
+            realtimeDeparturesAt: convertEpochToDate(arrived + 1),
+            mode: 'WALK',
+            nextStop: {
+                name: stop.stop.name,
+                code: stop.stop.code,
+                gtfsId: stop.stop.gtfsId,
+                coordinates: {
+                    latitude: stop.stop.lat,
+                    longitude: stop.stop.lon,
                 },
-                boardable: 'SCHEDULED',
-                unixTimestamps: {
-                    scheduledDeparture: convertDateToEpoch(arrived),
-                    realtimeDeparture: convertDateToEpoch(arrived),
-                    // scheduledArrival: stoptime.scheduledArrival,
-                    // realtimeArrival: stoptime.realtimeArrival,
-                    serviceDay: convertDateToEpoch(serviceDay),
-                },
-            }
-            departures.departures = [...departures.departures, facts]
-        })
+                locationType: stop.stop.locationType,
+                arrivesAt: afterWalk,
+                realtimeArrivesAt: afterWalk,
+                departuresAt: afterWalk,
+                realtimeDeparturesAt: afterWalk,
+                serviceDay,
+            },
+            boardable: 'SCHEDULED',
+            unixTimestamps: {
+                scheduledDeparture: convertDateToEpoch(arrived),
+                realtimeDeparture: convertDateToEpoch(arrived),
+                // scheduledArrival: stoptime.scheduledArrival,
+                // realtimeArrival: stoptime.realtimeArrival,
+                serviceDay: convertDateToEpoch(serviceDay),
+            },
+        }
+        departures.departures = [...departures.departures, facts]
+    })
 
     departures.departures = departures.departures
         .filter(
@@ -460,7 +450,7 @@ const getRouteline = async (stop, time, route) => {
     const slicedPoints = points.slice(nearestStart.index, nearestNext.index + 1)
     let converted = []
     slicedPoints.forEach((point) => {
-        converted = converted.concat([[point[1], point[0]]])
+        converted = [...converted, [point[1], point[0]]]
     })
 
     cache.set(
