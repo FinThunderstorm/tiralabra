@@ -129,11 +129,11 @@ const Search = () => {
                     </Stack>
                     {startStopsList
                         .filter((value) => value !== null)
-                        .filter(
-                            (value) =>
-                                value.vehicleMode !== 'SUBWAY' &&
-                                value.vehicleMode !== 'FERRY'
-                        )
+                        // .filter(
+                        //     (value) =>
+                        //         value.vehicleMode !== 'SUBWAY' &&
+                        //         value.vehicleMode !== 'FERRY'
+                        // )
                         .sort((a, b) => a.name.localeCompare(b.name))
                         .map((startStopOption) => (
                             <Button
