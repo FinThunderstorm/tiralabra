@@ -143,8 +143,9 @@ const Search = () => {
                                 }}
                             >
                                 {startStopOption.name} {startStopOption.code} (
-                                {startStopOption.vehicleMode}) (
-                                {startStopOption.platformCode})
+                                {startStopOption.vehicleMode}){' '}
+                                {startStopOption.platformCode &&
+                                    `(${startStopOption.platformCode})`}
                             </Button>
                         ))}
 

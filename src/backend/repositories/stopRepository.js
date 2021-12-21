@@ -328,6 +328,14 @@ const getTransferStops = async (stopGtfsId, maxDistance = 250) => {
 }
 
 const getNearestStops = async (lat, lon, maxDistance = 250) => {
+    const valid = await cache.check(`nearestStops@${lat};${lon};${maxDistance}`)
+    if (valid) {
+        const stops = await cache.get(
+            `nearestStops@${lat};${lon};${maxDistance}`
+        )
+        return JSON.parse(stops)
+    }
+
     const QUERY = gql`
         query ($lat: Float!, $lon: Float!, $maxDistance: Int!) {
             nearest(
@@ -346,6 +354,8 @@ const getNearestStops = async (lat, lon, maxDistance = 250) => {
                                 lat
                                 lon
                                 locationType
+                                platformCode
+                                vehicleMode
                             }
                         }
                         distance
@@ -369,6 +379,11 @@ const getNearestStops = async (lat, lon, maxDistance = 250) => {
             { stop: node.node.place, distance: node.node.distance },
         ]
     })
+
+    cache.set(
+        `nearestStops@${lat};${lon};${maxDistance}`,
+        JSON.stringify(stops)
+    )
 
     return stops
 }
@@ -456,65 +471,6 @@ const getRouteline = async (stop, time, route) => {
     return converted
 }
 
-const findStopsByName = async (searchTerm) => {
-    const valid = await cache.check(`findStopsByName:${searchTerm}`)
-    if (valid) {
-        const stops = await cache.get(`findStopsByName:${searchTerm}`)
-        return JSON.parse(stops)
-    }
-
-    const QUERY = gql`
-        query ($term: String!) {
-            stops(name: $term) {
-                name
-                code
-                gtfsId
-                platformCode
-                vehicleMode
-            }
-        }
-    `
-
-    const result = await api.request(QUERY, { term: searchTerm })
-
-    cache.set(`findStopsByName:${searchTerm}`, JSON.stringify(result))
-
-    return result
-}
-
-const findStopsByCoords = async (lon, lat) => {
-    const valid = await cache.check(`findStopsByCoords:${lon};${lat}`)
-    if (valid) {
-        const stops = await cache.get(`findStopsByCoords:${lon};${lat}`)
-        return JSON.parse(stops)
-    }
-
-    const QUERY = gql`
-        query ($lon: Float!, $lat: Float!) {
-            stopsByRadius(lon: $lon, lat: $lat, radius: 500) {
-                edges {
-                    node {
-                        stop {
-                            name
-                            code
-                            gtfsId
-                            platformCode
-                            vehicleMode
-                        }
-                        distance
-                    }
-                }
-            }
-        }
-    `
-
-    const result = await api.request(QUERY, { lon, lat })
-
-    cache.set(`findStopsByCoords:${lon};${lat}`, JSON.stringify(result))
-
-    return result
-}
-
 const findStopsByText = async (searchTerm) => {
     const valid = await cache.check(`findStopsByText:${searchTerm}`)
     if (valid) {
@@ -542,44 +498,35 @@ const findStopsByText = async (searchTerm) => {
     for (let i = 0; i < result.data.features.length; i += 1) {
         const feature = result.data.features[i]
         if (feature.properties.source === 'gtfshsl') {
-            console.log(feature.properties.addendum)
             const gtfsId = feature.properties.id.split('#')[0].split('GTFS:')[1]
             if (!check.has(gtfsId)) {
-                stops.stops = stops.stops.concat([
+                stops.stops = [
+                    ...stops.stops,
                     {
                         name: feature.properties.name,
                         code: feature.properties.id.split('#')[1],
                         gtfsId,
                         vehicleMode: feature.properties.addendum.GTFS.modes[0],
                     },
-                ])
+                ]
                 check.add(gtfsId)
             }
         } else if (feature.properties.source === 'openstreetmap') {
-            const coordsStops = await findStopsByCoords(
+            const coordsStops = await getNearestStops(
+                feature.geometry.coordinates[1],
                 feature.geometry.coordinates[0],
-                feature.geometry.coordinates[1]
+                1000
             )
-
-            coordsStops.stopsByRadius.edges.forEach((node) => {
-                if (!check.has(node.node.stop.gtfsId)) {
-                    stops.stops = stops.stops.concat([node.node.stop])
-                    check.add(node.node.stop.gtfsId)
+            console.log(feature.geometry)
+            console.log(coordsStops)
+            coordsStops.forEach((node) => {
+                if (!check.has(node.stop.gtfsId)) {
+                    stops.stops = [...stops.stops, node.stop]
+                    check.add(node.stop.gtfsId)
                 }
             })
         }
     }
-
-    /*
-    {
-        "stops": [
-            {
-                "name": "Kamppi",
-                "gtfsId": "HSL:1040279"
-            }
-        ]
-    }
-    */
 
     cache.set(`findStopsByText:${searchTerm}`, JSON.stringify(result.data))
 
@@ -592,6 +539,5 @@ module.exports = {
     getTransferStops,
     getNextDepartures,
     getRouteline,
-    findStopsByName,
     findStopsByText,
 }
