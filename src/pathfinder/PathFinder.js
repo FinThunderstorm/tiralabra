@@ -71,7 +71,7 @@ const heuristic = (startStop, endStop, mode = 'BUS') => {
  */
 const search = async (startStop, endStop, uStartTime) => {
     const queue = new PriorityQueue()
-    let visited = []
+    let visited = new Set()
 
     const startTime = new Date(uStartTime)
     const from = startStop
@@ -82,17 +82,8 @@ const search = async (startStop, endStop, uStartTime) => {
 
     let route = queue.pop()
     while (route.stop.gtfsId !== endStop.gtfsId) {
-        if (visited.indexOf(`${route.stop.gtfsId}:${route.route}`) === -1) {
-            visited = visited.concat([`${route.stop.gtfsId}:${route.route}`])
-
-            // console.log(
-            //     'Tarkastellaan pysäkkiä',
-            //     route.stop.gtfsId,
-            //     route.stop.name,
-            //     route.stop.code,
-            //     'ajassa',
-            //     route.arrived.toISOString()
-            // )
+        if (!visited.has(`${route.stop.gtfsId}:${route.route}`)) {
+            visited = visited.add(`${route.stop.gtfsId}:${route.route}`)
 
             const departures = await StopRepository.getNextDepartures(
                 route.stop.gtfsId,
@@ -111,6 +102,7 @@ const search = async (startStop, endStop, uStartTime) => {
                         if (departure.boardable === false) {
                             return
                         }
+
                         const elapsed =
                             departure.realtimeDeparturesAt - startTime
                         const takes =
@@ -152,11 +144,6 @@ const search = async (startStop, endStop, uStartTime) => {
         if (queue.length === 0) {
             return undefined
         }
-
-        // if (route.stop.gtfsId === 'HSL:4660201') {
-        //     console.log(queue.toString())
-        // }
-        // console.log(queue.toString())
 
         route = queue.pop()
     }
