@@ -41,6 +41,44 @@ const formatRouteLine = async (route) => {
     return routeLine
 }
 
+export const findPerformance = (startStopGtfsId, endStopGtfsId, startTime) => {
+    const uStartTime = Date.parse(startTime)
+    console.log(uStartTime, startStopGtfsId, endStopGtfsId)
+    return async (dispatch) => {
+        dispatch({
+            type: 'SET_PERFTESTRESULT',
+            data: null,
+        })
+        dispatch({
+            type: 'SET_ROUTE',
+            data: null,
+        })
+
+        try {
+            const result = await axios.post(
+                'http://localhost:3001/performanceTest',
+                {
+                    startStop: startStopGtfsId,
+                    endStop: endStopGtfsId,
+                    startTime: '2021-12-22T10:15:00.000Z',
+                }
+            )
+            console.log('res', result)
+
+            dispatch({
+                type: 'SET_ROUTE',
+                data: { route: result.data.route, routeLine: [] },
+            })
+            dispatch({
+                type: 'SET_PERFTESTRESULT',
+                data: result.data.took,
+            })
+        } catch {
+            console.log('err')
+        }
+    }
+}
+
 export const findRoute = (startStopGtfsId, endStopGtfsId, startTime) => {
     const uStartTime = Date.parse(startTime)
     return async (dispatch) => {

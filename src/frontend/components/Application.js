@@ -26,7 +26,6 @@ const Application = () => {
     const dispatch = useDispatch()
     const handleFindRoute = (event) => {
         event.preventDefault()
-        console.log('>>', startStop, endStop, startTime)
         dispatch(findRoute(startStop, endStop, startTime))
     }
 

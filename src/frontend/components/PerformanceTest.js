@@ -1,7 +1,19 @@
 import React from 'react'
-// import axios from 'axios'
+import { useDispatch } from 'react-redux'
+import {
+    Button,
+    Card,
+    CardContent,
+    Grid,
+    Typography,
+    Stack,
+} from '@mui/material'
+import RouteViewer from './RouteViewer'
+import { findPerformance } from '../reducers/routeReducer'
+import PerfResult from './PerfResult'
 
 const PerformanceTest = () => {
+    const dispatch = useDispatch()
     const today = new Date(
         new Date().getFullYear(),
         new Date().getMonth(),
@@ -55,32 +67,59 @@ const PerformanceTest = () => {
         },
     ]
 
-    let suites = []
-    stops.forEach((stop) => {
-        for (let add = 0; add < 12 * 300000; add += 300000) {
-            const time = new Date(today.valueOf() + add)
-            console.log('new time', time.toISOString())
-            suites = suites.concat([
-                {
-                    startStop: stop.startStop,
-                    endStop: stop.endStop,
-                    startTime: time,
-                },
-            ])
-        }
-    })
+    const times = [
+        new Date(today.valueOf()),
+        new Date(today.valueOf() + 1800000),
+    ]
 
-    // const runAllSuites = () => {
-    //     let running = false
-    //     let ready = false
+    const handleStart = async (event, startStop, endStop, startTime) => {
+        event.preventDefault()
+        console.log(startStop, endStop, startTime)
 
-    //     while (ready !== true) {}
-    // }
+        dispatch(findPerformance(startStop, endStop, startTime))
+    }
 
     return (
-        <div>
-            <p>Performance test</p>
-        </div>
+        <Grid container className="performance" margin="normal" spacing={2}>
+            <Grid item xs={6}>
+                {stops.map((stopPairs) => (
+                    <Stack spacing={2} direction="column" margin="normal">
+                        <Card>
+                            <CardContent>
+                                <Typography variant="body2">
+                                    From: {stopPairs.startStop}
+                                </Typography>
+                                <Typography variant="body2">
+                                    To: {stopPairs.endStop}
+                                </Typography>
+                                {times.map((time) => (
+                                    <Button
+                                        onClick={(event) =>
+                                            handleStart(
+                                                event,
+                                                stopPairs.startStop,
+                                                stopPairs.endStop,
+                                                time
+                                            )
+                                        }
+                                    >
+                                        {time.toLocaleString('fi-FI', {
+                                            timeZone: 'Europe/Helsinki',
+                                        })}
+                                    </Button>
+                                ))}
+                            </CardContent>
+                        </Card>
+                    </Stack>
+                ))}
+            </Grid>
+            <Grid item xs={6}>
+                <Stack spacing={2} direction="column" margin="normal">
+                    <PerfResult />
+                    <RouteViewer />
+                </Stack>
+            </Grid>
+        </Grid>
     )
 }
 

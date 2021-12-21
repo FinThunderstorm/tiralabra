@@ -12,12 +12,14 @@ import departuresReducer from './reducers/departuresReducer'
 import routeReducer from './reducers/routeReducer'
 import loadingReducer from './reducers/loadingReducer'
 import errorReducer from './reducers/errorReducer'
+import performanceTestReducer from './reducers/performanceTestReducer'
 
 const reducer = combineReducers({
     departures: departuresReducer,
     route: routeReducer,
     loading: loadingReducer,
     error: errorReducer,
+    performance: performanceTestReducer,
 })
 
 const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)))
