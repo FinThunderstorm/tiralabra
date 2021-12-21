@@ -21,6 +21,8 @@ const formatRouteLine = async (route) => {
         const stop = route.data.via[i]
         const nextStop = route.data.via[i - 1]
 
+        console.log(typeof stop.stop.arrivesAt)
+
         const points = await axios.post('http://localhost:3001/routeLine', {
             stopGtfsId: stop.stop.gtfsId,
             time: 0,
@@ -43,7 +45,7 @@ const formatRouteLine = async (route) => {
 
 export const findPerformance = (startStopGtfsId, endStopGtfsId, startTime) => {
     const uStartTime = Date.parse(startTime)
-    console.log(uStartTime, startStopGtfsId, endStopGtfsId)
+    console.log(uStartTime)
     return async (dispatch) => {
         dispatch({
             type: 'SET_PERFTESTRESULT',
@@ -60,10 +62,9 @@ export const findPerformance = (startStopGtfsId, endStopGtfsId, startTime) => {
                 {
                     startStop: startStopGtfsId,
                     endStop: endStopGtfsId,
-                    startTime: '2021-12-22T10:15:00.000Z',
+                    startTime: '2021-12-22T10:00:00.000Z',
                 }
             )
-            console.log('res', result)
 
             dispatch({
                 type: 'SET_ROUTE',

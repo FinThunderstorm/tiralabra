@@ -18,6 +18,7 @@ const check = async (key) => {
 }
 
 const set = async (key, value) => {
+    console.log('setting key', key)
     await client.set(key, JSON.stringify(value))
     await client.expire(key, cachetime)
 }
@@ -48,6 +49,7 @@ const getAllValues = async (keys) => {
 
 const flushall = async () => {
     const result = await client.sendCommand(['FLUSHALL'])
+    console.log('Flushed all', result)
     return result
 }
 

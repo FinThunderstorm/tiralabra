@@ -17,7 +17,7 @@ const PerformanceTest = () => {
     const today = new Date(
         new Date().getFullYear(),
         new Date().getMonth(),
-        new Date().getDay(),
+        new Date().getDate(),
         12,
         0,
         0,
@@ -68,8 +68,8 @@ const PerformanceTest = () => {
     ]
 
     const times = [
-        new Date(today.valueOf()),
-        new Date(today.valueOf() + 1800000),
+        new Date(today.valueOf() + 24 * 60 * 60 * 1000),
+        new Date(today.valueOf() + 1800000 + 24 * 60 * 60 * 1000),
     ]
 
     const handleStart = async (event, startStop, endStop, startTime) => {

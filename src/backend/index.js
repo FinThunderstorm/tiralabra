@@ -45,7 +45,8 @@ app.post('/search', async (req, res) => {
             try {
                 const routeJSON = searchedRoute.toJSON()
                 res.json(routeJSON)
-            } catch {
+            } catch (error) {
+                console.error(error)
                 res.status(400).end()
             }
         }
@@ -168,7 +169,6 @@ app.post('/performanceTest', async (req, res) => {
                     const percentage =
                         ((uncachedPfTook - pfTook) / pfTook) * 100
                     const difference = uncachedPfTook - pfTook
-                    console.log(pfResult)
                     res.json({
                         route: pfResult,
                         took: {

@@ -1,15 +1,8 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/self-closing-comp */
-/* eslint-disable react/jsx-props-no-spreading */
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import AdapterDateFns from '@mui/lab/AdapterDayjs'
-import DateTimePicker from '@mui/lab/DateTimePicker'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
-import { useDispatch } from 'react-redux'
-// import './App.css'
-import { TextField, Button, CircularProgress, Grid, Stack } from '@mui/material'
+import { Grid, Stack } from '@mui/material'
 
-import { findRoute } from '../reducers/routeReducer'
 import Departures from './Departures'
 import Map from './Map'
 import RouteViewer from './RouteViewer'
@@ -18,17 +11,7 @@ import Loading from './Loading'
 import Error from './Error'
 
 const Application = () => {
-    const [startStop, setStartStop] = useState('HSL:4620205')
-    const [endStop, setEndStop] = useState('HSL:1240118')
-    const [startTime, setStartTime] = useState(new Date())
-    const [searching, setSearching] = useState(false)
-
-    const dispatch = useDispatch()
-    const handleFindRoute = (event) => {
-        event.preventDefault()
-        dispatch(findRoute(startStop, endStop, startTime))
-    }
-
+    console.log('toot')
     return (
         <LocalizationProvider dateAdapter={AdapterDateFns} locale="fi">
             <Grid container className="App" margin="normal" spacing={2}>

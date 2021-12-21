@@ -40,7 +40,6 @@ const Search = () => {
     const handleStartStop = (event) => {
         event.preventDefault()
         setStartStop(event.target.value)
-        console.log(event.target.value, event.target.value.match(regex))
         if (event.target.value.match(regex) !== null) {
             setStartStopsList([null])
             setShowFindStart(undefined)
@@ -87,6 +86,7 @@ const Search = () => {
             searchTerm: endStop,
         })
         setEndStopsList(stops.data.stops)
+        setShowFindEnd(null)
     }
 
     return (
@@ -114,6 +114,7 @@ const Search = () => {
                             label="From:"
                             onChange={(event) => handleStartStop(event)}
                             value={startStop}
+                            style={{ width: '100%' }}
                         />
                         {showFindStart && (
                             <Button
@@ -122,18 +123,14 @@ const Search = () => {
                                 color="secondary"
                                 onClick={(event) => handleStartToGtfsId(event)}
                                 type="submit"
+                                xs={2}
                             >
-                                Find
+                                <SearchIcon />
                             </Button>
                         )}
                     </Stack>
                     {startStopsList
                         .filter((value) => value !== null)
-                        // .filter(
-                        //     (value) =>
-                        //         value.vehicleMode !== 'SUBWAY' &&
-                        //         value.vehicleMode !== 'FERRY'
-                        // )
                         .sort((a, b) => a.name.localeCompare(b.name))
                         .map((startStopOption) => (
                             <Button
@@ -155,6 +152,7 @@ const Search = () => {
                             label="Destination:"
                             onChange={(event) => handleEndStop(event)}
                             value={endStop}
+                            style={{ width: '100%' }}
                         />
                         {showFindEnd && (
                             <Button
@@ -164,13 +162,12 @@ const Search = () => {
                                 onClick={(event) => handleEndToGtfsId(event)}
                                 type="submit"
                             >
-                                Find
+                                <SearchIcon />
                             </Button>
                         )}
                     </Stack>
                     {endStopsList
                         .filter((value) => value !== null)
-                        .filter((value) => value.vehicleMode !== 'SUBWAY')
                         .sort((a, b) => a.name.localeCompare(b.name))
                         .map((endStopOption) => (
                             <Button
@@ -193,6 +190,7 @@ const Search = () => {
                         label="Start time:"
                         value={startTime}
                         onChange={(newValue) => setStartTime(newValue)}
+                        views={['day', 'hours', 'minutes', 'seconds']}
                     />
 
                     <Button
@@ -202,7 +200,7 @@ const Search = () => {
                         onClick={(event) => handleFindRoute(event)}
                         type="submit"
                     >
-                        Find
+                        <SearchIcon /> Find
                     </Button>
                 </Stack>
             </CardContent>
