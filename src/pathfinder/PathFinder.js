@@ -64,9 +64,10 @@ const heuristic = (startStop, endStop, mode = 'BUS') => {
  * search-funktiolla haetaan lyhin reitti ajallisesti kahden pysäkin välillä
  * käyttäen A*-algoritmiä ja minimikekoa prioriteettijonona.
  *
- * @param {*} startStop lähtöpysäkki
- * @param {*} endStop kohdepysäkki
- * @param {*} uStartTime käyttäjän spesifioima lähtöaika
+ * @param {JSON} startStop lähtöpysäkki
+ * @param {JSON} endStop kohdepysäkki
+ * @param {Number} uStartTime käyttäjän spesifioima lähtöaika
+ * @param {boolean} cacheMore
  * @returns {Route} suositeltu reitti Route-oliona.
  */
 const search = async (startStop, endStop, uStartTime) => {
@@ -94,7 +95,7 @@ const search = async (startStop, endStop, uStartTime) => {
             )
 
             if (departures !== undefined) {
-                departures.departures.forEach(async (departure) => {
+                departures.departures.forEach((departure) => {
                     // tarkastetaan, ettei ole linjan päätepysäkki tai pysäkiltä ei voi hypätä kyytiin
 
                     if (
@@ -148,8 +149,11 @@ const search = async (startStop, endStop, uStartTime) => {
             return undefined
         }
 
+        // console.log(queue.toString())
+
         route = queue.pop()
     }
+
     console.log(
         `Route search from ${startStop.code} to ${endStop.code} is ready (${startStop.code} -> ${endStop.code})`
     )

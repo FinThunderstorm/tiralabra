@@ -18,7 +18,7 @@ services:
             - otp
 
     cache:
-        image: redis:latest
+        image: redislabs/redismod:latest
         container_name: tiralabra-cache
         ports:
             - 6379:6379
