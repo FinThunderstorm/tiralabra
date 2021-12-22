@@ -47,7 +47,6 @@ const fixDepartures = (departure) => {
     })
     departures.departures = departuresList
 
-    // console.log(`nextDepartures:${stopGtfsId}@${time}`, departures)
     return departures
 }
 

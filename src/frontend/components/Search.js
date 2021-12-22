@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import axios from 'axios'
@@ -185,7 +184,7 @@ const Search = () => {
                     <DateTimePicker
                         color="secondary"
                         renderInput={(props) => (
-                            <TextField color="secondary" {...props} />
+                            <TextField color="secondary" {...props} /> // eslint-disable-line react/jsx-props-no-spreading
                         )}
                         label="Start time:"
                         value={startTime}

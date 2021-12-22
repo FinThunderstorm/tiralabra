@@ -43,22 +43,6 @@ const kylasaariStop = {
 }
 
 describe('PathFinder', () => {
-    test('distanceBetweenTwoPoints Urheilutie and Kumpula works', () => {
-        const result = PathFinder.distanceBetweenTwoPoints(
-            urheilutieStop.coordinates,
-            kumpulaStop.coordinates
-        )
-        expect(result).toBe(11.48011872320561)
-    })
-
-    test('distanceBetweenTwoPoints Kumpula and Kyläsaari works', () => {
-        const result2 = PathFinder.distanceBetweenTwoPoints(
-            kumpulaStop.coordinates,
-            kylasaariStop.coordinates
-        )
-        expect(result2).toBe(0.11922863963346399)
-    })
-
     test('heuristic calculates correct values between Urheilutie and Kumpula', () => {
         const result3 = PathFinder.heuristic(urheilutieStop, kumpulaStop)
         expect(result3).toBe(2066421.37017701)

@@ -64,16 +64,6 @@ app.get('/stop/:stopGtfsId', async (req, res) => {
     })
 })
 
-app.get('/getTransferStops/:stopGtfsId', async (req, res) => {
-    StopRepository.getTransferStops(req.params.stopGtfsId).then((stops) => {
-        if (stops === null) {
-            res.status(400).end()
-            return
-        }
-        res.json(stops)
-    })
-})
-
 app.get('/nextDepartures/:stopGtfsId', async (req, res) => {
     StopRepository.getNextDepartures(req.params.stopGtfsId, new Date()).then(
         (departures) => {

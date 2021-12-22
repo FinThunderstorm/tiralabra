@@ -1,14 +1,12 @@
-/* eslint-disable */
-import axios from 'axios'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import L from 'leaflet'
+import { Button, Stack, Typography } from '@mui/material'
 import 'leaflet/dist/leaflet.css'
 import { Marker, Polyline, Popup } from 'react-leaflet'
 import markerLogo from '../marker2.svg'
 import dotLogo from '../dot2.svg'
 import { setDepartures } from '../reducers/departuresReducer'
-import { Button, Stack, Typography } from '@mui/material'
 
 const RouteOnMap = () => {
     const routeState = useSelector((state) => state.route)
@@ -42,7 +40,7 @@ const RouteOnMap = () => {
     const getColor = () => {
         const ret = colorIndex
         colorIndex += 1
-        if (colorIndex == colors.length) {
+        if (colorIndex === colors.length) {
             colorIndex = 0
         }
         return ret

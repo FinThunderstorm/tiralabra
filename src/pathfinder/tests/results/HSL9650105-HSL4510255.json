@@ -758,7 +758,7 @@
                 "locationType": "STOP",
                 "arrivesAt": "2021-12-15T11:05:00.000Z"
             },
-            "route": null,
+            "route": "start",
             "travelTime": 0
         }
     ]

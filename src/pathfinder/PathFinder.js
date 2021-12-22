@@ -4,41 +4,11 @@
 const PriorityQueue = require('@datastructures/MinHeap')
 const StopRepository = require('@repositories/stopRepository')
 const Route = require('@datastructures/Route')
-const { speeds } = require('@helpers')
+const { speeds, distanceBetweenTwoPoints } = require('@helpers')
 
 /**
  * PathFinderin funktioita käytetään reitin hakemiseen kahden pisteen välillä.
  */
-
-/**
- * distanceBetweenTwoPoints laskee haversine-funktiolla kahden koordinaattipisteen
- * välisen etäisyyden maapallon pintaa pitkin.
- * Lähde: Chamberlain B, 2001, "Q5.1: What is the best way to calculate the distance
- *        between 2 points?", luettu 3.12.2021.
- *        Saatavilla: https://web.archive.org/web/20041108132234/http://www.census.gov/cgi-bin/geo/gisfaq?Q5.1
- *
- * @param {JSON} coord1 JSON-objekti, jossa on kentässä latitude leveysaste
- *                      ja longitude pituusaste.
- * @param {JSON} coord2 JSON-objekti, jossa on kentässä latitude leveysaste
- *                      ja longitude pituusaste.
- * @returns {Number} matka kilometreinä
- */
-const distanceBetweenTwoPoints = (coord1, coord2) => {
-    const lonDiff =
-        coord2.longitude * (Math.PI / 180) - coord1.longitude * (Math.PI / 180)
-    const latDiff =
-        coord2.latitude * (Math.PI / 180) - coord1.latitude * (Math.PI / 180)
-
-    const haversine =
-        Math.sin(latDiff / 2) ** 2 +
-        Math.cos(coord1.latitude * (Math.PI / 180)) *
-            Math.cos(coord2.latitude * (Math.PI / 180)) *
-            Math.sin(lonDiff / 2) ** 2
-    const invertHaversine = 2 * Math.asin(Math.min(1, Math.sqrt(haversine)))
-    const earthRadius = 6367
-    const distance = earthRadius * invertHaversine
-    return distance
-}
 
 /**
  * Käytetään heuristisen aika-arvion laskemiseen lähtöpysäköiltä kohdepysäkille.
@@ -73,7 +43,6 @@ const heuristic = (startStop, endStop, mode = 'BUS') => {
 const search = async (startStop, endStop, uStartTime) => {
     const queue = new PriorityQueue()
     let visited = new Set()
-    // let visited = []
 
     const startTime = new Date(uStartTime)
     const from = startStop
@@ -85,9 +54,7 @@ const search = async (startStop, endStop, uStartTime) => {
     let route = queue.pop()
     while (route.stop.gtfsId !== endStop.gtfsId) {
         if (!visited.has(`${route.stop.gtfsId}:${route.route}`)) {
-            // if (visited.indexOf(`${route.stop.gtfsId}:${route.route}`) === -1) {
             visited = visited.add(`${route.stop.gtfsId}:${route.route}`)
-            // visited = [...visited, `${route.stop.gtfsId}:${route.route}`]
 
             const departures = await StopRepository.getNextDepartures(
                 route.stop.gtfsId,
@@ -102,11 +69,6 @@ const search = async (startStop, endStop, uStartTime) => {
                         departure.nextStop !== null &&
                         departure.boardable !== 'NONE'
                     ) {
-                        // fallback for older syntax
-                        if (departure.boardable === false) {
-                            return
-                        }
-
                         const elapsed =
                             departure.realtimeDeparturesAt - startTime
                         const takes =
