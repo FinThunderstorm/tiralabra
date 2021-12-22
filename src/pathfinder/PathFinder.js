@@ -72,8 +72,8 @@ const heuristic = (startStop, endStop, mode = 'BUS') => {
  */
 const search = async (startStop, endStop, uStartTime) => {
     const queue = new PriorityQueue()
-    // let visited = new Set()
-    let visited = []
+    let visited = new Set()
+    // let visited = []
 
     const startTime = new Date(uStartTime)
     const from = startStop
@@ -84,10 +84,10 @@ const search = async (startStop, endStop, uStartTime) => {
 
     let route = queue.pop()
     while (route.stop.gtfsId !== endStop.gtfsId) {
-        // if (!visited.has(`${route.stop.gtfsId}:${route.route}`)) {
-        if (visited.indexOf(`${route.stop.gtfsId}:${route.route}`) === -1) {
-            // visited = visited.add(`${route.stop.gtfsId}:${route.route}`)
-            visited = [...visited, `${route.stop.gtfsId}:${route.route}`]
+        if (!visited.has(`${route.stop.gtfsId}:${route.route}`)) {
+            // if (visited.indexOf(`${route.stop.gtfsId}:${route.route}`) === -1) {
+            visited = visited.add(`${route.stop.gtfsId}:${route.route}`)
+            // visited = [...visited, `${route.stop.gtfsId}:${route.route}`]
 
             const departures = await StopRepository.getNextDepartures(
                 route.stop.gtfsId,

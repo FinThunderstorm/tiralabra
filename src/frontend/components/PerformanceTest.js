@@ -67,10 +67,7 @@ const PerformanceTest = () => {
         },
     ]
 
-    const times = [
-        new Date(today.valueOf() + 24 * 60 * 60 * 1000),
-        new Date(today.valueOf() + 1800000 + 24 * 60 * 60 * 1000),
-    ]
+    const times = [new Date(today.valueOf() + 24 * 60 * 60 * 1000)]
 
     const handleStart = async (event, startStop, endStop, startTime) => {
         event.preventDefault()

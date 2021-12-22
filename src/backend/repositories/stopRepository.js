@@ -314,9 +314,11 @@ const getTransferStops = async (stopGtfsId, maxDistance = 250) => {
 
     let stops = []
 
-    results.stop.transfers.forEach((stop) => {
-        stops = [...stops, { stop: stop.stop, distance: stop.distance }]
-    })
+    results.stop.transfers
+        .sort((a, b) => a.distance - b.distance)
+        .forEach((stop) => {
+            stops = [...stops, { stop: stop.stop, distance: stop.distance }]
+        })
 
     await cache.set(`transferStops:${stopGtfsId}`, JSON.stringify(stops))
 

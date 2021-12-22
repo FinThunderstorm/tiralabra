@@ -32,7 +32,7 @@ const Departures = () => {
                                 <DirectionsBusIcon />
                             </ListItemIcon>
                             <ListItemText>
-                                {dep.name.split(' ')[0]} - departures at{' '}
+                                {dep.name} - departures at{' '}
                                 {new Date(
                                     dep.realtimeDeparturesAt
                                 ).toLocaleString('fi-FI', {

@@ -42,8 +42,6 @@ const formatRouteLine = async (route) => {
 }
 
 export const findPerformance = (startStopGtfsId, endStopGtfsId, startTime) => {
-    const uStartTime = Date.parse(startTime)
-    console.log(uStartTime)
     return async (dispatch) => {
         dispatch({
             type: 'SET_PERFTESTRESULT',
@@ -60,7 +58,7 @@ export const findPerformance = (startStopGtfsId, endStopGtfsId, startTime) => {
                 {
                     startStop: startStopGtfsId,
                     endStop: endStopGtfsId,
-                    startTime: '2021-12-22T10:00:00.000Z',
+                    startTime: startTime.toISOString(),
                 }
             )
 

@@ -50,7 +50,6 @@ const AltRouteViewer = () => {
 
             <Card>
                 <CardContent>
-                    <Typography variant="h3">Alternative route:</Typography>
                     <Typography variant="body1">
                         Start time:{' '}
                         {new Date(route.startTime).toLocaleString('fi-FI', {

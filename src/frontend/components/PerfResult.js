@@ -19,7 +19,14 @@ const PerfResult = () => {
                             </Typography>
                         </CardContent>
                     </Card>
-                    {result.uncachedRoute && <AltRouteViewer alt />}
+                    {result.uncachedRoute && (
+                        <>
+                            <Typography variant="h3">
+                                Alternative route:
+                            </Typography>
+                            <AltRouteViewer alt />
+                        </>
+                    )}
                 </>
             )}
         </>
