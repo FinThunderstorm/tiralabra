@@ -6,6 +6,8 @@
 
 Yksikkötestauksessa tullaan huomioimaan tietorakenteiden ja reitinhakualgoritmin toiminta. Yksikkötestauskattavuuden ulkopuolelle jätetään käyttöliittymän koodi. API:sta haettavan tiedon osalta yksikkötestausta tullaan suorittamaan ainoastaan itse tehdylle muuntamiselle API:n omasta muodosta algoritmin käyttämään muotoon.
 
+Yksikkötestauksen kattavuusraportti löytyy [Codecovista.](https://codecov.io/gh/FinThunderstorm/tiralabra)
+
 ## Tekninen toteutus
 
 Automaattiseen yksikkötestaamiseen käytetään Jest-kirjastoa. Tämän lisäksi testausta suoritetaan manuaalisesti käyttöliittymän kautta tämän tarjotessa mahdollisuuden katsoa tarkemmin syntynyttä reittiä.
@@ -70,11 +72,15 @@ Itse aikavertailu löytyy avaimen `took` takaa. Ajat on esitetty sekunteissa.
 
 -   Prioriteettijonona toimiva [MinHeap](../src/datastructures/MinHeap.js)-luokka [(testit)](../src/datastructures/tests/MinHeap.test.js)
 
-    -   Suoritetaan Jestin avulla simuloimalla minimikeon toimintaa tarkastelemalla, että keko rakentuu oikein, järjestettäessä keko palauttaa oikean tilanteen sekä pitää myös huolen, että alkuperäinen keko pysyy koko ajan haluttuna. Lisättäessä ja poistettaessa keosta tarkastellaan jokaisen poisto-operaation jälkeen, että keko pysyy vaatimuksien mukaisena.
+    -   Suoritetaan Jestin avulla simuloimalla minimikeon toimintaa tarkastelemalla:
+        -   keko rakentuu oikein, järjestettäessä keko palauttaa oikean tilanteen
+        -   pitää myös huolen, että alkuperäinen keko pysyy koko ajan haluttuna.
+        -   Lisättäessä ja poistettaessa keosta tarkastellaan jokaisen poisto-operaation jälkeen, että keko pysyy vaatimuksien mukaisena.
 
 -   Reittiä kuvaava [Route](../src/datastructures/Route.js)-luokka [(testit)](../src/datastructures/tests/Route.test.js)
 
-    -   Suoritetaan Jestin avulla. Varmistetaan, että kentät palauttavat oikeat arvot sekä luokan metodit toimivat oikein.
+    -   Suoritetaan Jestin avulla.
+    -   Varmistetaan, että kentät palauttavat oikeat arvot sekä luokan metodit toimivat oikein.
 
 -   Reitinhausta vastaava A\*-algoritmin toteuttava [PathFinder](../src/pathfinder/PathFinder.js) [(testit)](../src/pathfinder/tests/PathFinder.test.js)
 
@@ -82,13 +88,14 @@ Itse aikavertailu löytyy avaimen `took` takaa. Ajat on esitetty sekunteissa.
     -   Yksikkötestauksella suoritetaan myös reitinhaun oikeellisuustestaus.
     -   Testataan heuristiikan laskeva funktio `heuristic`, että palauttavat oikeat arvot.
     -   Reitinhaku testataan suorittamalla reitinhaku eri reittipisteen välillä sekä vertailemalla niitä HSL:n käyttämän OpenTripPlannerin laskemiin reitteihin A\*-algoritmillä asetuksin `vain bussit, vältä kävelyä`- tuloksiin ensimmäisen neljän kohdalla. Jälkimmäiset kuusi testitapausta ovat normaali OpenTripPlanerin reittihaun tuloksini verraten tarkastettu asetuksella `vältä kävelyä`.
-    -   Huomioitavaa, että `PathFinderin` kutsuma `StopRepository` on toteutettu mock-oliona, joka palauttaa kovakoodattuja arvoja, jotka ovat haettu ajamalla jokaista tarkasteluväliä kolmen eri reitin tarkastelun verran ja tallentamalla nämä StopRepositoryä kohden tehdyt kutsut välimuistiin, ja tekemällä kovakoodatun testidumpin sen pohjalta. Täten kovakoodattu testidumppi pysyy järkevänä. Kovakoodatun datan lähde on HSL ja © Helsinki Region Transport 2021 käyttöoikeudella [CC BY 4.0 International](Creative Commons BY 4.0 International).
+    -   Huomioitavaa, että `PathFinderin` kutsuma `StopRepository` on toteutettu mock-oliona, joka palauttaa kovakoodattuja arvoja, jotka ovat haettu ajamalla jokaista tarkasteluväliä kolmen eri reitin tarkastelun verran ja tallentamalla nämä StopRepositoryä kohden tehdyt kutsut välimuistiin, ja tekemällä kovakoodatun testidumpin sen pohjalta. Täten kovakoodattu testidumppi pysyy järkevänä.
+    -   Kovakoodatun datan lähde on **HSL** ja **© Helsinki Region Transport 2021** käyttöoikeudella [**CC BY 4.0 International**](https://creativecommons.org/licenses/by/4.0/).
     -   Testausta ei voi suorittaa todellista OTP-instanssia vasten, sillä se ei osaa hakea yli päivän menneisyydessä oleville kellonajoille lähtötietoja.
     -   Testattavat pysäkkivälit ovat:
-        -   HSL:4620205 (Urheilutie V6205) ja HSL:1240118 (Kumpulan kampus H3028) lähtöajalla 15.12.2021 klo 1215
-        -   HSL:9650105 (Kievari Tu6041) ja HSL:4510255 (Osuustie V5155) lähtöajalla 15.12.2021 klo 1305
-        -   HSL:1361108 (Maaherrantie H3076) ja HSL:1150110 (Haartmaninkatu H1322) lähtöajalla 15.12.2021 klo 1305
-        -   HSL:1431187 (Herttoniemi (M) H4006) ja HSL:1304161 (Munkkivuoren ostosk. H1432) lähtöajalla 15.12.2021 klo 1300
+        -   Urheilutie (V6205 / HSL:4620205) ja Kumpulan kampus (H3028 / HSL:1240118 ) lähtöajalla 15.12.2021 klo 1215
+        -   Kievari (Tu6041 / HSL:9650105) ja Osuustie (V5155 / HSL:4510255) lähtöajalla 15.12.2021 klo 1305
+        -   Maaherrantie (H3076 / HSL:1361108) ja Haartmaninkatu (H1322 / HSL:1150110) lähtöajalla 15.12.2021 klo 1305
+        -   Herttoniemi (M) (H4006 / HSL:1431187) ja Munkkivuoren ostosk. (H1432 / HSL:1304161) lähtöajalla 15.12.2021 klo 1300
         -   Rautatieasema - (H0302 / HSL:1020454) ja Länsiterm. T1 - (H0235 / HSL:1203409) lähtöajalla 28.12.2021 klo 1205
         -   Kumpulan kampus - (H0326 / HSL:1240419) ja Erottaja - (H0802 / HSL:1040445) lähtöajalla 28.12.2021 klo 1205
         -   Herttoniemi - (H0030 / HSL:1431602) ja Kumpulan kampus - (H3029 / HSL:1240103) lähtöajalla 28.12.2021 klo 1205
@@ -99,7 +106,7 @@ Itse aikavertailu löytyy avaimen `took` takaa. Ajat on esitetty sekunteissa.
 
 -   Avustajafunktioita tarjoava [helpers](../src/backend/utils/helpers.js) [(testit)](../src/backend/tests/helpers.test.js)
 
-    -   Suoritetaan Jestin avulla ja varmistetaan, että avustajafunktiot palauttavat oikeat arvot sekä haversine-funktion toteuttava `distanceBetweenTwoPoints`, että palauttaa oikeat tulokset
+    -   Suoritetaan Jestin avulla ja varmistetaan, että avustajafunktiot palauttavat oikeat arvot sekä haversine-funktion toteuttavan `distanceBetweenTwoPoints` palauttamat arvot ovat oikeellisia.
 
 -   Reitti- ja pysäkkitietojen noutamisesta API-väylästä ja muotoilemisesta vastaava [StopRepository](../src/backend/repositories/stopRepository.js) [(testit)](../src/backend/tests/stopRepository.test.js)
-    -   Testein on katettu niiden API-väylästä haettavien toiminnallisuuksien osuudet, joita käytetään reitinhaun yhteydessä. Käyttöliittymän tarvitsemia osuuksia ei ole testattu.
+    -   Yksikkötestein on katettu niiden toiminnallisuuksien osuudet, joilla haetaan tietoa API-välyästä reitinhaun yhteydessä. Käyttöliittymän tarvitsemia osuuksia ei ole testattu.

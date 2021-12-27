@@ -6,7 +6,7 @@
 
 ## Käyttöohjeet
 
-Sovelluksen voi käynnistää komennolla `docker-compose up -d`. Mikäli kääntämisessä ilmenee virheitä, varmista ensimmäisenä Dockerilla olevan oikeat käyttöoikeudet kansion tiedostoihin.
+Sovelluksen voi käynnistää komennolla `docker-compose up -d` sovelluksen juurikansiossa. Komennon suorittamiseksi vaaditaan vähintään docker-composen versio `v1.2.7` tai uudempi sekä dockerin versio `19.03.0` tai uudempi. Mikäli kääntämisessä ilmenee virheitä, varmista ensimmäisenä Dockerilla olevan oikeat käyttöoikeudet kansion tiedostoihin.
 
 Sovellus on käytettävissä hetken jälkeen osoitteesta `http://localhost:3000/`. Jos `localhost` ei vastaa logien ilmoitettua olevan käännetty, voi kokeilla logeista löytyvää ip-osoitetta.
 
