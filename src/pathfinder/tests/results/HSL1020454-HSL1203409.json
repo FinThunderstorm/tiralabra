@@ -1,1 +1,138 @@
-{"to":{"name":"Länsiterm. T1","code":"H0235","gtfsId":"HSL:1203409","coordinates":{"latitude":60.15407,"longitude":24.919259},"locationType":"STOP","arrivesAt":"2021-12-28T10:19:00.000Z","realtimeArrivesAt":"2021-12-28T10:19:00.000Z","departuresAt":"2021-12-28T10:19:00.000Z","realtimeDeparturesAt":"2021-12-28T10:19:00.000Z","serviceDay":"2021-12-27T22:00:00.000Z"},"from":{"name":"Rautatieasema","code":"H0302","gtfsId":"HSL:1020454","coordinates":{"latitude":60.1704,"longitude":24.94061},"locationType":"STOP","arrivesAt":"2021-12-28T10:05:00.000Z"},"arrived":"2021-12-28T10:19:00.000Z","startTime":"2021-12-28T10:05:00.000Z","travelTime":840000,"via":[{"stop":{"name":"Länsiterm. T1","code":"H0235","gtfsId":"HSL:1203409","coordinates":{"latitude":60.15407,"longitude":24.919259},"locationType":"STOP","arrivesAt":"2021-12-28T10:19:00.000Z","realtimeArrivesAt":"2021-12-28T10:19:00.000Z","departuresAt":"2021-12-28T10:19:00.000Z","realtimeDeparturesAt":"2021-12-28T10:19:00.000Z","serviceDay":"2021-12-27T22:00:00.000Z"},"route":"7 to Länsiterm. T2 (HSL:1203416) from Pasilan asema (HSL:1174402)","travelTime":840000},{"stop":{"name":"Huutokonttori","code":"H0296","gtfsId":"HSL:1203405","coordinates":{"latitude":60.159893,"longitude":24.921266},"locationType":"STOP","arrivesAt":"2021-12-28T10:17:00.000Z","realtimeArrivesAt":"2021-12-28T10:17:00.000Z","departuresAt":"2021-12-28T10:17:00.000Z","realtimeDeparturesAt":"2021-12-28T10:17:00.000Z","serviceDay":"2021-12-27T22:00:00.000Z"},"route":"7 to Länsiterm. T2 (HSL:1203416) from Pasilan asema (HSL:1174402)","travelTime":838175.4573575084},{"stop":{"name":"Länsilinkki","code":"H0821","gtfsId":"HSL:1040405","coordinates":{"latitude":60.1627,"longitude":24.92315},"locationType":"STOP","arrivesAt":"2021-12-28T10:15:00.000Z","realtimeArrivesAt":"2021-12-28T10:15:00.000Z","departuresAt":"2021-12-28T10:15:00.000Z","realtimeDeparturesAt":"2021-12-28T10:15:00.000Z","serviceDay":"2021-12-27T22:00:00.000Z"},"route":"7 to Länsiterm. T2 (HSL:1203416) from Pasilan asema (HSL:1174402)","travelTime":776912.8609799973},{"stop":{"name":"Ruoholahden villat","code":"H0823","gtfsId":"HSL:1040407","coordinates":{"latitude":60.1654,"longitude":24.92675},"locationType":"STOP","arrivesAt":"2021-12-28T10:13:00.000Z","realtimeArrivesAt":"2021-12-28T10:13:00.000Z","departuresAt":"2021-12-28T10:13:00.000Z","realtimeDeparturesAt":"2021-12-28T10:13:00.000Z","serviceDay":"2021-12-27T22:00:00.000Z"},"route":"7 to Länsiterm. T2 (HSL:1203416) from Pasilan asema (HSL:1174402)","travelTime":718577.6712882519},{"stop":{"name":"Kampintori","code":"H0825","gtfsId":"HSL:1040409","coordinates":{"latitude":60.16776,"longitude":24.9313},"locationType":"STOP","arrivesAt":"2021-12-28T10:11:00.000Z","realtimeArrivesAt":"2021-12-28T10:11:00.000Z","departuresAt":"2021-12-28T10:11:00.000Z","realtimeDeparturesAt":"2021-12-28T10:11:00.000Z","serviceDay":"2021-12-27T22:00:00.000Z"},"route":"7 to Länsiterm. T2 (HSL:1203416) from Pasilan asema (HSL:1174402)","travelTime":658909.1774589237},{"stop":{"name":"Simonkatu","code":"H0231","gtfsId":"HSL:1040411","coordinates":{"latitude":60.16875,"longitude":24.9353},"locationType":"STOP","arrivesAt":"2021-12-28T10:10:00.000Z","realtimeArrivesAt":"2021-12-28T10:10:00.000Z","departuresAt":"2021-12-28T10:10:00.000Z","realtimeDeparturesAt":"2021-12-28T10:10:00.000Z","serviceDay":"2021-12-27T22:00:00.000Z"},"route":"7 to Länsiterm. T2 (HSL:1203416) from Pasilan asema (HSL:1174402)","travelTime":634230.1275628738},{"stop":{"name":"Rautatieasema","code":"H0302","gtfsId":"HSL:1020454","coordinates":{"latitude":60.1704,"longitude":24.94061},"locationType":"STOP","arrivesAt":"2021-12-28T10:05:00.000Z"},"route":"start","travelTime":0}]}
+{
+    "to": {
+        "name": "Länsiterm. T1",
+        "code": "H0235",
+        "gtfsId": "HSL:1203409",
+        "coordinates": { "latitude": 60.15407, "longitude": 24.919259 },
+        "locationType": "STOP",
+        "arrivesAt": "2021-12-28T10:19:00.000Z",
+        "realtimeArrivesAt": "2021-12-28T10:19:00.000Z",
+        "departuresAt": "2021-12-28T10:19:00.000Z",
+        "realtimeDeparturesAt": "2021-12-28T10:19:00.000Z",
+        "serviceDay": "2021-12-27T22:00:00.000Z"
+    },
+    "from": {
+        "name": "Rautatieasema",
+        "code": "H0302",
+        "gtfsId": "HSL:1020454",
+        "coordinates": { "latitude": 60.1704, "longitude": 24.94061 },
+        "locationType": "STOP",
+        "arrivesAt": "2021-12-28T10:05:00.000Z"
+    },
+    "arrived": "2021-12-28T10:19:00.000Z",
+    "startTime": "2021-12-28T10:05:00.000Z",
+    "travelTime": 840000,
+    "via": [
+        {
+            "stop": {
+                "name": "Länsiterm. T1",
+                "code": "H0235",
+                "gtfsId": "HSL:1203409",
+                "coordinates": { "latitude": 60.15407, "longitude": 24.919259 },
+                "locationType": "STOP",
+                "arrivesAt": "2021-12-28T10:19:00.000Z",
+                "realtimeArrivesAt": "2021-12-28T10:19:00.000Z",
+                "departuresAt": "2021-12-28T10:19:00.000Z",
+                "realtimeDeparturesAt": "2021-12-28T10:19:00.000Z",
+                "serviceDay": "2021-12-27T22:00:00.000Z"
+            },
+            "route": "7 to Länsiterm. T2 (HSL:1203416) from Pasilan asema (HSL:1174402)",
+            "travelTime": 840000
+        },
+        {
+            "stop": {
+                "name": "Huutokonttori",
+                "code": "H0296",
+                "gtfsId": "HSL:1203405",
+                "coordinates": {
+                    "latitude": 60.159893,
+                    "longitude": 24.921266
+                },
+                "locationType": "STOP",
+                "arrivesAt": "2021-12-28T10:17:00.000Z",
+                "realtimeArrivesAt": "2021-12-28T10:17:00.000Z",
+                "departuresAt": "2021-12-28T10:17:00.000Z",
+                "realtimeDeparturesAt": "2021-12-28T10:17:00.000Z",
+                "serviceDay": "2021-12-27T22:00:00.000Z"
+            },
+            "route": "7 to Länsiterm. T2 (HSL:1203416) from Pasilan asema (HSL:1174402)",
+            "travelTime": 838175.4573575084
+        },
+        {
+            "stop": {
+                "name": "Länsilinkki",
+                "code": "H0821",
+                "gtfsId": "HSL:1040405",
+                "coordinates": { "latitude": 60.1627, "longitude": 24.92315 },
+                "locationType": "STOP",
+                "arrivesAt": "2021-12-28T10:15:00.000Z",
+                "realtimeArrivesAt": "2021-12-28T10:15:00.000Z",
+                "departuresAt": "2021-12-28T10:15:00.000Z",
+                "realtimeDeparturesAt": "2021-12-28T10:15:00.000Z",
+                "serviceDay": "2021-12-27T22:00:00.000Z"
+            },
+            "route": "7 to Länsiterm. T2 (HSL:1203416) from Pasilan asema (HSL:1174402)",
+            "travelTime": 776912.8609799973
+        },
+        {
+            "stop": {
+                "name": "Ruoholahden villat",
+                "code": "H0823",
+                "gtfsId": "HSL:1040407",
+                "coordinates": { "latitude": 60.1654, "longitude": 24.92675 },
+                "locationType": "STOP",
+                "arrivesAt": "2021-12-28T10:13:00.000Z",
+                "realtimeArrivesAt": "2021-12-28T10:13:00.000Z",
+                "departuresAt": "2021-12-28T10:13:00.000Z",
+                "realtimeDeparturesAt": "2021-12-28T10:13:00.000Z",
+                "serviceDay": "2021-12-27T22:00:00.000Z"
+            },
+            "route": "7 to Länsiterm. T2 (HSL:1203416) from Pasilan asema (HSL:1174402)",
+            "travelTime": 718577.6712882519
+        },
+        {
+            "stop": {
+                "name": "Kampintori",
+                "code": "H0825",
+                "gtfsId": "HSL:1040409",
+                "coordinates": { "latitude": 60.16776, "longitude": 24.9313 },
+                "locationType": "STOP",
+                "arrivesAt": "2021-12-28T10:11:00.000Z",
+                "realtimeArrivesAt": "2021-12-28T10:11:00.000Z",
+                "departuresAt": "2021-12-28T10:11:00.000Z",
+                "realtimeDeparturesAt": "2021-12-28T10:11:00.000Z",
+                "serviceDay": "2021-12-27T22:00:00.000Z"
+            },
+            "route": "7 to Länsiterm. T2 (HSL:1203416) from Pasilan asema (HSL:1174402)",
+            "travelTime": 658909.1774589237
+        },
+        {
+            "stop": {
+                "name": "Simonkatu",
+                "code": "H0231",
+                "gtfsId": "HSL:1040411",
+                "coordinates": { "latitude": 60.16875, "longitude": 24.9353 },
+                "locationType": "STOP",
+                "arrivesAt": "2021-12-28T10:10:00.000Z",
+                "realtimeArrivesAt": "2021-12-28T10:10:00.000Z",
+                "departuresAt": "2021-12-28T10:10:00.000Z",
+                "realtimeDeparturesAt": "2021-12-28T10:10:00.000Z",
+                "serviceDay": "2021-12-27T22:00:00.000Z"
+            },
+            "route": "7 to Länsiterm. T2 (HSL:1203416) from Pasilan asema (HSL:1174402)",
+            "travelTime": 634230.1275628738
+        },
+        {
+            "stop": {
+                "name": "Rautatieasema",
+                "code": "H0302",
+                "gtfsId": "HSL:1020454",
+                "coordinates": { "latitude": 60.1704, "longitude": 24.94061 },
+                "locationType": "STOP",
+                "arrivesAt": "2021-12-28T10:05:00.000Z"
+            },
+            "route": "start",
+            "travelTime": 0
+        }
+    ]
+}

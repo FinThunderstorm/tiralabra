@@ -1,1 +1,166 @@
-{"to":{"name":"Kumpulan kampus","code":"H3029","gtfsId":"HSL:1240103","coordinates":{"latitude":60.203679,"longitude":24.965952},"locationType":"STOP","arrivesAt":"2021-12-28T10:26:00.000Z","realtimeArrivesAt":"2021-12-28T10:26:00.000Z","departuresAt":"2021-12-28T10:26:00.000Z","realtimeDeparturesAt":"2021-12-28T10:26:00.000Z","serviceDay":"2021-12-27T22:00:00.000Z"},"from":{"name":"Herttoniemi","code":"H0030","gtfsId":"HSL:1431602","coordinates":{"latitude":60.194825,"longitude":25.030723},"locationType":"STOP","arrivesAt":"2021-12-28T10:05:00.000Z"},"arrived":"2021-12-28T10:26:00.000Z","startTime":"2021-12-28T10:05:00.000Z","travelTime":1260000,"via":[{"stop":{"name":"Kumpulan kampus","code":"H3029","gtfsId":"HSL:1240103","coordinates":{"latitude":60.203679,"longitude":24.965952},"locationType":"STOP","arrivesAt":"2021-12-28T10:26:00.000Z","realtimeArrivesAt":"2021-12-28T10:26:00.000Z","departuresAt":"2021-12-28T10:26:00.000Z","realtimeDeparturesAt":"2021-12-28T10:26:00.000Z","serviceDay":"2021-12-27T22:00:00.000Z"},"route":"56 to Kannelmäen asema (HSL:1331156)","travelTime":1260000},{"stop":{"name":"Haukilahdenkatu","code":"H3009","gtfsId":"HSL:1210164","coordinates":{"latitude":60.19909,"longitude":24.96847},"locationType":"STOP","arrivesAt":"2021-12-28T10:24:00.000Z","realtimeArrivesAt":"2021-12-28T10:24:00.000Z","departuresAt":"2021-12-28T10:24:00.000Z","realtimeDeparturesAt":"2021-12-28T10:24:00.000Z","serviceDay":"2021-12-27T22:00:00.000Z"},"route":"56 to Kannelmäen asema (HSL:1331156)","travelTime":1235142.9337283946},{"stop":{"name":"Sörnäistenkatu","code":"H3019","gtfsId":"HSL:1210111","coordinates":{"latitude":60.19603,"longitude":24.97368},"locationType":"STOP","arrivesAt":"2021-12-28T10:22:00.000Z","realtimeArrivesAt":"2021-12-28T10:22:00.000Z","departuresAt":"2021-12-28T10:22:00.000Z","realtimeDeparturesAt":"2021-12-28T10:22:00.000Z","serviceDay":"2021-12-27T22:00:00.000Z"},"route":"56 to Kannelmäen asema (HSL:1331156)","travelTime":1191202.942261374},{"stop":{"name":"Agroksenkuja","code":"H3007","gtfsId":"HSL:1100168","coordinates":{"latitude":60.193332,"longitude":24.977983},"locationType":"STOP","arrivesAt":"2021-12-28T10:21:00.000Z","realtimeArrivesAt":"2021-12-28T10:21:00.000Z","departuresAt":"2021-12-28T10:21:00.000Z","realtimeDeparturesAt":"2021-12-28T10:21:00.000Z","serviceDay":"2021-12-27T22:00:00.000Z"},"route":"56 to Kannelmäen asema (HSL:1331156)","travelTime":1199039.0959258673},{"stop":{"name":"Kalasatama (M)","code":"H3005","gtfsId":"HSL:1100133","coordinates":{"latitude":60.18831,"longitude":24.97647},"locationType":"STOP","arrivesAt":"2021-12-28T10:15:07.720Z","realtimeArrivesAt":"2021-12-28T10:15:07.720Z","departuresAt":"2021-12-28T10:15:07.720Z","realtimeDeparturesAt":"2021-12-28T10:15:07.720Z","serviceDay":"2021-12-27T22:00:00.000Z"},"route":"Walk to Kalasatama (M) H3005 (HSL:1100133)","travelTime":932436.8520905459},{"stop":{"name":"Kalasatama","code":"H0026","gtfsId":"HSL:1100602","coordinates":{"latitude":60.187523,"longitude":24.977137},"locationType":"STOP","arrivesAt":"2021-12-28T10:11:00.000Z","realtimeArrivesAt":"2021-12-28T10:11:00.000Z","departuresAt":"2021-12-28T10:11:00.000Z","realtimeDeparturesAt":"2021-12-28T10:11:00.000Z","serviceDay":"2021-12-27T22:00:00.000Z"},"route":"M2 to Tapiola (HSL:2211602)","travelTime":701758.2959056848},{"stop":{"name":"Kulosaari","code":"H0028","gtfsId":"HSL:1420602","coordinates":{"latitude":60.188855,"longitude":25.008181},"locationType":"STOP","arrivesAt":"2021-12-28T10:09:00.000Z","realtimeArrivesAt":"2021-12-28T10:09:00.000Z","departuresAt":"2021-12-28T10:09:00.000Z","realtimeDeparturesAt":"2021-12-28T10:09:00.000Z","serviceDay":"2021-12-27T22:00:00.000Z"},"route":"M2 to Tapiola (HSL:2211602)","travelTime":753988.2194973975},{"stop":{"name":"Herttoniemi","code":"H0030","gtfsId":"HSL:1431602","coordinates":{"latitude":60.194825,"longitude":25.030723},"locationType":"STOP","arrivesAt":"2021-12-28T10:05:00.000Z"},"route":"start","travelTime":0}]}
+{
+    "to": {
+        "name": "Kumpulan kampus",
+        "code": "H3029",
+        "gtfsId": "HSL:1240103",
+        "coordinates": { "latitude": 60.203679, "longitude": 24.965952 },
+        "locationType": "STOP",
+        "arrivesAt": "2021-12-28T10:26:00.000Z",
+        "realtimeArrivesAt": "2021-12-28T10:26:00.000Z",
+        "departuresAt": "2021-12-28T10:26:00.000Z",
+        "realtimeDeparturesAt": "2021-12-28T10:26:00.000Z",
+        "serviceDay": "2021-12-27T22:00:00.000Z"
+    },
+    "from": {
+        "name": "Herttoniemi",
+        "code": "H0030",
+        "gtfsId": "HSL:1431602",
+        "coordinates": { "latitude": 60.194825, "longitude": 25.030723 },
+        "locationType": "STOP",
+        "arrivesAt": "2021-12-28T10:05:00.000Z"
+    },
+    "arrived": "2021-12-28T10:26:00.000Z",
+    "startTime": "2021-12-28T10:05:00.000Z",
+    "travelTime": 1260000,
+    "via": [
+        {
+            "stop": {
+                "name": "Kumpulan kampus",
+                "code": "H3029",
+                "gtfsId": "HSL:1240103",
+                "coordinates": {
+                    "latitude": 60.203679,
+                    "longitude": 24.965952
+                },
+                "locationType": "STOP",
+                "arrivesAt": "2021-12-28T10:26:00.000Z",
+                "realtimeArrivesAt": "2021-12-28T10:26:00.000Z",
+                "departuresAt": "2021-12-28T10:26:00.000Z",
+                "realtimeDeparturesAt": "2021-12-28T10:26:00.000Z",
+                "serviceDay": "2021-12-27T22:00:00.000Z"
+            },
+            "route": "56 to Kannelmäen asema (HSL:1331156)",
+            "travelTime": 1260000
+        },
+        {
+            "stop": {
+                "name": "Haukilahdenkatu",
+                "code": "H3009",
+                "gtfsId": "HSL:1210164",
+                "coordinates": { "latitude": 60.19909, "longitude": 24.96847 },
+                "locationType": "STOP",
+                "arrivesAt": "2021-12-28T10:24:00.000Z",
+                "realtimeArrivesAt": "2021-12-28T10:24:00.000Z",
+                "departuresAt": "2021-12-28T10:24:00.000Z",
+                "realtimeDeparturesAt": "2021-12-28T10:24:00.000Z",
+                "serviceDay": "2021-12-27T22:00:00.000Z"
+            },
+            "route": "56 to Kannelmäen asema (HSL:1331156)",
+            "travelTime": 1235142.9337283946
+        },
+        {
+            "stop": {
+                "name": "Sörnäistenkatu",
+                "code": "H3019",
+                "gtfsId": "HSL:1210111",
+                "coordinates": { "latitude": 60.19603, "longitude": 24.97368 },
+                "locationType": "STOP",
+                "arrivesAt": "2021-12-28T10:22:00.000Z",
+                "realtimeArrivesAt": "2021-12-28T10:22:00.000Z",
+                "departuresAt": "2021-12-28T10:22:00.000Z",
+                "realtimeDeparturesAt": "2021-12-28T10:22:00.000Z",
+                "serviceDay": "2021-12-27T22:00:00.000Z"
+            },
+            "route": "56 to Kannelmäen asema (HSL:1331156)",
+            "travelTime": 1191202.942261374
+        },
+        {
+            "stop": {
+                "name": "Agroksenkuja",
+                "code": "H3007",
+                "gtfsId": "HSL:1100168",
+                "coordinates": {
+                    "latitude": 60.193332,
+                    "longitude": 24.977983
+                },
+                "locationType": "STOP",
+                "arrivesAt": "2021-12-28T10:21:00.000Z",
+                "realtimeArrivesAt": "2021-12-28T10:21:00.000Z",
+                "departuresAt": "2021-12-28T10:21:00.000Z",
+                "realtimeDeparturesAt": "2021-12-28T10:21:00.000Z",
+                "serviceDay": "2021-12-27T22:00:00.000Z"
+            },
+            "route": "56 to Kannelmäen asema (HSL:1331156)",
+            "travelTime": 1199039.0959258673
+        },
+        {
+            "stop": {
+                "name": "Kalasatama (M)",
+                "code": "H3005",
+                "gtfsId": "HSL:1100133",
+                "coordinates": { "latitude": 60.18831, "longitude": 24.97647 },
+                "locationType": "STOP",
+                "arrivesAt": "2021-12-28T10:15:07.720Z",
+                "realtimeArrivesAt": "2021-12-28T10:15:07.720Z",
+                "departuresAt": "2021-12-28T10:15:07.720Z",
+                "realtimeDeparturesAt": "2021-12-28T10:15:07.720Z",
+                "serviceDay": "2021-12-27T22:00:00.000Z"
+            },
+            "route": "Walk to Kalasatama (M) H3005 (HSL:1100133)",
+            "travelTime": 932436.8520905459
+        },
+        {
+            "stop": {
+                "name": "Kalasatama",
+                "code": "H0026",
+                "gtfsId": "HSL:1100602",
+                "coordinates": {
+                    "latitude": 60.187523,
+                    "longitude": 24.977137
+                },
+                "locationType": "STOP",
+                "arrivesAt": "2021-12-28T10:11:00.000Z",
+                "realtimeArrivesAt": "2021-12-28T10:11:00.000Z",
+                "departuresAt": "2021-12-28T10:11:00.000Z",
+                "realtimeDeparturesAt": "2021-12-28T10:11:00.000Z",
+                "serviceDay": "2021-12-27T22:00:00.000Z"
+            },
+            "route": "M2 to Tapiola (HSL:2211602)",
+            "travelTime": 701758.2959056848
+        },
+        {
+            "stop": {
+                "name": "Kulosaari",
+                "code": "H0028",
+                "gtfsId": "HSL:1420602",
+                "coordinates": {
+                    "latitude": 60.188855,
+                    "longitude": 25.008181
+                },
+                "locationType": "STOP",
+                "arrivesAt": "2021-12-28T10:09:00.000Z",
+                "realtimeArrivesAt": "2021-12-28T10:09:00.000Z",
+                "departuresAt": "2021-12-28T10:09:00.000Z",
+                "realtimeDeparturesAt": "2021-12-28T10:09:00.000Z",
+                "serviceDay": "2021-12-27T22:00:00.000Z"
+            },
+            "route": "M2 to Tapiola (HSL:2211602)",
+            "travelTime": 753988.2194973975
+        },
+        {
+            "stop": {
+                "name": "Herttoniemi",
+                "code": "H0030",
+                "gtfsId": "HSL:1431602",
+                "coordinates": {
+                    "latitude": 60.194825,
+                    "longitude": 25.030723
+                },
+                "locationType": "STOP",
+                "arrivesAt": "2021-12-28T10:05:00.000Z"
+            },
+            "route": "start",
+            "travelTime": 0
+        }
+    ]
+}
