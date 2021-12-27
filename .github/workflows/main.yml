@@ -19,9 +19,9 @@ jobs:
               run: npm run prettier:ci
             - name: Run linter
               run: npm run lint
-            - name: Build the Docker image
-              run: docker-compose build
+            #- name: Build the Docker image
+            #  run: docker-compose build
             - name: Run tests & create coverage report
-              run: docker-compose run --rm app npm run test:coverage
+              run: npm run test:coverage
             - name: Coverage report to Codecov
               run: bash <(curl -s https://codecov.io/bash)
