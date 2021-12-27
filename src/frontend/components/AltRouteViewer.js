@@ -44,6 +44,9 @@ const AltRouteViewer = () => {
 
     return (
         <Stack spacing={2} direction="column" margin="normal">
+            <Typography variant="body1">
+                Route from first caching round
+            </Typography>
             <Stop stop={route.from} title="From" color="error" />
             <Stop stop={route.to} title="Destination" color="success" />
 

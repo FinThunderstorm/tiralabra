@@ -11,6 +11,7 @@ import {
 import RouteViewer from './RouteViewer'
 import { findPerformance } from '../reducers/routeReducer'
 import PerfResult from './PerfResult'
+import AltRouteViewer from './AltRouteViewer'
 
 const PerformanceTest = () => {
     const dispatch = useDispatch()
@@ -114,6 +115,7 @@ const PerformanceTest = () => {
                 <Stack spacing={2} direction="column" margin="normal">
                     <PerfResult />
                     <RouteViewer />
+                    <AltRouteViewer alt />
                 </Stack>
             </Grid>
         </Grid>

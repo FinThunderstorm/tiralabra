@@ -1,7 +1,6 @@
 import React from 'react'
 import { Typography, Card, CardContent } from '@mui/material'
 import { useSelector } from 'react-redux'
-import AltRouteViewer from './AltRouteViewer'
 
 const PerfResult = () => {
     const result = useSelector((state) => state.performance)
@@ -19,14 +18,6 @@ const PerfResult = () => {
                             </Typography>
                         </CardContent>
                     </Card>
-                    {result.uncachedRoute && (
-                        <>
-                            <Typography variant="h3">
-                                Alternative route:
-                            </Typography>
-                            <AltRouteViewer alt />
-                        </>
-                    )}
                 </>
             )}
         </>
