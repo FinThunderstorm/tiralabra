@@ -69,7 +69,11 @@ const getStop = async (stopGtfsId) => {
  */
 const getNextDepartures = async (stopGtfsId, startTime, maxDistance = 250) => {
     const QUERY = gql`
-        query stop($id: String!, $startTime: Long, $maxDistance: Int!) {
+        query nextDepartures(
+            $id: String!
+            $startTime: Long
+            $maxDistance: Int!
+        ) {
             stop(id: $id) {
                 name
                 code
@@ -305,7 +309,7 @@ const getNearestStops = async (lat, lon, maxDistance = 250) => {
     }
 
     const QUERY = gql`
-        query ($lat: Float!, $lon: Float!, $maxDistance: Int!) {
+        query nearest($lat: Float!, $lon: Float!, $maxDistance: Int!) {
             nearest(
                 lat: $lat
                 lon: $lon
@@ -377,7 +381,7 @@ const getRouteline = async (stop, time, route) => {
     }
 
     const QUERY = gql`
-        query ($tripId: String!) {
+        query routeLine($tripId: String!) {
             trip(id: $tripId) {
                 routeShortName
                 stops {
