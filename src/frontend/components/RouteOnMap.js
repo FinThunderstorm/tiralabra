@@ -1,34 +1,54 @@
-/* eslint-disable react/prop-types */
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import L from 'leaflet'
+import { Button, Stack, Typography } from '@mui/material'
 import 'leaflet/dist/leaflet.css'
 import { Marker, Polyline, Popup } from 'react-leaflet'
-import markerLogo from '../marker.svg'
+import markerLogo from '../marker2.svg'
+import dotLogo from '../dot2.svg'
 import { setDepartures } from '../reducers/departuresReducer'
 
-const RouteOnMap = ({ stops, routeLine }) => {
+const RouteOnMap = () => {
+    const routeState = useSelector((state) => state.route)
     const dispatch = useDispatch()
+
+    if (routeState === null) {
+        return <></>
+    }
+
     const handleDepartures = (event) => {
         event.preventDefault()
         const gtfsId = event.target.gtfsId.value
         const startTime = event.target.startTime.value
-        console.log(gtfsId, startTime)
+        console.log(new Date(startTime).toISOString())
         dispatch(setDepartures(gtfsId, startTime))
     }
     const scale = 0.05
-    if (stops === null || routeLine === null) {
-        return <></>
-    }
-    console.log('stops:', stops)
 
-    console.log(
-        typeof stops.via[0].stop.arrivesAt,
-        new Date(stops.via[0].stop.arrivesAt).toLocaleString('fi-FI')
-    )
+    const { route, routeLine } = routeState
+
+    const colors = [
+        '#00bfa6',
+        '#dd2c00',
+        '#ff0000',
+        '#ffff00',
+        '#03a9f4',
+        '#00ea00',
+    ]
+
+    let colorIndex = 0
+    const getColor = () => {
+        const ret = colorIndex
+        colorIndex += 1
+        if (colorIndex === colors.length) {
+            colorIndex = 0
+        }
+        return ret
+    }
+
     return (
         <>
-            {stops.via.map((stop) => (
+            {route.via.map((stop) => (
                 <Marker
                     key={stop.stop.gtfsId}
                     icon={L.icon({
@@ -42,36 +62,83 @@ const RouteOnMap = ({ stops, routeLine }) => {
                     ]}
                 >
                     <Popup>
-                        <h1>{stop.route}</h1>
-                        <form onSubmit={handleDepartures}>
-                            <input
-                                name="gtfsId"
-                                hidden
-                                value={stop.stop.gtfsId}
-                            />
-                            <input
-                                name="startTime"
-                                hidden
-                                value={stop.stop.arrivesAt}
-                            />
-                            <button type="submit">
-                                {stop.stop.name} ({stop.stop.code}) -{' '}
-                                {stop.stop.gtfsId}
-                            </button>
-                        </form>
-                        <p>
-                            Arrived at:{' '}
-                            {new Date(stop.stop.arrivesAt).toLocaleString(
-                                'fi-FI',
-                                {
-                                    timeZone: 'Europe/Helsinki',
-                                }
-                            )}
-                        </p>
+                        <Stack spacing={2} direction="column" margin="normal">
+                            <Typography variant="h5">
+                                Arrived with{' '}
+                                {(stop.route && stop.route.split(' ')[0]) ??
+                                    'your choice'}
+                            </Typography>
+                            <form onSubmit={handleDepartures}>
+                                <input
+                                    name="gtfsId"
+                                    hidden
+                                    readOnly
+                                    value={stop.stop.gtfsId}
+                                />
+                                <input
+                                    name="startTime"
+                                    hidden
+                                    readOnly
+                                    value={
+                                        stop.stop.realtimeArrivesAt ??
+                                        stop.stop.arrivesAt
+                                    }
+                                />
+                                <Button
+                                    color="secondary"
+                                    variant="contained"
+                                    type="submit"
+                                >
+                                    {stop.stop.name} ({stop.stop.code}) -{' '}
+                                    {stop.stop.gtfsId}
+                                </Button>
+                            </form>
+                            <Typography variant="body2">
+                                Arrived at:{' '}
+                                {stop.stop.realtimeArrivesAt &&
+                                    new Date(
+                                        stop.stop.realtimeArrivesAt
+                                    ).toLocaleString('fi-FI', {
+                                        timeZone: 'Europe/Helsinki',
+                                    })}
+                            </Typography>
+                        </Stack>
                     </Popup>
                 </Marker>
             ))}
-            <Polyline pathOptions={{ color: 'purple' }} positions={routeLine} />
+            {Object.keys(routeLine)
+                .filter((key) => key !== 'Walk')
+                .map((key) => (
+                    <>
+                        <Marker
+                            position={routeLine[key][0][0]}
+                            icon={L.icon({
+                                iconUrl: dotLogo,
+                                iconSize: [256 * scale, 256 * scale],
+                                iconAnchor: [5, 5],
+                            })}
+                        />
+                        <Polyline
+                            pathOptions={{
+                                color: colors[getColor()],
+                            }}
+                            positions={routeLine[key]}
+                        />
+                        <Marker
+                            position={
+                                routeLine[key][routeLine[key].length - 1][
+                                    routeLine[key][routeLine[key].length - 1]
+                                        .length - 1
+                                ]
+                            }
+                            icon={L.icon({
+                                iconUrl: dotLogo,
+                                iconSize: [256 * scale, 256 * scale],
+                                iconAnchor: [5, 5],
+                            })}
+                        />
+                    </>
+                ))}
         </>
     )
 }

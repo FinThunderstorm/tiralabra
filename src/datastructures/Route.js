@@ -158,7 +158,7 @@ class Route {
     }
 
     toString() {
-        return this.route
+        return `${this.route}`
     }
 }
 

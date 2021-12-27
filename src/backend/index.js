@@ -1,3 +1,4 @@
+/* eslint-disable */
 require('module-alias/register')
 const express = require('express')
 const cors = require('cors')
@@ -11,10 +12,6 @@ const StopRepository = require('@repositories/stopRepository')
 const PathFinder = require('@pathfinder/PathFinder')
 const PerformanceTest = require('@backend/performanceTest')
 const { apiHealth } = require('./graphql')
-
-// const Route = require('../datastructures/Route')
-
-// 'experimental cachetime >', Math.round(((departures.departures[0].departuresAt - timeNow)/1000)-60)
 
 app.use(cors())
 app.use(express.json())
@@ -34,18 +31,35 @@ app.get('/health', async (req, res) => {
 
 app.post('/search', async (req, res) => {
     const attributes = req.body
-    console.log('attr:', attributes)
     const startStop = await StopRepository.getStop(attributes.startStop)
     const endStop = await StopRepository.getStop(attributes.endStop)
+    if (startStop === null || endStop === null) {
+        res.status(400).end()
+        return
+    }
     PathFinder.search(startStop, endStop, attributes.uStartTime).then(
         (searchedRoute) => {
-            res.json(searchedRoute.toJSON())
+            if (searchedRoute === null) {
+                res.status(400).end()
+                return
+            }
+            try {
+                const routeJSON = searchedRoute.toJSON()
+                res.json(routeJSON)
+            } catch (error) {
+                console.error(error)
+                res.status(400).end()
+            }
         }
     )
 })
 
 app.get('/stop/:stopGtfsId', async (req, res) => {
     StopRepository.getStop(req.params.stopGtfsId).then((stop) => {
+        if (stop === null) {
+            res.status(400).end()
+            return
+        }
         res.json(stop)
     })
 })
@@ -53,6 +67,10 @@ app.get('/stop/:stopGtfsId', async (req, res) => {
 app.get('/nextDepartures/:stopGtfsId', async (req, res) => {
     StopRepository.getNextDepartures(req.params.stopGtfsId, new Date()).then(
         (departures) => {
+            if (departures === null) {
+                res.status(400).end()
+                return
+            }
             res.json(departures)
         }
     )
@@ -64,7 +82,31 @@ app.post('/nextDepartures', async (req, res) => {
         attributes.gtfsId,
         attributes.startTime
     ).then((departures) => {
+        if (departures === null) {
+            res.status(400).end()
+            return
+        }
         res.json(departures)
+    })
+})
+
+app.post('/findStops', async (req, res) => {
+    const attributes = req.body
+
+    const textResults = await StopRepository.findStopsByText(
+        attributes.searchTerm
+    )
+    res.status(218).json(textResults)
+})
+
+app.post('/routeLine', async (req, res) => {
+    const attributes = req.body
+    StopRepository.getRouteline(
+        attributes.stopGtfsId,
+        attributes.time,
+        attributes.route
+    ).then((result) => {
+        res.status(218).json(result)
     })
 })
 
@@ -97,54 +139,144 @@ app.post('/travelTime', async (req, res) => {
 
 app.post('/performanceTest', async (req, res) => {
     const attributes = req.body
-    console.log(attributes)
     const startStop = await StopRepository.getStop(attributes.startStop)
     const endStop = await StopRepository.getStop(attributes.endStop)
     const startTime = new Date(Date.parse(attributes.startTime))
 
     await cache.flushall()
 
-    const otpStart = performance.now()
-    PerformanceTest.runOTP(startStop, endStop, startTime)
-        .then((otpResult) => {
-            const otpEnd = performance.now()
-            const uncachedPfStart = performance.now()
+    console.log('Starting perftest')
+    const uncachedPfStart = performance.now()
+    PerformanceTest.runPathFinder(startStop, endStop, startTime)
+        .then((uncachedPfResult) => {
+            const uncachedPfEnd = performance.now()
             PerformanceTest.runPathFinder(startStop, endStop, startTime)
                 .then(() => {
-                    const uncachedPfEnd = performance.now()
-                    const pfStart = performance.now()
                     PerformanceTest.runPathFinder(startStop, endStop, startTime)
-                        .then((pfResult) => {
-                            const pfEnd = performance.now()
-                            const otpTook = (otpEnd - otpStart) / 1000
-                            const uncachedPfTook =
-                                (uncachedPfEnd - uncachedPfStart) / 1000
-                            const pfTook = (pfEnd - pfStart) / 1000
-                            const percentage =
-                                ((pfTook - otpTook) / pfTook) * 100
-                            const difference = pfTook - otpTook
-
-                            res.json({
-                                results: {
-                                    otp: otpResult,
-                                    pathfinder: pfResult,
-                                },
-                                took: {
-                                    otp: otpTook,
-                                    uncachedPathfinder: uncachedPfTook,
-                                    pathfinder: pfTook,
-                                    resultText: `OTP took ${otpTook.toFixed(
-                                        3
-                                    )} seconds and PathFinder took ${pfTook.toFixed(
-                                        3
-                                    )} seconds`,
-                                    comparation: `PathFinder was ${percentage.toFixed(
-                                        3
-                                    )}% slower than optimized OpenTripPlanner\n -> Time difference was ${difference.toFixed(
-                                        3
-                                    )} seconds.`,
-                                },
-                            })
+                        .then(() => {
+                            PerformanceTest.runPathFinder(
+                                startStop,
+                                endStop,
+                                startTime
+                            )
+                                .then(() => {
+                                    PerformanceTest.runPathFinder(
+                                        startStop,
+                                        endStop,
+                                        startTime
+                                    )
+                                        .then(() => {
+                                            PerformanceTest.runPathFinder(
+                                                startStop,
+                                                endStop,
+                                                startTime
+                                            )
+                                                .then(() => {
+                                                    PerformanceTest.runPathFinder(
+                                                        startStop,
+                                                        endStop,
+                                                        startTime
+                                                    )
+                                                        .then(() => {
+                                                            PerformanceTest.runPathFinder(
+                                                                startStop,
+                                                                endStop,
+                                                                startTime
+                                                            )
+                                                                .then(() => {
+                                                                    const pfStart =
+                                                                        performance.now()
+                                                                    PerformanceTest.runPathFinder(
+                                                                        startStop,
+                                                                        endStop,
+                                                                        startTime
+                                                                    )
+                                                                        .then(
+                                                                            (
+                                                                                pfResult
+                                                                            ) => {
+                                                                                const pfEnd =
+                                                                                    performance.now()
+                                                                                const uncachedPfTook =
+                                                                                    (uncachedPfEnd -
+                                                                                        uncachedPfStart) /
+                                                                                    1000
+                                                                                const pfTook =
+                                                                                    (pfEnd -
+                                                                                        pfStart) /
+                                                                                    1000
+                                                                                const percentage =
+                                                                                    ((uncachedPfTook -
+                                                                                        pfTook) /
+                                                                                        pfTook) *
+                                                                                    100
+                                                                                const difference =
+                                                                                    uncachedPfTook -
+                                                                                    pfTook
+                                                                                res.json(
+                                                                                    {
+                                                                                        route: pfResult,
+                                                                                        uncachedRoute:
+                                                                                            uncachedPfResult,
+                                                                                        took: {
+                                                                                            uncachedPathfinder:
+                                                                                                uncachedPfTook,
+                                                                                            pathfinder:
+                                                                                                pfTook,
+                                                                                            resultText: `Uncached took ${uncachedPfTook.toFixed(
+                                                                                                3
+                                                                                            )} seconds and cached PathFinder took ${pfTook.toFixed(
+                                                                                                3
+                                                                                            )} seconds`,
+                                                                                            comparation: `Cached PathFinder was ${percentage.toFixed(
+                                                                                                3
+                                                                                            )}% faster than uncached PathFinder\n -> Time difference was ${difference.toFixed(
+                                                                                                3
+                                                                                            )} seconds.`,
+                                                                                        },
+                                                                                    }
+                                                                                )
+                                                                            }
+                                                                        )
+                                                                        .catch(
+                                                                            (
+                                                                                error
+                                                                            ) =>
+                                                                                res
+                                                                                    .status(
+                                                                                        218
+                                                                                    )
+                                                                                    .send(
+                                                                                        error
+                                                                                    )
+                                                                        )
+                                                                })
+                                                                .catch(
+                                                                    (error) =>
+                                                                        res
+                                                                            .status(
+                                                                                218
+                                                                            )
+                                                                            .send(
+                                                                                error
+                                                                            )
+                                                                )
+                                                        })
+                                                        .catch((error) =>
+                                                            res
+                                                                .status(218)
+                                                                .send(error)
+                                                        )
+                                                })
+                                                .catch((error) =>
+                                                    res.status(218).send(error)
+                                                )
+                                        })
+                                        .catch((error) =>
+                                            res.status(218).send(error)
+                                        )
+                                })
+                                .catch((error) => res.status(218).send(error))
                         })
                         .catch((error) => res.status(218).send(error))
                 })
@@ -159,7 +291,7 @@ app.get('/flushall', async (req, res) => {
     res.status(218).end()
 })
 
-app.get('/testing', async (req, res) => {
+app.get('/cache', async (req, res) => {
     const keys = await cache.getAllKeys()
     console.log('Keys in cache:', keys.length)
     const test = await cache.getAllValues(keys)
@@ -169,45 +301,6 @@ app.get('/testing', async (req, res) => {
         pairs[keys[i]] = result[i]
     }
     res.json(pairs)
-
-    // Kumpulan kampus pohjoiseen HSL:1240103
-    // Urheilutie etelään HSL:4620205
-    // const urheilutieCode = 'HSL:4620205'
-    // // const kumpulaCode = 'HSL:1240103'
-    // // const toinenSavuCode = 'HSL:4520237'
-    // const kuusikkotieCode = 'HSL:4640213'
-    // const urheilutie = await StopRepository.getStop(urheilutieCode)
-    // // const kumpula = await StopRepository.getStop(kumpulaCode)
-    // // const toinenSavu = await StopRepository.getStop(toinenSavuCode)
-    // const kuusikkotie = await StopRepository.getStop(kuusikkotieCode)
-
-    // // const nextUrheilutie = await StopRepository.getNextDepartures(
-    // //     urheilutieCode
-    // // )
-    // // await res.json(nextUrheilutie)
-    // // await res.json({distance: distanceBetweenTwoPoints(urheilutie.coordinates, kumpula.coordinates)})
-    // cache.ttl('route:1').then((expired) => {
-    //     if (expired < 0) {
-    //         console.log('cache is old, refreshing')
-    //         PathFinder.search(urheilutie, kuusikkotie).then((searchedRoute) => {
-    //             // console.log('Searched route:', searchedRoute)
-    //             cache.set('route:1', JSON.stringify(searchedRoute)).then(() => {
-    //                 cache.expire('route:1', Math.round(cachetime / 4))
-    //                 res.json(searchedRoute)
-    //             })
-    //         })
-    //     } else {
-    //         console.log('Was in cache, using that')
-    //         cache
-    //             .get('route:1')
-    //             .then((searchedRoute) => res.json(JSON.parse(searchedRoute)))
-    //     }
-    // })
-
-    // PathFinder.search(urheilutie, kuusikkotie).then((searchedRoute) => {
-    //     console.log('Searched route:', searchedRoute)
-    //     res.json(searchedRoute.toJSON())
-    // })
 })
 
 const PORT = 3001

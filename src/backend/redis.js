@@ -18,22 +18,13 @@ const check = async (key) => {
 }
 
 const set = async (key, value) => {
-    await client.set(key, JSON.stringify(value))
+    await client.json.set(key, '.', value)
     await client.expire(key, cachetime)
 }
 
 const get = async (key) => {
-    const value = await client.get(key)
-    return JSON.parse(value)
-}
-
-const getValid = async (key, value) => {
-    if (!check(key)) {
-        console.log('problem>', value)
-        await set(key, value)
-    }
-    const retValue = await get(key)
-    return retValue
+    const value = await client.json.get(key)
+    return value
 }
 
 const getAllKeys = async () => {
@@ -48,6 +39,7 @@ const getAllValues = async (keys) => {
 
 const flushall = async () => {
     const result = await client.sendCommand(['FLUSHALL'])
+    console.log('Flushed all', result)
     return result
 }
 
@@ -56,7 +48,6 @@ module.exports = {
     check,
     set,
     get,
-    getValid,
     getAllKeys,
     getAllValues,
     flushall,
