@@ -1,8 +1,8 @@
 const convertEpochToDate = (epoch) => new Date(epoch * 1000)
 const convertDateToEpoch = (date) => Math.floor(date.valueOf() / 1000)
 
-const fixDepartures = (departure) => {
-    const departures = departure
+const fixDepartures = (departured) => {
+    const departures = departured
     let departuresList = []
     departures.departures.forEach((departure) => {
         const values = {

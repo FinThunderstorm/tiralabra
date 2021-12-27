@@ -40,9 +40,10 @@ const heuristic = (startStop, endStop, mode = 'BUS') => {
  * @param {boolean} cacheMore
  * @returns {Route} suositeltu reitti Route-oliona.
  */
-const search = async (startStop, endStop, uStartTime) => {
+const search = async (startStop, endStop, uStartTime, routesAmount = 1) => {
     const queue = new PriorityQueue()
     let visited = new Set()
+    let routes = []
 
     const startTime = new Date(uStartTime)
     const from = startStop
@@ -52,7 +53,9 @@ const search = async (startStop, endStop, uStartTime) => {
     queue.push(startRoute)
 
     let route = queue.pop()
-    while (route.stop.gtfsId !== endStop.gtfsId) {
+    let foundRoutes = 0
+    // route.stop.gtfsId !== endStop.gtfsId &&
+    while (foundRoutes < routesAmount) {
         if (!visited.has(`${route.stop.gtfsId}:${route.route}`)) {
             visited = visited.add(`${route.stop.gtfsId}:${route.route}`)
 
@@ -111,7 +114,10 @@ const search = async (startStop, endStop, uStartTime) => {
             return undefined
         }
 
-        // console.log(queue.toString())
+        if (route.stop.gtfsId === endStop.gtfsId) {
+            foundRoutes += 1
+            routes = [...routes, route]
+        }
 
         route = queue.pop()
     }
@@ -120,7 +126,7 @@ const search = async (startStop, endStop, uStartTime) => {
         `Route search from ${startStop.code} to ${endStop.code} is ready (${startStop.code} -> ${endStop.code})`
     )
 
-    return route
+    return routes[0]
 }
 
 module.exports = { search, distanceBetweenTwoPoints, heuristic }

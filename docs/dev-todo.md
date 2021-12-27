@@ -7,15 +7,7 @@ Julkisen liikenteen keskinopeudet:
 -   juna 54 km/h (http://junakalusto.fi/fi/lahijunaliikenne)
 -   suomenlinnan lautta ~9 solmua eli ~17km/h (https://turvallisuustutkinta.fi/material/attachments/otkes/tutkintaselostukset/fi/vesiliikenneonnettomuuksientutkinta/2016/UfLyPxJPF/M2016-02_Suomenlinnan_lautan_ja_purjeveneen_yhteentormays_Helsingissa_2.9.2016.pdf)
 
-selvitä how to prevent return of value as promise, wait for promise to resolve before return
-
-https://www.colourlovers.com/palette/56122/Sweet_Lolly väriteema
-
-docker run --name otp-hsl -p 9080:8080 -e ROUTER_NAME=hsl -e JAVA_OPTS=-Xmx5g -e ROUTER_DATA_CONTAINER_URL=https://api.digitransit.fi/routing-data/v2/hsl hsldevcom/opentripplanner:prod
-Tällä pyörimään oma OTP Hösselistä, niin ei tarvitse prodia sekottaa. ![Vinkki täältä.](https://digitransit.fi/en/developers/architecture/x-apis/1-routing-api/)
-
-Hylkää jos linja vaihtuu pysäkin ja pysäkin jälkeen
-departures.departures PriorityQueueksi.
+departures.departures PriorityQueueksi?
 
 ke 15.12.2021 klo 1215 ->
 startStop: HSL:4620205 (Urheilutie V6205)
@@ -45,28 +37,40 @@ uStartTime: 1639566000000
 HSL: 500
 -> testien vertailulopputulos ok
 
----
+--uusia
 
-ma 6.12.2021 klo 1200 ->
-startStop: HSL:9650105 (Kievari Tu6041)
-endStop: HSL:1240118 (Kumpulan kampus H3028)
-uStartTime: 1638784800000
-HSL: 641 -> 711 (vain bussi, vältä kävelyä)
-HOX! V6106 jälkeen HSL vaihtaa suoraan 711 pysäkiltä V6148 -> niin kauan kun algoritmi ei saa "STATION"-tyyppiselle pysäkkikokonaisuudelle kaikkien sen pysäkkien tietoja, ei ole relevantti.
+28.12.2021 klo 1205 // 1640685900000
+Rautatieasema - (H0302 / HSL:1020454)
+Länsiterm. T1 - (H0235 / HSL:1203409)
+Should be TRAM 7
+-> testien vertailulopputulos ok
 
-ma 6.12.2021 klo 1200 ->
-startStop: HSL:1495151 (Kutteritie H4104)
-endStop: HSL:1201127 (Wavulintie H1081)
-uStartTime: 1638784800000
-HSL: 86 -> 500 -> 69 -> 21 (vain bussi, vältä kävelyä)
-HOX! Ei toimi niin kauan, kun 'STATION' kokonaisuudesta ei osata hakea jatkoyhteyksiä
+28.12.2021 klo 1205 // 1640685900000
+Kumpulan kampus - (H0326 / HSL:1240419)
+Erottaja - (H0802 / HSL:1040445)
+Should be TRAM 6
+-> testien vertailulopputulos ok
 
-suorituskykytesti-mallia ultimate :D Hösselikin laski aikansa tätä :D
-ma 6.12.2021 klo 1200 ->
-startStop: HSL:9620109 (Kellokoski Tu6201)
-endStop: HSL:6100206 (Upinniemen koulu Ki1006)
-HSL laskee 665K -> 641 -> 717 => 192V => 173 (ilman kävelyn välttämistä ei löydy reittiä vain busseilla)
+28.12.2021 klo 1205 // 1640685900000
+Herttoniemi - (H0030 / HSL:1431602)
+Kumpulan kampus - (H3029 / HSL:1240103)
+Should be M2 -> Walk -> 56
+-> testien vertailulopputulos ok
 
-lisää linjan todellinen lähtöaika (siis jos haetaan 1200, niin matka alkaa vasta 1206 tms bussin lähtiessä)
-lisää moneltako lähdettiin edelliseltä pysäkiltä matkaamaan kohti tarkasteltavaa pysäkkiä
-lisää vaihtojen määrä, hylkää jos vaihtojen määrä ylittää 5 (6 ->)
+28.12.2021 klo 1200 // 1640685600000
+Tikkurila - (V0618 / HSL:4610553)
+Ilmalantori - (H2087 / HSL:1171180)
+Should be R -> 23
+-> testien vertailulopputulos ok
+
+28.12.2021 klo 1210 // 1640686200000
+Ruoholahti - (H0015 / HSL:1201601)
+Kaivopuisto - (H0437 / HSL:1070418)
+Should be M2 -> Walk -> TRAM 3
+-> testien vertailulopputulos ok
+
+28.12.2021 klo 1210 // 1640686200000
+Matinkylä - (E0011 / HSL:2314601)
+Koivusaarentie - (H1039 / HSL:1310119)
+Should be M1 -> Walk -> 22B
+-> testien vertailulopputulos ok

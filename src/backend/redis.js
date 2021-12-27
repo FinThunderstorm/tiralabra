@@ -18,13 +18,11 @@ const check = async (key) => {
 }
 
 const set = async (key, value) => {
-    console.log('setting', key)
     await client.json.set(key, '.', value)
     await client.expire(key, cachetime)
 }
 
 const get = async (key) => {
-    console.log('getting', key)
     const value = await client.json.get(key)
     return value
 }

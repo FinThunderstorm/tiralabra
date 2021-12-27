@@ -64,6 +64,7 @@ const getStop = async (stopGtfsId) => {
  * Esimerkki pysäkin gtfsid:stä: HSL:1240103
  * @param {String} stopGtfsId - pysäkin id GTFS-formaatissa
  * @param {Number} startTime - aloitusaika UNIX-formaatissa (millisekuntit mukana)
+ * @param {Number} maxDistance - maksimimatka vaihtopysäkeille metreinä
  * @return {JSON} Pysäkin perustiedot ja seuraava lähtö jokaiselle kulkevalle linjalle lähtöaikajärjestyksessä.
  */
 const getNextDepartures = async (stopGtfsId, startTime, maxDistance = 250) => {
