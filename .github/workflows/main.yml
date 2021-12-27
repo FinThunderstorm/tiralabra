@@ -19,8 +19,9 @@ jobs:
               run: npm run prettier:ci
             - name: Run linter
               run: npm run lint
-            #- name: Build the Docker image
-            #  run: docker-compose build
+            - uses: szenius/set-timezone@v1.0
+              with:
+                  timezoneLinux: 'Europe/Helsinki'
             - name: Run tests & create coverage report
               run: npm run test:coverage
             - name: Coverage report to Codecov
