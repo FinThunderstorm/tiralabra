@@ -5,7 +5,7 @@ import Application from './components/Application'
 import PerformanceTest from './components/PerformanceTest'
 
 const App = () => {
-    const appName = 'työnimi pirkkaReittiopas'
+    const appName = 'Reittiopas'
 
     return (
         <>
