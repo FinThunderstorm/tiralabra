@@ -41,3 +41,9 @@ Sulje sovellukset komennolla `docker-compose down -v`.
 -   [Viikko 4](./docs/viikkoraportit/viikko4.md)
 -   [Viikko 5](./docs/viikkoraportit/viikko5.md)
 -   [Viikko 6](./docs/viikkoraportit/viikko6.md)
+
+## Lisensseistä
+
+Projektissa käytetyt pysäkki- ja reittidatat ovat noudettu Helsingin Seudun Liikenteen tarjoamasta API-väylästä lisenssillä [Creative Commons BY 4.0 International](https://creativecommons.org/licenses/by/4.0/) ja näiden tietojen tekijänoikeus on **© Helsinki Region Transport 2021**.
+
+Reittien geometriatiedot sekä käytetty karttadata ovat käytössä [Open Database License (ODbL)](https://opendatacommons.org/licenses/odbl/index.html) mukaisesti.
