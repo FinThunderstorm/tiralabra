@@ -1,6 +1,22 @@
+/**
+ * convertEpochToDate on apufunktio eri aikojen muuttamisen välillä
+ * @param {number} epoch aika Epoch-formaatissa (sekunteissa)
+ * @returns {Date} sama aika Date-oliona
+ */
 const convertEpochToDate = (epoch) => new Date(epoch * 1000)
+
+/**
+ * convertDateToEpoch on apufunktio eri ajan esitysformaattien muuttamisen välillä
+ * @param {Date} date aika Date-oliona
+ * @returns {number} sama aika Epoch-formaatissa (sekunteissa)
+ */
 const convertDateToEpoch = (date) => Math.floor(date.valueOf() / 1000)
 
+/**
+ * fixDepartures muuttaa merkkijonomuotoiset päivämäärät Date-olioiksi
+ * @param {JSON} departured JSON-olio, jossa on pysäkiltä lähtevien linjojen seuraavat lähdöt
+ * @returns {JSON} korjattu JSON-olio, jossa kellonajat ovat Date-olioita
+ */
 const fixDepartures = (departured) => {
     const departures = departured
     let departuresList = []
@@ -50,10 +66,12 @@ const fixDepartures = (departured) => {
     return departures
 }
 
+/**
+ * speeds ilmaisee eri joukkoliikennevälineiden keskinopeuksia km/h -muodossa
+ */
 const speeds = {
     TRAM: 14,
     BUS: 20,
-    mainlineBus: 26,
     SUBWAY: 44,
     WALK: 5,
     RAIL: 54,
