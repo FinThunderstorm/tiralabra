@@ -28,9 +28,11 @@ Docker-ympäristössä on kolme konttia, itse reitinhaku, Redis-välimuisti ja O
 
 Reitinhaku on toteutettu siten, että reitinhakukontissa on erikseen frontend ja backend. Frontend kutsuu backendia RESTful API:n ylitse. Backend hakee GraphQL-muotoisesta API-väylästä tietoa OTP:sta.
 
+Koodi on kommentoitu käyttäen JSDoc-formaattia sekä backendin tarjoamat reitit käyttäen Swaggerin OpenAPI-formaattia. API-väylän dokumentaatio on löydettävissä ohjelman pyöriessä `http://localhost:3001/apidocs` löytyvästä Swagger UI:sta.
+
 ## Saavutetut aika- ja tilavaativuudet
 
-A\*-algoritmillä saavutetaan aika- ja tilavaatimuksiltaan määritelydokumentissa annetut rajat. Nämä ovat täysin reittikohtaisia, sillä lukumäärään vaikuttaa suuresti
+A\*-algoritmillä saavutetaan aika- ja tilavaatimuksiltaan määritelydokumentissa annetut rajat. Nämä ovat täysin reittikohtaisia, sillä lukumäärään vaikuttaa suuresti jokaiselta tarkasteltavalta pysäkiltä lähtevien linjojen ja vaihtopysäkkien määrä, sekä löydetyn reitin kaarien määrä. Annettuun ylärajaan päästään.
 
 Minimikeko noudattelee määrittelydokumentissa asetettuja arvoja aika- ja tilavaatimuksille.
 
