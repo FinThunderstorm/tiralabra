@@ -299,6 +299,13 @@ const getNextDepartures = async (stopGtfsId, startTime, maxDistance = 250) => {
     return departures
 }
 
+/**
+ * getNearestStops käytetään haettaessa lähialueen pysäkkejä käyttöliittymän puolella määritettäessä reitinhaun lähtö- ja päätepisteitä.
+ * @param {Float} lat koordinaatin leveysaste hakupisteelle (WGS 84 formaatissa)
+ * @param {Float} lon koordinaatin pituusaste hakupisteelle (WGS 84 formaatissa)
+ * @param {?number} maxDistance maksimietäisyys haettaville pysäkeille metreissä hakupisteestä, oletus 250 metriä.
+ * @returns {JSON[]} listaus lähellä olevista pysäkeistä
+ */
 const getNearestStops = async (lat, lon, maxDistance = 250) => {
     const valid = await cache.check(`nearestStops@${lat};${lon};${maxDistance}`)
     if (valid) {
@@ -360,6 +367,13 @@ const getNearestStops = async (lat, lon, maxDistance = 250) => {
     return stops
 }
 
+/**
+ * getRoutelineä käytetään haettaessa käyttöliittymän kartalle linjan kulkureittiä piirrettäväksi
+ * @param {string} stop haettavan pysäkin id GTFS-formaatissa
+ * @param {Date} time lähtöaika, mille halutaan hakea reittipisteet
+ * @param {string} route linja, mille halutaan hakea reittipisteet
+ * @returns {number[][]} lista, jossa on listana koordinaattipisteitä, jotka järjestyksessä [leveysaste, pituusaste]
+ */
 const getRouteline = async (stop, time, route) => {
     const valid = await cache.check(`routeLine:${stop}@${route}`)
     if (valid) {
@@ -443,6 +457,11 @@ const getRouteline = async (stop, time, route) => {
     return converted
 }
 
+/**
+ * findStopsByText muuntaa annetun hakusanan koordnaateiksi, joilla haetaan lähialueen pysäkit
+ * @param {string} searchTerm hakusana, jolle tehdään geokoodaus
+ * @returns {JSON} JSON-muotoisessa objektissa listaus lähialueen pysäkeistä
+ */
 const findStopsByText = async (searchTerm) => {
     const valid = await cache.check(`findStopsByText:${searchTerm}`)
     if (valid) {

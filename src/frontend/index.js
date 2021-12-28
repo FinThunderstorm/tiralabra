@@ -14,6 +14,10 @@ import loadingReducer from './reducers/loadingReducer'
 import errorReducer from './reducers/errorReducer'
 import performanceTestReducer from './reducers/performanceTestReducer'
 
+/**
+ * index.js vastaa Reactin ylläpitämisestä, Redux storen ylläpitämisestä sekä Material UI:n teeman ylläpitämisestä.
+ */
+
 const reducer = combineReducers({
     departures: departuresReducer,
     route: routeReducer,

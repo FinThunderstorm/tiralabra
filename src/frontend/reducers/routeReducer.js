@@ -1,6 +1,13 @@
-/* eslint-disable */
+/* eslint-disable consistent-return */
+/* eslint-disable no-await-in-loop */
 import axios from 'axios'
 
+/**
+ * routeReducer huolehti reitin tilasta käyttöliittymässä
+ * @param {JSON} state Reduxin tila, jossa hallinnoidaan reittiä
+ * @param {*} action Reduxin tapahtuma
+ * @returns state
+ */
 const routeReducer = (state = null, action) => {
     switch (action.type) {
         case 'SET_ROUTE':
@@ -14,8 +21,13 @@ const routeReducer = (state = null, action) => {
 
 export default routeReducer
 
+/**
+ * formatRouteLine huolehti reittipisteiden muotoilusta
+ * @param {string} route Reitti, jolle haetaan reittipisteitä.
+ * @returns {JSON} jokaiselle reitille kuljetut reittipisteet
+ */
 const formatRouteLine = async (route) => {
-    let routeLine = {}
+    const routeLine = {}
 
     for (let i = route.data.via.length - 1; i > 0; i -= 1) {
         const stop = route.data.via[i]
@@ -41,8 +53,15 @@ const formatRouteLine = async (route) => {
     return routeLine
 }
 
-export const findPerformance = (startStopGtfsId, endStopGtfsId, startTime) => {
-    return async (dispatch) => {
+/**
+ * findPerformance huolehtii suorituskykytestin toteuttamisesta käyttöliittymän puolella
+ * @param {string} startStopGtfsId lähtöpysäkin id GTFS-formaatissa
+ * @param {string} endStopGtfsId kohdepysäkin id GTFS-formaatissa
+ * @param {string} startTime lähtöaika ISO-muotosessa merkkijonossa
+ * @returns Reduxin ymmärtämä dispatch-funktio
+ */
+export const findPerformance =
+    (startStopGtfsId, endStopGtfsId, startTime) => async (dispatch) => {
         dispatch({
             type: 'SET_PERFTESTRESULT',
             data: null,
@@ -77,10 +96,16 @@ export const findPerformance = (startStopGtfsId, endStopGtfsId, startTime) => {
             console.log('err')
         }
     }
-}
 
-export const findRoute = (startStopGtfsId, endStopGtfsId, startTime) => {
-    const uStartTime = Date.parse(startTime)
+/**
+ * findRoute huolehtii reitinhaun toteuttamisesta käyttöliittymän puolella
+ * @param {string} startStopGtfsId lähtöpysäkin id GTFS-formaatissa
+ * @param {string} endStopGtfsId kohdepysäkin id GTFS-formaatissa
+ * @param {string} fStartTime lähtöaika merkkjonona
+ * @returns Reduxin ymmärtämä dispatch-funktio
+ */
+export const findRoute = (startStopGtfsId, endStopGtfsId, fStartTime) => {
+    const uStartTime = Date.parse(fStartTime)
     return async (dispatch) => {
         dispatch({
             type: 'SET_LOADING',

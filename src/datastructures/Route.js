@@ -5,7 +5,7 @@ class Route {
     /**
      * Konstruktorille annetaan seuraavat parametrit
      * @param {JSON} stop pysäkki, jossa ollaan viimeisimmäksi käyty
-     * @param {int} travelTime vapaaehtoinen, kuinka kauan ollaan matkustettu
+     * @param {number} travelTime vapaaehtoinen, kuinka kauan ollaan matkustettu
      * @param {Date} arrived vapaaehtoinen, milloin reitillä ollaan saavuttu tälle pysäkille∂
      * @param {string} route vapaaehtoinen, reitin tiedot, jolla ollaan saavuttu
      * @param {Route} next vapaaehtoinen, edellinen pysäkki
@@ -18,6 +18,10 @@ class Route {
         this.next = next ?? null
     }
 
+    /**
+     * Palauttaa vertalua varten kuinka kauan tällä reitillä on matkustettu
+     * @returns {number}
+     */
     valueOf() {
         return this.travelTime
     }
@@ -60,6 +64,10 @@ class Route {
         return output
     }
 
+    /**
+     * toJSONForTests käytetään reitin havainnollistamiseen JSON-muodossa testejä varten. Muutos on ilmaista ajat merkkijonoina.
+     * @return {JSON} Reitin tiedot JSON-muodossa
+     */
     toJSONForTests() {
         const output = {
             to: {
@@ -157,6 +165,10 @@ class Route {
         return output
     }
 
+    /**
+     * toString palauttaa merkkijonomuotoisen esityksen reitistä palauttaen reitillä käytetyn linjan.
+     * @returns {string}
+     */
     toString() {
         return `${this.route}`
     }

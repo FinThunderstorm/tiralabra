@@ -1,6 +1,6 @@
 /**
  * MinHeap-luokka mallintaa minimikekoa prioriteettijonotietorakenteena.
-
+ *
  * Lähde: Stein, C. et al. (2009) Introduction to algorithms. The MIT Press.
  */
 const parent = (index) => Math.floor(index / 2)

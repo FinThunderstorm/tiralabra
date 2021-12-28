@@ -4,6 +4,9 @@ import { Routes, Route } from 'react-router-dom'
 import Application from './components/Application'
 import PerformanceTest from './components/PerformanceTest'
 
+/**
+ * App vastaa pääkäyttöliittymästä sekä Reactin sisäisten reittien hallinnasta
+ */
 const App = () => {
     const appName = 'Reittiopas'
 
