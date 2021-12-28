@@ -32,9 +32,9 @@ Koodi on kommentoitu käyttäen JSDoc-formaattia sekä backendin tarjoamat reiti
 
 ## Saavutetut aika- ja tilavaativuudet
 
-A\*-algoritmillä saavutetaan aika- ja tilavaatimuksiltaan määritelydokumentissa annetut rajat. Nämä ovat täysin reittikohtaisia, sillä lukumäärään vaikuttaa suuresti jokaiselta tarkasteltavalta pysäkiltä lähtevien linjojen ja vaihtopysäkkien määrä, sekä löydetyn reitin kaarien määrä. Annettuun ylärajaan päästään.
+A\*-algoritmillä saavutetaan aika- ja tilavaatimuksiltaan [määritelydokumentissa](./maarittelydokumentti.md) annetut rajat. Nämä ovat täysin reittikohtaisia, sillä lukumäärään vaikuttaa suuresti jokaiselta tarkasteltavalta pysäkiltä lähtevien linjojen ja vaihtopysäkkien määrä, sekä löydetyn reitin kaarien määrä. Annettuun ylärajaan päästään.
 
-Minimikeko noudattelee määrittelydokumentissa asetettuja arvoja aika- ja tilavaatimuksille.
+Minimikeko noudattelee [määrittelydokumentissa](./maarittelydokumentti.md) asetettuja arvoja aika- ja tilavaatimuksille.
 
 ## Työn mahdolliset puutteet ja parannusehdotukset
 
