@@ -23,7 +23,7 @@ export default departuresReducer
  * setDepartures käytetään käyttölittymästä saadakseen näkyville tietyltä pysäkiltä tietylä ajan hetkellä lähtevät linjat.
  * @param {string} gtfsId pysäkin id GTFS-formaatissa
  * @param {number} startTime lähtöaika pysäkille millisekuntteina
- * @returns
+ * @returns {function} Reduxin ymmärtämä dispatch-funktio
  */
 export const setDepartures = (gtfsId, startTime) => async (dispatch) => {
     const departures = await axios.post(
