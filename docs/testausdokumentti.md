@@ -52,7 +52,7 @@ Vaihtoehtoisesti `http://localhost:3000/performance` takaa löytyy graaffinen k�
 
 ## Suorituskykytestaus
 
-Suorituskykytestaaminen toteutetaan vertailemalla hakemiseen kuluvaa aikaa. Suorituskykytestin aikana haetaan reitti kurssin aikana kirjoitetulla A\*-algoritmillä. Ensimmäiseltä ja yhdeksänneltä reitinhaulta otetaan tulokset ylös. Näiden suoritukseen kulunutta aikaa vertaillaan toisiinsa. Yhdeksäs reitinhaku edustaa tulosta, jossa on lähes kaikki API-väylästä johtuvat hitaudet eliminoitu pois, ja saadaan algoritmin todellinen nopeus selville.
+Suorituskykytestaaminen toteutetaan vertailemalla hakemiseen kuluvaa aikaa. Suorituskykytestin aikana haetaan reitti kurssin aikana kirjoitetulla A\*-algoritmillä. Ennen suorituksen aloittamista välimuisti tyhjennetään. Suoritus tapahtuu siten, että ensin lasketaan aika yhdelle välimuistittomalle haulle. Tämän jälkeen suoritetaan 10 reitin verran reittien hakua välimuistiin. Vasta tämän jälkeen haetaan reitti, jolla saadaan aika reitinhaulle välimuistilla. Näiden kahden kellotetun suorituksen kulunutta aikaa vertaillaan toisiinsa. Viimeinen reitinhaku edustaa tulosta, jossa on lähes kaikki API-väylästä johtuvat hitaudet eliminoitu pois, ja saadaan algoritmin todellinen nopeus selville.
 
 Suorituskykytestauksen voi suorittaa tekemällä pyynnön backendin endpointiin `http://localhost:3001/performanceTest` sisällyttämällä `application/json` muotoisen bodyn mukaan. Tarkempi kuvaus suorittamisesta löytyy kohdasta _”Testien suorittaminen”_
 

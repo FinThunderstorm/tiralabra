@@ -37,7 +37,7 @@ const heuristic = (startStop, endStop, mode = 'BUS') => {
  * @param {JSON} startStop lähtöpysäkki
  * @param {JSON} endStop kohdepysäkki
  * @param {Number} uStartTime käyttäjän spesifioima lähtöaika
- * @param {boolean} cacheMore
+ * @param {boolean} routesAmount kuinka monta reittiä haetaan
  * @returns {Route} suositeltu reitti Route-oliona.
  */
 const search = async (startStop, endStop, uStartTime, routesAmount = 1) => {

@@ -1,19 +1,18 @@
 const PathFinder = require('@pathfinder/PathFinder')
 
-const runPathFinder = async (from, to, startTime) => {
-    const result = await PathFinder.search(from, to, startTime)
+/**
+ *
+ * @param {JSON} from lähtöpysäkki
+ * @param {JSON} to kohdepysäkki
+ * @param {Number} startTime käyttäjän spesifioima lähtöaika
+ * @param {number} routes kuinka monta reittiä haetaan
+ * @returns {Route} suositeltu reitti Route-oliona.
+ */
+const runPathFinder = async (from, to, startTime, routes = 10) => {
+    const result = await PathFinder.search(from, to, startTime, routes)
     return result
-}
-const runCache = async (from, to, startTime) => {
-    const result = await PathFinder.search(from, to, startTime)
-    const result2 = await PathFinder.search(result.from, result.to, startTime)
-    const result3 = await PathFinder.search(result2.from, result2.to, startTime)
-    const result4 = await PathFinder.search(result3.from, result3.to, startTime)
-    const result5 = await PathFinder.search(result4.from, result4.to, startTime)
-    return result5
 }
 
 module.exports = {
-    runCache,
     runPathFinder,
 }
