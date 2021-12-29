@@ -4,6 +4,10 @@ import { MapContainer, TileLayer } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import RouteOnMap from './RouteOnMap'
 
+/**
+ * Map-komponentti vastaa karttapohjan esittämisestä käyttöliittymässä.
+ * @returns React-komponentti
+ */
 const Map = () => {
     const position = [60.29549, 25.0614]
 

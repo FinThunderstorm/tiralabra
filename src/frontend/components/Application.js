@@ -10,6 +10,10 @@ import Search from './Search'
 import Loading from './Loading'
 import Error from './Error'
 
+/**
+ * Application-komponentti vastaa reitinhaun käyttöliittymäkokonaisuudesta
+ * @returns React-komponentti
+ */
 const Application = () => {
     console.log('toot')
     return (

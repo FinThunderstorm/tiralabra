@@ -24,6 +24,10 @@ import RouteIcon from '@mui/icons-material/Route'
 
 import Stop from './Stop'
 
+/**
+ * RouteViewer-komponenttiä käytetään reitin haun tuloksien esittämiseen
+ * @returns React-komponentti
+ */
 const RouteViewer = () => {
     const routeState = useSelector((state) => state.route)
 

@@ -14,6 +14,10 @@ import SearchIcon from '@mui/icons-material/Search'
 
 import { findRoute } from '../reducers/routeReducer'
 
+/**
+ * Search-komponenttia käytetään reitinhaun lähtö- ja kohdepisteiden määrittämiseen.
+ * @returns React-komponentti
+ */
 const Search = () => {
     const [startStop, setStartStop] = useState('HSL:4620205')
     const [endStop, setEndStop] = useState('HSL:1240118')

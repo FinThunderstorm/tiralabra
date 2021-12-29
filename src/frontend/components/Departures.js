@@ -11,6 +11,10 @@ import DirectionsBusIcon from '@mui/icons-material/DirectionsBus'
 import React from 'react'
 import { useSelector } from 'react-redux'
 
+/**
+ * Departures-komponentti vastaa pysäkiltä lähtevien linjojen esittämisestä käyttöliittymässä.
+ * @returns React-komponentti
+ */
 const Departures = () => {
     const departures = useSelector((state) => state.departures)
 
