@@ -24,6 +24,10 @@ import RouteIcon from '@mui/icons-material/Route'
 
 import Stop from './Stop'
 
+/**
+ * AltRouteViewer-komponentti vastaa välimuistittoman reitin esittämisestä suorituskykytesteissä.
+ * @returns React-komponentti
+ */
 const AltRouteViewer = () => {
     const routeState = useSelector((state) => state.performance)
 

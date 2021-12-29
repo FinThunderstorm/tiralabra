@@ -13,6 +13,10 @@ import { findPerformance } from '../reducers/routeReducer'
 import PerfResult from './PerfResult'
 import AltRouteViewer from './AltRouteViewer'
 
+/**
+ * PerformanceTest-komponentti huolehtii suorituskykytestauksen komponenttien esittämisestä
+ * @returns React-komponentti
+ */
 const PerformanceTest = () => {
     const dispatch = useDispatch()
     const today = new Date(
