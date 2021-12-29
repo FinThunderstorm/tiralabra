@@ -8,6 +8,10 @@ import markerLogo from '../marker2.svg'
 import dotLogo from '../dot2.svg'
 import { setDepartures } from '../reducers/departuresReducer'
 
+/**
+ * RouteOnMap-komponenttia käytetään reitin piirtämiseen kartalle
+ * @returns React-komponentti
+ */
 const RouteOnMap = () => {
     const routeState = useSelector((state) => state.route)
     const dispatch = useDispatch()
