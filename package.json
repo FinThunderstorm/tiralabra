@@ -56,7 +56,7 @@
         "prettier": "npx prettier --write src",
         "prettier:ci": "npx prettier --check src",
         "fixPermissions": "getent passwd && whoami",
-        "start:dev": "NODE_ENV=development ls -la && ./node_modules/concurrently/bin/concurrently.js \"./node_modules/.bin/nodemon ./src/backend/index.js\" \"npm run start:frontend\"",
+        "start:dev": "NODE_ENV=development ./node_modules/concurrently/bin/concurrently.js \"./node_modules/.bin/nodemon ./src/backend/index.js\" \"npm run start:frontend\"",
         "start:dev-containers": "docker-compose up -d && docker-compose logs -f app cache",
         "run:container": "docker-compose run -rm app"
     },
