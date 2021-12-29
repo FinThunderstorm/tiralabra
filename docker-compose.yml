@@ -13,6 +13,7 @@ services:
             - 3001:3001
         volumes:
             - ./:/tiralabra
+            - node_modules:/tiralabra/node_modules/
         depends_on:
             - cache
             - otp
@@ -33,3 +34,5 @@ services:
         ports:
             - 9080:8080
             - 9081:8081
+volumes:
+    node_modules:
